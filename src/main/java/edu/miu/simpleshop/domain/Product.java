@@ -16,7 +16,9 @@ public class Product {
     private List<ProductReview> productReviews;
     private Seller seller;
 
-    public Product(){}
+    public Product(){
+
+    }
 
     public String getName() {
         return name;
