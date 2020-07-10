@@ -1,0 +1,156 @@
+@startuml
+class User{
+    -id: Long
+    -username: String
+    -password: String
+    -email: String
+    -role: Role
+}
+
+class Admin {
+    -id: Long    -
+}
+
+class Product {
+    -id:Long
+    -quantity:int
+    -name: String
+    -price: Price
+    -description: Description
+    -productImage: Multipart
+    -isConfirmed:Boolean
+}
+
+class Buyer {
+    -id: long
+    -int: gainPoints
+    -productReviews: ProductReview
+    -follows: Follow
+    -orders: Order
+}
+
+class Follow{
+    -id: long
+    -seller: Seller
+    -buyer: Buyer
+}
+
+class Seller {
+    -id: Long
+    -products: Product
+    -follows: Follow
+    -orders: Order
+}
+
+class Order {
+    -id: long
+    -category: Category
+    -payment: Payment
+    -date: Date
+    -shippingAddress: Address
+    -orderLines: OrderLine
+}
+
+class Address {
+    -id: long
+    -street:String
+    -city:String
+    -zip:String
+    -state:String
+}
+
+class CartItem {
+    -id: long
+    -products: Product
+    -quantity: int
+}
+
+class ShoppingCart {
+    -id: long
+    -cartItems: CartItem
+    -buyer: Buyer
+}
+
+class ProductReview {
+    -id: Long
+    -product: Product
+    -buyer: Buyer
+    -comment: String
+    -rating: int
+    -isConfirmed: Boolean
+}
+
+class BillingInfo {
+    -id: long
+    -billingAddress: Address
+    -orderNumber: Long
+    -cardNumber: Long
+    -date: Date
+}
+
+class OrderLine {
+    -id: long
+    -order: Order
+    -product: Product
+    -quantity: int
+}
+
+class Category{
+    -id: long
+    -products: Product
+    -name: String
+}
+
+
+
+enum Role{
+    ADMIN
+    BUYER
+    SELLER
+}
+
+enum OrderStatus{
+    CREATED
+    SHIPPED
+    DELIVERED
+    CANCELLED
+}
+
+
+User -- Buyer
+User -- Seller
+User -left- Admin
+Seller -- Order
+Order -- BillingInfo
+Payment -- Address
+Address -- Buyer
+Buyer -right- Follow
+Follow -- Seller
+Buyer -- ShoppingCart
+Product -- ProductReview
+Buyer -- ProductReview
+Order -- OrderLine
+OrderLine -- Product
+Product -- Category
+Seller -- Product
+Product -- CartItem
+CartItem -- ShoppingCart
+OrderLine -..> CartItem
+
+
+'
+'Entry "1" -- "1..*" Block
+'Block -- Section
+'Entry  "1" <-- "1..*" Student
+'Student "0..*" -- "0..*" Section
+'Student "0..1" -- "0..*" Transcript
+'Transcript --> Course
+'Section --> Course
+'Faculty --> Course
+'Course -left-> Specialization
+'Faculty --> Section
+'Faculty --> Specialization
+
+
+
+@enduml
