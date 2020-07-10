@@ -1,7 +1,7 @@
 package edu.miu.simpleshop.domain;
 
 
-public class Payment {
+public class BillingInfo {
 
 
 }
