@@ -1,13 +1,26 @@
 package edu.miu.simpleshop.domain;
 
 
+import javax.persistence.*;
+
+@Entity
 public class CartItem {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @OneToOne
     private Product product;
+
     private int quantity;
+
+    @ManyToOne
     private ShoppingCart shoppingCart;
 
     public CartItem(){}
+
+    public Long getId() { return this.id; }
 
     public Product getProduct() {
         return product;

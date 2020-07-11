@@ -1,27 +1,45 @@
 package edu.miu.simpleshop.domain;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+@Entity
 public class ShoppingCart {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private List<CartItem> cartItems;
+
+    @NotNull
+    @OneToMany (fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "shoppingCart")
+    private List<@NotNull CartItem> cartItems;
+
+    @OneToOne
     private Buyer buyer;
 
-    public ShoppingCart(){}
+    public ShoppingCart(){  }
+
+    public Long getId() { return this.id; }
 
     public List<CartItem> getCartItems() {
-        return cartItems;
+        return Collections.unmodifiableList(cartItems);
     }
 
-    public void setCartItems(List<CartItem> cartItems) {
-        this.cartItems = cartItems;
+    public void addCartItem(CartItem cartItem) {
+        cartItems.add(cartItem);
     }
 
-    public Buyer getBuyer() {
-        return buyer;
+    public CartItem removeLastCartItem() {
+        if (!cartItems.isEmpty()) return null;
+        else return cartItems.remove(cartItems.size() - 1);
     }
 
-    public void setBuyer(Buyer buyer) {
-        this.buyer = buyer;
+    public CartItem removeCartItemById(Long id) {
+        for (CartItem c : cartItems)
+            if (c.getId().equals(id)) return c;
+            return null;
     }
 }

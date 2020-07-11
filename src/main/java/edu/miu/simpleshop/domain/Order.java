@@ -1,26 +1,34 @@
 package edu.miu.simpleshop.domain;
 
-
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
+@Entity
 public class Order  {
+
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
    private Long id;
-   private Category category;
+
+   @OneToOne
    private BillingInfo billingInfo;
+
    private LocalDate date;
+
+   @OneToOne
    private Address shippingAddress;
-   private List<OrderLine> orderLines;
+
+   @NotEmpty
+   @OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "order")
+   private List<@NotNull OrderLine> orderLines;
 
    public Order(){}
 
-   public Category getCategory() {
-      return category;
-   }
 
-   public void setCategory(Category category) {
-      this.category = category;
-   }
+   public Long getId() { return this.id; }
 
    public BillingInfo getBillingInfo() {
       return billingInfo;

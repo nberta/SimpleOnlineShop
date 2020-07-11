@@ -2,12 +2,17 @@ package edu.miu.simpleshop.domain;
 
 import edu.miu.simpleshop.domain.enums.Role;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
+
+@Entity
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotBlank
@@ -20,9 +25,14 @@ public class User {
     private String email;
 
     @NotEmpty
+    @ElementCollection(targetClass = Role.class)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "user_role")
     private Set<Role> roles;
 
     public User(){}
+
+    public Long getId() { return this.id; }
 
     public String getUsername() {
         return username;

@@ -1,22 +1,47 @@
 package edu.miu.simpleshop.domain;
 
+import org.hibernate.annotations.BatchSize;
 
+import javax.persistence.*;
+import javax.validation.Valid;
 import java.util.List;
 
+@Entity
+@BatchSize(size = 10)
 public class Buyer {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Valid
+    @OneToOne
     private User user;
+
     private int gainPoints;
-    private List<Product> products;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer")
     private List<Follow> follows;
+
+    @OneToMany (cascade = CascadeType.ALL)
     private List<Order> orders;
+
+    @OneToOne
     private Address shippingAddress;
+
+    @OneToOne
     private Address billingAddress;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer")
     private List<ProductReview> productReviews;
+
+    @OneToOne
     private ShoppingCart shoppingCart;
 
     public Buyer() {
     }
+
+    public Long getId() { return this.id; }
 
     public User getUser() {
         return user;
@@ -32,14 +57,6 @@ public class Buyer {
 
     public void setGainPoints(int gainPoints) {
         this.gainPoints = gainPoints;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
     }
 
     public List<Follow> getFollows() {
