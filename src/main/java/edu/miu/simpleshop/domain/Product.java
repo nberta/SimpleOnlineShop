@@ -3,20 +3,35 @@ package edu.miu.simpleshop.domain;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.beans.Transient;
 import java.util.List;
-
+@Entity
 public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @NotBlank
+    @Size(min=2, max=50, message = "{product.name}")
     private String name;
     private String description;
     private int quantity;
     private int price;
+
     private MultipartFile productImage;
     private Boolean isConfirmed;
     private List<ProductReview> productReviews;
     private Seller seller;
 
-    public Product(){}
+    public Product(){
+
+    }
 
     public String getName() {
         return name;
