@@ -43,28 +43,35 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product delete(Long id) {
-//        Product product = productRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        return null;
+        Product product = productRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        productRepository.delete(product);
+        return product;
     }
 
     @Override
     public List<Product> getAllUnconfirmedProducts() {
         List<Product> result;
-        return null;
+        result = productRepository.findAll();
+        return result;
     }
 
     @Override
     public List<Product> getBySellerId(Long id) {
-        return null;
+        List<Product> result;
+        result = productRepository.findBySellerID(id);
+        return result;
     }
 
     @Override
     public Collection<Product> getByCategoryId(Long id) {
-        return null;
+        Collection<Product> result;
+        result = productRepository.findByCategoryId(id);
+        return result;
     }
 
     @Override
     public Product getProduct(Long id) {
-        return null;
+
+        return productRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 }
