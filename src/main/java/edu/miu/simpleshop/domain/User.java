@@ -2,13 +2,24 @@ package edu.miu.simpleshop.domain;
 
 import edu.miu.simpleshop.domain.enums.Role;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 public class User {
+
     private Long id;
+
+    @NotBlank
     private String username;
+
+    @NotBlank
     private String password;
+
+    @NotBlank
     private String email;
+
+    @NotEmpty
     private Set<Role> roles;
 
     public User(){}

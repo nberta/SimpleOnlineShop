@@ -1,11 +1,19 @@
 package edu.miu.simpleshop.domain;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
+
 
 public class Seller {
     private Long id;
+
+    @NotNull
     private List<Product> products;
+
+    @NotNull
     private List<OrderLine> orderLines;
+
+    @NotNull
     private User user;
 
     public Seller(){}
