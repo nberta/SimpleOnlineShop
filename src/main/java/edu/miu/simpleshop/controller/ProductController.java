@@ -37,8 +37,8 @@ public class ProductController {
         return "index";
     }
 
-    public String addProduct(@ModelAttribute("product") Product product, Model model) throws IOException {
-        model.addAttribute("categories", categoryService.allCategories());
+    public String addProduct(@ModelAttribute("product") Product product,  Model model) throws IOException {
+        model.addAttribute("categories", categoryService.getAllCategories());
         return "seller/add-product";
     }
 
@@ -47,7 +47,7 @@ public class ProductController {
                               @ModelAttribute("seller") Seller seller,
                               Model model) throws IOException {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("categories", categoryService.allCategories());
+            model.addAttribute("categories", categoryService.getAllCategories());
             return "seller/add-product";
         }
         MultipartFile productImage = product.getProductImage();
@@ -60,7 +60,7 @@ public class ProductController {
 
     @GetMapping("/product/edit/{productId}")
     public String updateProduct(@PathVariable("productId") long productId, Model model) {
-        model.addAttribute("categories", categoryService.allCategories());
+        model.addAttribute("categories", categoryService.getAllCategories());
         Product product = productService.getProduct(productId);
         return "seller/edit-product";
     }
@@ -73,7 +73,8 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public Order getShoppingCartById(@PathVariable Long id) {
-        return CartItemService.getById(id);// will check what to return here
+//        return CartItemService.getById(id);// will check what to return here
+        return null;
     }
 
     @PutMapping("/update")
