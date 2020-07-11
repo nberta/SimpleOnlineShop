@@ -1,14 +1,13 @@
 package edu.miu.simpleshop.controller;
 
 import edu.miu.simpleshop.domain.*;
-import edu.miu.simpleshop.service.BuyerService;
-import edu.miu.simpleshop.service.CartItemService;
-import edu.miu.simpleshop.service.ProductService;
-import edu.miu.simpleshop.service.ShoppingCartService;
+import edu.miu.simpleshop.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.security.Principal;
 import java.util.List;
 
@@ -37,8 +36,8 @@ public class ShoppingCartController {
         @RequestMapping("/{category}")
         public String getProductsByCategory(Model model, @PathVariable("category") Long productCategory, @ModelAttribute("item") Item item) {
             try {
-                List<Category> categoryList = (List<Category>) categoryService.findAll();
-                Category category = categoryService.findById(productCategory);
+                List<Category> categoryList = (List<Category>) categoryService.getAllCategories();
+                Category category = categoryService.getById(productCategory);
                 List<Product> productList = productService.findAllByCategory(category);
                 model.addAttribute(productList);
                 model.addAttribute(categoryList);
@@ -53,27 +52,32 @@ public class ShoppingCartController {
         }
 
 
-        //SAVE
+
         @GetMapping(value = "/cartList")
         public String getListInCart(Principal principal, Model model) {
             double total;
             String email = principal.getName();
             Buyer buyer = buyerService.findByEmail(email);
 
-            CartItem cartItem = cartItemService.findByBuyer(buyer);
-            System.out.println("#############" + cartItem);
-            if (cartItem != null) {
+            ShoppingCart shoppingCart = ShoppingCart.findByBuyer(buyer);
+           // System.out.println("#############" + ShoppingCart);
+            if (shoppingCart != null) {
                 total = getTotalAmount(cartItem);
-                cartItem.setTotalPrice(total);
-                cartItemService.save(cartItem);
+                shoppingCart.setTotalPrice(total);
+                ShoppingCartService.save(shoppingCart);
                 //List<CartItem> cartItems = cartItemBuyer.getItem();
-                model.addAttribute("cartItemBuyer", cartItem);
-                model.addAttribute("cartItemList", cartItems);
+                model.addAttribute("cartItemBuyer", shoppingCart);
+                model.addAttribute("cartItemList", shoppingCart);
             }
             return "cart/shoppingCart";
         }
 
-
+        //DELETE
+        @DeleteMapping(value = "/delete/{id}")
+        public String removeItemCart(@PathVariable Long id, Model model) {
+            model.addAttribute("deleted", ShoppingCartService.delete(id));
+            return "redirect:/shoppingCart/cartList";
+        }
 
        /* @GetMapping(value = "/productList")
         public String listProduct(@ModelAttribute("cartItem") CartItem cartItem, Model model) {
@@ -98,13 +102,6 @@ public class ShoppingCartController {
             return "cart/addShoppingCart";
         }*/
 
-
-        //DELETE
-        @DeleteMapping(value = "/delete/{id}")
-        public String removeItemCart(@PathVariable Long id, Model model) {
-            model.addAttribute("deleted", ShoppingCartService.delete(id));
-            return "redirect:/shoppingCart/cartList";
-        }
     }
 }
 
