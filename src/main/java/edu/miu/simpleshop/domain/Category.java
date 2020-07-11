@@ -1,13 +1,25 @@
 package edu.miu.simpleshop.domain;
 
+import org.hibernate.annotations.BatchSize;
+
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@BatchSize(size = 10)
 public class Category {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+
+    @OneToMany (cascade = CascadeType.PERSIST)
     private List<Product> products;
 
     public Category(){}
+
+    public Long getId() { return this.id; }
 
     public String getName() {
         return name;

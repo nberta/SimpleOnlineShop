@@ -1,14 +1,27 @@
 package edu.miu.simpleshop.domain;
 
+import javax.persistence.*;
+
+@Entity
 public class ProductReview {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @ManyToOne
     private Product product;
+
+    @ManyToOne
     private Buyer buyer;
+
     private String review;
     private int rating;
     private Boolean isConfirmed;
 
     public ProductReview(){}
+
+    public Long getId() { return this.id; }
 
     public Product getProduct() {
         return product;

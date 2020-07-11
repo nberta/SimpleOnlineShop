@@ -2,15 +2,32 @@ package edu.miu.simpleshop.domain;
 
 import edu.miu.simpleshop.domain.enums.OrderStatus;
 
+import javax.persistence.*;
+
+@Entity
 public class OrderLine {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @ManyToOne
     private Seller seller;
+
+    @OneToOne
     private Product product;
+
+    @ManyToOne
     private Order order;
+
     private int quantity;
+
+    @Enumerated(value = EnumType.STRING)
     private OrderStatus status = OrderStatus.CREATED;
 
-    private OrderLine(){}
+    public OrderLine(){}
+
+    public Long getId() { return this.id; }
 
     public Seller getSeller() {
         return seller;

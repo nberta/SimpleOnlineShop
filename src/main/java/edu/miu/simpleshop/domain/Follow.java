@@ -1,11 +1,23 @@
 package edu.miu.simpleshop.domain;
 
+import javax.persistence.*;
+
+@Entity
 public class Follow {
+
+    @Id
+    @GeneratedValue
     private Long id;
+
+    @ManyToOne
     private Buyer buyer;
+
+    @ManyToOne
     private Seller seller;
 
     public Follow(){}
+
+    public Long getId() { return this.id; }
 
     public Buyer getBuyer() {
         return buyer;

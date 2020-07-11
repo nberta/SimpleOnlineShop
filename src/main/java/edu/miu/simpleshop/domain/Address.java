@@ -18,6 +18,8 @@ public class Address {
 	public Address(){
 	}
 
+	public Long getId() { return this.id; }
+
 	public String getStreet() {
 		return street;
 	}
