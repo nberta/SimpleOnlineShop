@@ -9,8 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.beans.Transient;
+import javax.persistence.*;
 import java.util.List;
+
+
 @Entity
 public class Product {
     @Id
@@ -24,14 +26,21 @@ public class Product {
     private int quantity;
     private int price;
 
+    @Transient
     private MultipartFile productImage;
+
     private Boolean isConfirmed;
+
+    @OneToMany (cascade = CascadeType.ALL, mappedBy = "product")
     private List<ProductReview> productReviews;
+
+    @OneToOne (cascade = CascadeType.PERSIST)
     private Seller seller;
 
-    public Product(){
-
+    public Product() {
     }
+
+    public Long getId() { return this.id; }
 
     public String getName() {
         return name;
