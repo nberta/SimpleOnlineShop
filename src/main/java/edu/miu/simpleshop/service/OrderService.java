@@ -9,7 +9,7 @@ import java.util.List;
 public interface OrderService {
 
     Order getById(Long id);
-    List<Order> getOrdersForBuyer(Long id);
+    List<Order> getAllOrders();
     Order save(Order order);
     Order cancel(Order order);
     Order delete(Long id);
