@@ -2,8 +2,10 @@ package edu.miu.simpleshop.domain;
 
 import org.hibernate.annotations.BatchSize;
 
+
 import javax.persistence.*;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -38,6 +40,7 @@ public class Buyer {
     @OneToOne
     private ShoppingCart shoppingCart;
 
+
     public Buyer() {
     }
 
@@ -59,13 +62,7 @@ public class Buyer {
         this.gainPoints = gainPoints;
     }
 
-    public List<Follow> getFollows() {
-        return follows;
-    }
 
-    public void setFollows(List<Follow> follows) {
-        this.follows = follows;
-    }
 
     public List<Order> getOrders() {
         return orders;
@@ -106,4 +103,21 @@ public class Buyer {
     public void setShoppingCart(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
     }
+
+    //Follows
+    public List<Follow> getFollows() {
+        return follows;
+    }
+
+    public void followSeller(Seller seller){
+        Follow follow = new Follow();
+        follow.setSeller(seller);
+        follow.setBuyer(this);
+        this.follows.add(follow);
+    }
+
+    public void unfollowSeller(Seller seller){
+       // sellers.remove(seller);
+    }
 }
+

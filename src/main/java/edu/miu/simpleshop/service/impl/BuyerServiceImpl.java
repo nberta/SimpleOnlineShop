@@ -1,6 +1,7 @@
 package edu.miu.simpleshop.service.impl;
 
 import edu.miu.simpleshop.domain.Buyer;
+import edu.miu.simpleshop.domain.Seller;
 import edu.miu.simpleshop.domain.ShoppingCart;
 import edu.miu.simpleshop.repository.BuyerRepository;
 import edu.miu.simpleshop.service.BuyerService;
@@ -39,8 +40,14 @@ public class BuyerServiceImpl implements BuyerService {
         return null;
     }
 
+
     @Override
-    public Buyer buyerFollowSeller(Buyer buyer, Long sellerId) {
-        return null;
+    public void followSeller(Buyer buyer, Seller seller) {
+        buyer.followSeller(seller);
+    }
+
+    @Override
+    public void unfollowSeller(Buyer buyer, Seller seller) {
+        buyer.unfollowSeller(seller);
     }
 }

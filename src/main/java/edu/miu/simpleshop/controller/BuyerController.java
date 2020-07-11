@@ -57,4 +57,14 @@ public class BuyerController {
         model.addAttribute("deleted", buyerService.delete(id));
         return "buyer/details";
     }
+
+    //Follows
+    @GetMapping("/following")
+    public String getFollowingSellers(){
+        return "buyer/mysellers";
+    }
+
+
+
+
 }
