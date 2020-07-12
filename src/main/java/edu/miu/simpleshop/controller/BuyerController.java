@@ -26,12 +26,12 @@ public class BuyerController {
 
     @GetMapping("/register")
     public String getRegistrationForm(@ModelAttribute("user") User user) {
-        return "buyer/buyerRegistrationForm";
+        return "register";
     }
 
     @PostMapping("/register")
     public String save(@Valid User user, BindingResult bindingResult, RedirectAttributes attributes) {
-        if (bindingResult.hasErrors()) return "buyer/buyerRegistrationForm";
+        if (bindingResult.hasErrors()) return "register";
         Buyer buyer = new Buyer();
         buyer.setUser(user);
         buyer = buyerService.save(buyer);
