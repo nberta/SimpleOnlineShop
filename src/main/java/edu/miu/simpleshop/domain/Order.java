@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,7 +24,7 @@ public class Order  {
 
    @NotEmpty
    @OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "order")
-   private List<@NotNull OrderLine> orderLines;
+   private List<@NotNull OrderLine> orderLines = new ArrayList<>();
 
    public Order(){}
 

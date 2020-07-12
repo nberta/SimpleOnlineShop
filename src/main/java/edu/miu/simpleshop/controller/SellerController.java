@@ -2,6 +2,7 @@ package edu.miu.simpleshop.controller;
 
 import edu.miu.simpleshop.domain.Seller;
 import edu.miu.simpleshop.domain.User;
+import edu.miu.simpleshop.service.ProductService;
 import edu.miu.simpleshop.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,11 @@ public class SellerController {
 
     @Autowired
     private SellerService sellerService;
+
+    @Autowired
+    private ProductService productService;
+
+
 
     @GetMapping
     public String getHomepage() {
@@ -62,6 +68,12 @@ public class SellerController {
     @GetMapping("/register/{id}")
     public String getRegistrationForm(@PathVariable Long id) {
         return "seller/sellerRegistrationForm";
+    }
+
+    @GetMapping("/my-products")
+    public String sellerProductPage(@ModelAttribute("seller") Seller seller, Model model) {
+        model.addAttribute("products", productService.getBySellerId(seller.getId()));
+        return "seller/productsDisplay";
     }
 
 }
