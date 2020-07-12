@@ -1,52 +1,86 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/dashboard_layout}"
+      xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-
-    <!--  bootstrap, css, js  -->
-
+    <title>Shopping Cart</title>
 </head>
 <body>
+<div layout:fragment="main-content"class="container" style="margin:2%;margin-left: 30%">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Product Registration</h4>
+            <form th:action="@{/seller/update}" th:object="${productForm}"
+                  method="post"  enctype="multipart/form-data" >
 
-<!--product registration form-->
-    <form th:object="${product}" th:action="@{/products/product/add}" enctype="multipart/form-data" method="post" action="#">
-        <fieldset>
-            <legend>Add new product</legend>
-            <div class="form-group">
-                <label for="name">Name: </label>
-                <input th:field="*{name}"  th:value="*{name}" id="name" />
-                <span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
-            </div>
-            <div class="form-group">
-                <label for="description">Description: </label>
-                <input required th:field="*{description}"  th:value="*{description}" id="description" />
-                <span class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
-            </div>
+                <input type="hidden" th:field="*{id}" />
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon7"><i class="fas fa-user-lock">Category</i></span>
+                    </div>
+                    <select th:readonly="${product.id != null}" class="form-control" id="roles" th:field="*{category.id}" >
+                        <option th:each="category: ${categoryList}" th:value="${category.id}" th:text="${category.name}">
+                        </option>
+                    </select>
+                         </div>
 
-            <div class="form-group">
-                <label for="quantity">Quantity: </label>
-                <input required type="number" th:field="*{quantity}"  th:value="*{quantity}" id="quantity" />
-                <span class="text-danger" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></span>
-            </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon2"><i class="fas fa-user-lock">Product Name</i></span>
+                    </div>
+                    <input type="text"
+                           th:field="${product.name}" class="form-control" aria-describedby="basic-addon2">
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('Name')}">
+                        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                              class="validation-message"> </span></div>
+                </div>
 
-            <div class="form-group">
-                <label for="price">Price: </label>
-                <input required type="number" th:field="*{price}"  th:value="*{price}" id="price" />
-                <span class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
-            </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon4"><i class="fas fa-user-lock">Description </i></span>
+                    </div>
+                    <input type="text"
+                           th:field="${product.description}" class="form-control" aria-describedby="basic-addon4">
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('description')}">
+                        <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
+                              class="validation-message"> </span></div>
+                </div>
 
-            <div class="form-group">
-                <label for="productImage">Picture:</label>
-                <input required type="file" th:field="*{productImage}" id="productImage"/>
-                <span class="text-danger" th:if="${#fields.hasErrors('productImage')}" th:errors="*{productImage}"></span>
-            </div>
 
-            <div class="col-md-6 mt-5">
-                <input type="submit" class="btn btn-primary" value="Submit">
-            </div>
-        </fieldset>
-    </form>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon5"><i class="fas fa-user-lock">Quantity </i></span>
+                    </div>
+                    <input type="text"
+                           th:field="${product.quantity}" class="form-control" aria-describedby="basic-addon5">
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('quantity')}">
+                        <span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"
+                              class="validation-message"> </span></div>
+                </div>
 
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon6"><i class="fas fa-user-lock">Price </i></span>
+                    </div>
+
+                        <input type="text"  class="form-control" th:field="${product.price}" aria-describedby="basic-addon6">
+
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('price')}">
+                        <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"  class="validation-message"> </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label >Image URL</label>
+                    <input  type="file" th:field="${product.productImage}"  class="form-control" />
+                    </div>
+                <button  class="btn btn-primary">Save</button>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <product-card [product]="product" [show-actions]="false"></product-card>
+        </div>
+    </div>
+</div>
 </body>
 </html>

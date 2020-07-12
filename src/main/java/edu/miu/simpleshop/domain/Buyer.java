@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @BatchSize(size = 10)
-public class Buyer {
+public class Buyer{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
