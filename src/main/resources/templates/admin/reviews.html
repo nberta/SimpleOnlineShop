@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/main}"
+      xmlns:th="http://www.thymeleaf.org" >
+
+<head>
+    <title>Home Page</title>
+
+        <link rel='stylesheet' type='text/css' media='screen' th:href="@{/css/main.css}">-->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
+    <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container" layout:fragment="main-content">
+    <!-- BUYER HOME START-->
+    <section>
+        <div class="row justify-content-md-center">
+            <div class="col-12">
+                <h3 align="center">Buyers Comments to approve </h3>
+
+                <table class="class=table table-bordered table-striped" id="myTable" width="100%" cellspacing="0" data-toggle="table" data-maintain-meta-data="true">
+
+                    <thead class="thead-dark">
+
+                    <tr>
+                        <th data-sortable="true">Buyer's UserName</th>
+                        <th data-sortable="true">Buyer's email </th>
+                        <th data-sortable="true">Buyer's review </th>
+                        <th data-sortable="true">Status</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="prod: ${productReviews}">
+                        <td th: text="${prod.buyer.user.username}"></td>
+                        <td th: text="${prod.buyer.user.email}"></td>
+                        <td th:text="${prod.review}"></td>
+
+
+                        <td>
+                            <form action="#" th:action="@{/admin/reviews/} + ${prod.id} + @{/approve}" method="post">
+                                <input type="submit" value="Approve"  class="btn btn-sm btn-primary"/>
+                            </form>
+
+                            <form action="#" th:action="@{/admin/reviews/} + ${prod.id} + @{/reject}" method="post">
+                                <input type="submit" value="Reject"  class="btn btn-danger btn-sm mt-2"/>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+    <!-- BUYER HOME END-->
+</body>
+</html>
