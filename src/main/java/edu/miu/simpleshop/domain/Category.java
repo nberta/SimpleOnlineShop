@@ -3,6 +3,7 @@ package edu.miu.simpleshop.domain;
 import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,7 +16,7 @@ public class Category {
     private String name;
 
     @OneToMany (cascade = CascadeType.PERSIST)
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
 
     public Category(){}
 

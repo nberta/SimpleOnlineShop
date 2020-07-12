@@ -3,9 +3,11 @@ package edu.miu.simpleshop.controller;
 import edu.miu.simpleshop.domain.Order;
 import edu.miu.simpleshop.domain.Product;
 import edu.miu.simpleshop.domain.Seller;
+import edu.miu.simpleshop.exception.IncorrectFileTypeException;
 import edu.miu.simpleshop.domain.ShoppingCart;
 import edu.miu.simpleshop.service.CategoryService;
 import edu.miu.simpleshop.service.ProductService;
+import org.apache.tika.Tika;
 import edu.miu.simpleshop.service.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,9 +17,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import org.apache.commons.lang3.RandomStringUtils;
 
 @Controller
 @RequestMapping("/products")
@@ -37,30 +43,44 @@ public class ProductController {
         return "index";
     }
 
+    @GetMapping("/product/add")
     public String addProduct(@ModelAttribute("product") Product product,  Model model) throws IOException {
-        model.addAttribute("categories", categoryService.getAllCategories());
-        return "seller/add-product";
+        //model.addAttribute("categories", categoryService.allCategories());
+        return "product/productForm";
     }
 
     @PostMapping("/product/add")
     public String saveProduct(@Valid @ModelAttribute("product") Product product, BindingResult bindingResult,
-                              @ModelAttribute("seller") Seller seller,
-                              Model model) throws IOException {
+                              @ModelAttribute("seller") Seller seller, HttpServletRequest request,
+                              Model model) throws IOException{
         if (bindingResult.hasErrors()) {
-            model.addAttribute("categories", categoryService.getAllCategories());
+            //model.addAttribute("categories", categoryService.allCategories());
             return "seller/add-product";
         }
         MultipartFile productImage = product.getProductImage();
-        product.setSeller(seller);
-
-        productService.save(product);
+        String rootDirectory = request.getSession().getServletContext().getRealPath("/");
+        product.setImageIdentifier(product.getName() + RandomStringUtils.randomAlphanumeric(10));
+        if (productImage != null && !productImage.isEmpty()) {
+            try {
+                Tika tika = new Tika();
+                String type = tika.detect(productImage.getBytes());
+                if (!type.equals("image/png"))
+                    throw new IncorrectFileTypeException("The uploaded file is an invalid type. Please enter an image.");
+                productImage.transferTo(
+                        new File(rootDirectory + "images\\products\\"
+                                + product.getImageIdentifier() + ".png"));
+            } catch (Exception e) {
+                throw new RuntimeException("Product Image saving failed", e);
+            }
+        }
 
         return "redirect:/seller/my-products";
     }
 
+
     @GetMapping("/product/edit/{productId}")
     public String updateProduct(@PathVariable("productId") long productId, Model model) {
-        model.addAttribute("categories", categoryService.getAllCategories());
+        //model.addAttribute("categories", categoryService.allCategories());
         Product product = productService.getProduct(productId);
         return "seller/edit-product";
     }

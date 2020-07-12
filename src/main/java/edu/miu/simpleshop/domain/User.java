@@ -1,10 +1,12 @@
 package edu.miu.simpleshop.domain;
 
 import edu.miu.simpleshop.domain.enums.Role;
+import edu.miu.simpleshop.validation.annotation.ValidPassword;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -19,6 +21,7 @@ public class User {
     private String username;
 
     @NotBlank
+    @ValidPassword
     private String password;
 
     @NotBlank
@@ -28,7 +31,7 @@ public class User {
     @ElementCollection(targetClass = Role.class)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_role")
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
     public User(){}
 

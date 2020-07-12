@@ -3,6 +3,7 @@ package edu.miu.simpleshop.domain;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,17 +15,19 @@ public class Seller{
 
     @NotNull
     @OneToMany (cascade = CascadeType.ALL)
-    private List<@NotNull Product> products;
+    private List<@NotNull Product> products = new ArrayList<>();
 
     @NotNull
     @OneToMany (cascade = CascadeType.PERSIST, mappedBy = "seller")
-    private List<@NotNull OrderLine> orderLines;
+    private List<@NotNull OrderLine> orderLines = new ArrayList<>();
 
     @Valid
     @OneToOne (cascade = CascadeType.ALL)
     private User user;
 
     public Seller(){}
+
+    public Long getId() { return this.id; }
 
     public List<Product> getProducts() {
         return products;

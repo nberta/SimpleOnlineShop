@@ -15,7 +15,7 @@ public class ShoppingCart {
 
     @NotNull
     @OneToMany (fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "shoppingCart")
-    private List<@NotNull CartItem> cartItems;
+    private List<@NotNull CartItem> cartItems = new ArrayList<>();
 
     @OneToOne
     private Buyer buyer;
