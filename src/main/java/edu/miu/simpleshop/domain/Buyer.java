@@ -4,6 +4,7 @@ import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,10 +22,10 @@ public class Buyer {
     private int gainPoints;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer")
-    private List<Follow> follows;
+    private List<Follow> follows = new ArrayList<>();
 
     @OneToMany (cascade = CascadeType.ALL)
-    private List<Order> orders;
+    private List<Order> orders = new ArrayList<>();
 
     @OneToOne
     private Address shippingAddress;
@@ -33,7 +34,7 @@ public class Buyer {
     private Address billingAddress;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer")
-    private List<ProductReview> productReviews;
+    private List<ProductReview> productReviews = new ArrayList<>();
 
     @OneToOne
     private ShoppingCart shoppingCart;

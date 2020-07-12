@@ -7,9 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,17 +24,25 @@ public class Product {
     @NotBlank
     @Size(min=2, max=50, message = "{product.name}")
     private String name;
+
+    @NotBlank
     private String description;
+
+    @Min(1)
     private int quantity;
+
+    @Min(0)
     private int price;
 
     @Transient
     private MultipartFile productImage;
 
-    private Boolean isConfirmed;
+    private String imageIdentifier;
+
+    private Boolean isConfirmed = false;
 
     @OneToMany (cascade = CascadeType.ALL, mappedBy = "product")
-    private List<ProductReview> productReviews;
+    private List<ProductReview> productReviews = new ArrayList<>();
 
     @OneToOne (cascade = CascadeType.PERSIST)
     private Seller seller;
@@ -41,6 +51,14 @@ public class Product {
     }
 
     public Long getId() { return this.id; }
+
+    public String getImageIdentifier() {
+        return imageIdentifier;
+    }
+
+    public void setImageIdentifier(String imageIdentifier) {
+        this.imageIdentifier = imageIdentifier;
+    }
 
     public String getName() {
         return name;

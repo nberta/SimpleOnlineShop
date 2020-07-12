@@ -1,10 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <!--  bootstrap, css, js  -->
+
 </head>
 <body>
+
+<!--product registration form-->
+    <form th:object="${product}" th:action="@{/products/product/add}" enctype="multipart/form-data" method="post" action="#">
+        <fieldset>
+            <legend>Add new product</legend>
+            <div class="form-group">
+                <label for="name">Name: </label>
+                <input th:field="*{name}"  th:value="*{name}" id="name" />
+                <span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+            </div>
+            <div class="form-group">
+                <label for="description">Description: </label>
+                <input required th:field="*{description}"  th:value="*{description}" id="description" />
+                <span class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="quantity">Quantity: </label>
+                <input required type="number" th:field="*{quantity}"  th:value="*{quantity}" id="quantity" />
+                <span class="text-danger" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="price">Price: </label>
+                <input required type="number" th:field="*{price}"  th:value="*{price}" id="price" />
+                <span class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="productImage">Picture:</label>
+                <input required type="file" th:field="*{productImage}" id="productImage"/>
+                <span class="text-danger" th:if="${#fields.hasErrors('productImage')}" th:errors="*{productImage}"></span>
+            </div>
+
+            <div class="col-md-6 mt-5">
+                <input type="submit" class="btn btn-primary" value="Submit">
+            </div>
+        </fieldset>
+    </form>
 
 </body>
 </html>
