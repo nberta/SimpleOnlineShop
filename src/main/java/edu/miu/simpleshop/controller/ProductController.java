@@ -32,9 +32,6 @@ public class ProductController {
     private ProductService productService;
 
     @Autowired
-    private ShoppingCartService shoppingCartService;
-
-    @Autowired
     private CategoryService categoryService;
 
     public String mainPage(@RequestParam(value = "category", required = false) Integer category, Model model) {
@@ -91,24 +88,25 @@ public class ProductController {
         productService.delete(productId);
     }
 
-    @GetMapping("/{id}")
-    public Order getShoppingCartById(@PathVariable Long id) {
-//        return CartItemService.getById(id);// will check what to return here
-        return null;
-    }
+//    @GetMapping("/{id}")
+//    public Order getShoppingCartById(@PathVariable Long id) {
+////        return CartItemService.getById(id);// will check what to return here
+//        return null;
+//    }
+//
+//    @PutMapping("/update")
+//    public String update(@Valid ShoppingCart shoppingCart, BindingResult bindingResult) {
+//        if (bindingResult.hasErrors()) return "shoppingCart/edit";
+//        shoppingCartService.save(shoppingCart);
+//        return "shoppingCart/details";
+//    }
 
-    @PutMapping("/update")
-    public String update(@Valid ShoppingCart shoppingCart, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) return "shoppingCart/edit";
-        shoppingCartService.save(shoppingCart);
-        return "shoppingCart/details";
-    }
-
-    @DeleteMapping(value = "/delete/{id}")
-    public String removeItemCart(@PathVariable Long id, Model model) {
-        model.addAttribute("deleted", shoppingCartService.delete(id));
-        return "shoppingCart/details";
-    }
+//    @DeleteMapping(value = "/delete/{id}")
+//    public String removeItemCart(@PathVariable Long id, Model model) {
+//
+//        model.addAttribute("deleted", shoppingCartService.delete(id));
+//        return "shoppingCart/details";
+//    }
 }
 
 

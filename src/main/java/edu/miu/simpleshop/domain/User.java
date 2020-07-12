@@ -1,7 +1,7 @@
 package edu.miu.simpleshop.domain;
 
 import edu.miu.simpleshop.domain.enums.Role;
-import edu.miu.simpleshop.validation.annotation.ValidPassword;
+//import edu.miu.simpleshop.validation.annotation.ValidPassword;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -21,7 +21,7 @@ public class User {
     private String username;
 
     @NotBlank
-    @ValidPassword
+    //@ValidPassword
     private String password;
 
     @NotBlank

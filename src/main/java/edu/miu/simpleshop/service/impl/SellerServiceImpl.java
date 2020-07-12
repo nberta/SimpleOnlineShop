@@ -32,4 +32,5 @@ public class SellerServiceImpl implements SellerService {
     public Seller getById(Long id) {
         return sellerRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
+
 }

@@ -47,6 +47,10 @@ public class Product {
     @OneToOne (cascade = CascadeType.PERSIST)
     private Seller seller;
 
+    //Added later
+    @ManyToOne
+    private Category category;
+
     public Product() {
     }
 

@@ -16,8 +16,8 @@ public class Buyer{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Valid
-    @OneToOne
+   // @Valid
+    @OneToOne(cascade = CascadeType.ALL)
     private User user;
 
     private int gainPoints;
@@ -28,16 +28,16 @@ public class Buyer{
     @OneToMany (cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Address shippingAddress;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Address billingAddress;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer")
     private List<ProductReview> productReviews = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private ShoppingCart shoppingCart;
 
 
@@ -117,7 +117,7 @@ public class Buyer{
     }
 
     public void unfollowSeller(Seller seller){
-       // sellers.remove(seller);
+     //  this.follows.remove(followSeller(follow))
     }
 }
 
