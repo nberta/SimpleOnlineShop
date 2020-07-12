@@ -9,5 +9,4 @@ public interface SellerService {
     Seller delete(Long id);
     Seller getById(Long id);
 
-
 }

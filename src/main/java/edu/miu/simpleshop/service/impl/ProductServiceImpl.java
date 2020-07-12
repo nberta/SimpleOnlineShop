@@ -4,7 +4,6 @@ import edu.miu.simpleshop.domain.Product;
 import edu.miu.simpleshop.repository.CategoryRepository;
 import edu.miu.simpleshop.repository.ProductRepository;
 import edu.miu.simpleshop.service.ProductService;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getBySellerId(Long id) {
         List<Product> result;
-        result = productRepository.findBySellerID(id);
+        result = productRepository.findBySellerId(id);
         return result;
     }
 

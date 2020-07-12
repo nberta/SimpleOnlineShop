@@ -2,6 +2,7 @@ package edu.miu.simpleshop.domain;
 
 import org.hibernate.annotations.BatchSize;
 
+
 import javax.persistence.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -15,8 +16,8 @@ public class Buyer{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Valid
-    @OneToOne
+   // @Valid
+    @OneToOne(cascade = CascadeType.ALL)
     private User user;
 
     private int gainPoints;
@@ -27,17 +28,18 @@ public class Buyer{
     @OneToMany (cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Address shippingAddress;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Address billingAddress;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer")
     private List<ProductReview> productReviews = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private ShoppingCart shoppingCart;
+
 
     public Buyer() {
     }
@@ -60,13 +62,7 @@ public class Buyer{
         this.gainPoints = gainPoints;
     }
 
-    public List<Follow> getFollows() {
-        return follows;
-    }
 
-    public void setFollows(List<Follow> follows) {
-        this.follows = follows;
-    }
 
     public List<Order> getOrders() {
         return orders;
@@ -107,4 +103,21 @@ public class Buyer{
     public void setShoppingCart(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
     }
+
+    //Follows
+    public List<Follow> getFollows() {
+        return follows;
+    }
+
+    public void followSeller(Seller seller){
+        Follow follow = new Follow();
+        follow.setSeller(seller);
+        follow.setBuyer(this);
+        this.follows.add(follow);
+    }
+
+    public void unfollowSeller(Seller seller){
+     //  this.follows.remove(followSeller(follow))
+    }
 }
+

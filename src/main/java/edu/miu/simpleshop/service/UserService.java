@@ -7,5 +7,6 @@ public interface UserService {
 
     User getByUserName(String username);
     User delete(User user);
+    User save(User user);
 
 }
