@@ -31,6 +31,8 @@ public class Product {
     @Min(1)
     private int quantity;
 
+    private boolean enabled = false;
+
     @Min(0)
     private int price;
 
@@ -126,5 +128,9 @@ public class Product {
 
     public void setSeller(Seller seller) {
         this.seller = seller;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 }

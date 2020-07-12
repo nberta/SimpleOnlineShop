@@ -45,11 +45,11 @@
 
                         <td>
                             <form action="#" th:action="@{admin/products/{id}/approve(id=${product.id})}" method="post">
-                                <input type="submit" value="Approve" th: class="btn btn-sm btn-primary btn-lg"/>
+                                <input type="submit" value="Approve" th:if="${product.isEnabled() ==false}" class="btn btn-sm btn-primary btn-lg"/>
                             </form>
 
                             <form action="#" th:action="@{admin/products/{id}/reject(id=${product.id})}" method="post">
-                                <input type="submit" value="Reject" th: class="btn btn-danger btn-sm btn-lg"/>
+                                <input type="submit" value="Reject" th:if="${product.isEnabled()== true}" class="btn btn-danger btn-sm btn-lg"/>
                             </form>
                         </td>
                     </tr>
