@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Service
 @Transactional
@@ -32,5 +33,15 @@ public class SellerServiceImpl implements SellerService {
     public Seller getById(Long id) {
         return sellerRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
+    @Override
+    public List<Seller> getPendingSellers() {
+        return sellerRepository.findAllByIsActiveFalse();
+    }
+
+
+
+
+
+
 
 }
