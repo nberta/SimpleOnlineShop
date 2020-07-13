@@ -1,17 +1,25 @@
 package edu.miu.simpleshop.controller;
 
+
 import edu.miu.simpleshop.domain.*;
 import edu.miu.simpleshop.service.BuyerService;
 import edu.miu.simpleshop.service.OrderService;
 import edu.miu.simpleshop.service.UserService;
+import edu.miu.simpleshop.util.PdfReceiptDownload;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
+
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,6 +30,9 @@ public class BuyerController {
 
     @Autowired
     private BuyerService buyerService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private OrderService orderService;
@@ -67,8 +78,7 @@ public class BuyerController {
         return "buyer/details";
     }
 
-
-    //   follow
+    //Follows
     @GetMapping("/following")
     public String getSellersFollowed(@ModelAttribute("loggedInBuyer") Buyer buyer, Model model){
         model.addAttribute("follows", buyerService.getFollowedSellersForBuyer(buyer.getId()));
@@ -128,6 +138,22 @@ public class BuyerController {
     @GetMapping("/my-orders/order-successful")
     public String successfulOrder(@ModelAttribute("order") Order order) {
         return "order/details";
+    }
+
+
+    @GetMapping(value = "/receipt/download/{orderId}", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<InputStreamResource> downloadReceipt(@PathVariable("orderId") long orderId) {
+        Order orderForPDF = orderService.getById(orderId);
+        ByteArrayInputStream bis = PdfReceiptDownload.Report(orderForPDF);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=citiesreport.pdf");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(bis));
     }
 
 }
