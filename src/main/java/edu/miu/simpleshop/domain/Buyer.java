@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @BatchSize(size = 10)
@@ -41,8 +42,6 @@ public class Buyer{
 
     @OneToOne(cascade = CascadeType.ALL)
     private ShoppingCart shoppingCart;
-
-
 
     public Buyer() {
     }
@@ -123,6 +122,9 @@ public class Buyer{
 
     public void unfollowSeller(Seller seller){
      //  this.follows.remove(followSeller(follow))
+    }
+    public void unfollowSeller(Long id) {
+        this.follows = follows.stream().filter(f -> !f.getId().equals(id)).collect(Collectors.toList());
     }
     public boolean isActive() { return this.isActive; }
 
