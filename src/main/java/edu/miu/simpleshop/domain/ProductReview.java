@@ -18,6 +18,7 @@ public class ProductReview {
     private String review;
     private int rating;
     private Boolean isConfirmed;
+    private boolean enabled;
 
     public ProductReview(){}
 
@@ -61,5 +62,10 @@ public class ProductReview {
 
     public void setConfirmed(Boolean confirmed) {
         isConfirmed = confirmed;
+    }
+
+
+    public boolean isEnabled() {
+        return enabled;
     }
 }
