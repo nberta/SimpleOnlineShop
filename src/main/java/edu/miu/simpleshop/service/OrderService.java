@@ -1,9 +1,12 @@
 package edu.miu.simpleshop.service;
 
 
+import edu.miu.simpleshop.domain.Buyer;
+import edu.miu.simpleshop.domain.CartItem;
 import edu.miu.simpleshop.domain.Order;
 import edu.miu.simpleshop.domain.OrderLine;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface OrderService {
@@ -13,6 +16,7 @@ public interface OrderService {
     Order save(Order order);
     Order cancel(Order order);
     Order delete(Long id);
-    List<OrderLine> getOrderLinesByOrderId(Long id);
-
+    Collection<OrderLine> getOrderLinesByOrderId(Long id);
+    boolean canMakeOrder(Collection<CartItem> cartItems, Collection<CartItem> possibleRefuse);
+    Order prepareOrder(Collection<CartItem> cartItems, Buyer buyer);
 }

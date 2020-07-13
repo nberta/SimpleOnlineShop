@@ -20,6 +20,8 @@ public class Order  {
 
    private LocalDate date;
 
+   private Double totalCost;
+
    @OneToOne
    private Address shippingAddress;
 
@@ -29,6 +31,17 @@ public class Order  {
 
    public Order(){}
 
+   public Order(List<OrderLine> orderLines, BillingInfo billingInfo, Address shippingAddress) {
+      this.orderLines = orderLines;
+      Double cost = 0D;
+      for(OrderLine orderLine : orderLines) {
+         orderLine.setOrder(this);
+         cost += (orderLine.getProduct().getPrice() * orderLine.getQuantity());
+      }
+      this.totalCost = cost;
+      this.billingInfo = billingInfo;
+      this.shippingAddress = shippingAddress;
+   }
 
    public Long getId() { return this.id; }
 
@@ -62,5 +75,13 @@ public class Order  {
 
    public void setOrderLines(List<OrderLine> orderLines) {
       this.orderLines = orderLines;
+   }
+
+   public Double getTotalCost() {
+      return totalCost;
+   }
+
+   public void setTotalCost(Double totalCost) {
+      this.totalCost = totalCost;
    }
 }

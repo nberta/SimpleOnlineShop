@@ -8,4 +8,5 @@ import java.util.Collection;
 public interface OrderLineRepository extends JpaRepository<OrderLine, Long> {
 
     Collection<OrderLine> findAllByProductId(Long id);
+    Collection<OrderLine> findAllByOrderId(Long id);
 }

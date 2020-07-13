@@ -27,6 +27,11 @@ public class OrderLine {
 
     public OrderLine(){}
 
+    public OrderLine(CartItem cartItem) {
+        this.product = cartItem.getProduct();
+        this.quantity = cartItem.getQuantity();
+        this.seller = this.product.getSeller();
+    }
     public Long getId() { return this.id; }
 
     public Seller getSeller() {

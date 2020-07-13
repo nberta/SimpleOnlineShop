@@ -58,4 +58,8 @@ public class Seller{
     public boolean isActive() { return this.isActive; }
 
     public void setIsActive(boolean isActive) { this.isActive = isActive; }
+
+    public boolean addOrderLine(OrderLine orderLine) {
+        return this.orderLines.add(orderLine);
+    }
 }

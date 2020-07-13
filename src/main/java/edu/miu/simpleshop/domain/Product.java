@@ -1,6 +1,7 @@
 package edu.miu.simpleshop.domain;
 
 
+import edu.miu.simpleshop.exception.IllegalProductStateException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Entity;
@@ -132,5 +133,12 @@ public class Product {
 
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public boolean isAvailable() { return quantity > 0; }
+
+    public void decrementQuantity(int quantity) {
+        if (quantity > 0) this.quantity -= quantity;
+        if (quantity < 0) throw new IllegalProductStateException();
     }
 }
