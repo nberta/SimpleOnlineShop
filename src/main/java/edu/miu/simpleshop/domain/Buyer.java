@@ -65,7 +65,9 @@ public class Buyer{
         this.gainPoints = gainPoints;
     }
 
-
+    public void incrementGainPoints(int gainPoints) {
+        this.gainPoints += gainPoints;
+    }
 
     public List<Order> getOrders() {
         return orders;

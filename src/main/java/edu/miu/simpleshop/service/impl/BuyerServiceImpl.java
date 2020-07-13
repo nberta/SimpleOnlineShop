@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Service
 @Transactional
@@ -77,5 +78,10 @@ public class BuyerServiceImpl implements BuyerService {
         CartItem cartItem = shoppingCart.removeCartItemById(id);
         shoppingCartRepository.save(shoppingCart);
         return cartItem;
+    }
+
+    @Override
+    public List<Buyer> getPendingBuyers() {
+        return repository.findAllByIsActiveFalse();
     }
 }

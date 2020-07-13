@@ -9,11 +9,12 @@
     <hr/>
     <h4>Please mark items you'd like to purchase</h4>
 
-    <form th:action="@{/buyers/my-cart/make-purchase}" method="post" action="#">
+    <h5 th:if="${errorMessage} != null" th:text="${errorMessage}"></h5>
+
+    <form th:action="@{/buyers/my-cart/make-purchase}" th:object="${itemsForCheckOut}" method="post" action="#">
         <div>
             <p th:each="cartItem :${cartItems}">
-                <input type="checkbox">
-                <span th:text="${cartItem.product.name}"/>
+                <input type="checkbox" name="itemsForCheckOut" th:value="${cartItem}" th:text="${cartItem.product.name}">
                 <span th:text="${cartItem.product.price}"/>
                 <span th:text="${cartItem.product.quantity}"/>
 <!--  for total price              <span/>-->
