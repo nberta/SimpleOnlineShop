@@ -33,7 +33,6 @@ public class BuyerController {
 
     @GetMapping("/register")
     public String getRegistrationForm(@ModelAttribute("buyer") Buyer buyer) {
-
         return "buyer/register";
     }
 
@@ -68,13 +67,30 @@ public class BuyerController {
         return "buyer/details";
     }
 
-    //Follows
+
+    //   follow
     @GetMapping("/following")
-    public String getFollowingSellers(){
-        return "buyer/mysellers";
+    public String getSellersFollowed(@ModelAttribute("loggedInBuyer") Buyer buyer, Model model){
+        model.addAttribute("follows", buyerService.getFollowedSellersForBuyer(buyer.getId()));
+        return "buyer/mySellers";
+    }
+
+    @PutMapping("/following/{id}/follow")
+    public String followSeller(@ModelAttribute("loggedInBuyer") Buyer buyer,
+                               @PathVariable("id") Long id, Model model) {
+        buyerService.followSeller(buyer, id);
+        return "redirect:/buyers/following";
+    }
+
+    @PutMapping("/following/{id}/unfollow")
+    public String unfollowSeller(@ModelAttribute("loggedInBuyer") Buyer buyer,
+                                 @PathVariable("id") Long id, Model model) {
+        buyerService.unfollowSeller(buyer, id);
+        return "redirect:/buyers/following";
     }
 
 
+    //shopping cart and order processing
     @GetMapping("/my-cart")
     public String loadShoppingCart(@ModelAttribute("cart")ShoppingCart cart,
                                    Model model, @ModelAttribute("errorMessage") String errorMessage) {
