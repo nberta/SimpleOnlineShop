@@ -3,12 +3,10 @@ package edu.miu.simpleshop.controller;
 import edu.miu.simpleshop.domain.Product;
 import edu.miu.simpleshop.domain.Seller;
 import edu.miu.simpleshop.exception.IncorrectFileTypeException;
-import edu.miu.simpleshop.exception.UndeletableProductException;
 import edu.miu.simpleshop.service.CategoryService;
 import edu.miu.simpleshop.service.ProductService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

@@ -1,8 +1,10 @@
 package edu.miu.simpleshop.controller;
 
 
+import edu.miu.simpleshop.domain.Buyer;
 import edu.miu.simpleshop.domain.Product;
 import edu.miu.simpleshop.domain.ProductReview;
+import edu.miu.simpleshop.domain.Seller;
 import edu.miu.simpleshop.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,7 +55,7 @@ public class AdminController {
 
 
     @GetMapping("/reviews")
-    public String getReview(Model model) {
+    public String getReviews(Model model) {
         model.addAttribute("productReviews", productReviewService.getAllUnconfirmedReviews());
         return "/admin/reviews";
     }
@@ -76,12 +78,39 @@ public class AdminController {
         model.addAttribute("pendingSellers", sellerService.getPendingSellers());
         return "/admin/pending-sellers";
     }
+
+    @GetMapping("/pending-sellers/{id}/reject")
+    public String rejectSeller(@PathVariable("id") Long id) {
+        sellerService.delete(id);
+        return "/admin/pending-sellers";
+    }
+
+    @GetMapping("/pending-sellers/{id}/approve")
+    public String approveSeller(@PathVariable("id") Long id) {
+        Seller seller = sellerService.getById(id);
+        seller.setIsActive(true);
+        sellerService.save(seller);
+        return "/admin/pending-sellers";
+    }
+
     @GetMapping("/pending-buyers")
     public String pendingBuyers(Model model){
         model.addAttribute("pendingBuyers", buyerService.getPendingBuyers());
         return "/admin/pending-buyers";
     }
 
+    @GetMapping("pending-buyers/{id}/approve")
+    public String rejectBuyer(@PathVariable("id") Long id) {
+        buyerService.delete(id);
+        return "/admin/pending-buyers";
+    }
 
+    @GetMapping("/pending-buyers/{id}/approve")
+    public String approveBuyer(@PathVariable("id") Long id) {
+        Buyer buyer = buyerService.getById(id);
+        buyer.setIsActive(true);
+        buyerService.save(buyer);
+        return "/admin/pending-buyers";
+    }
 
 }
