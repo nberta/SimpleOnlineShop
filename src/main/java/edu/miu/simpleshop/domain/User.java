@@ -5,7 +5,6 @@ import edu.miu.simpleshop.domain.enums.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,10 +27,21 @@ public class User {
     private String email;
 
     //@NotEmpty
-    @ElementCollection(targetClass = Role.class)
+//    @ElementCollection(targetClass = Role.class)
+//    @Enumerated(EnumType.STRING)
+//    @CollectionTable(name = "user_role")
+//    private Set<Role> roles = new HashSet<>();
+
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "user_role")
-    private Set<Role> roles = new HashSet<>();
+    private Role role;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     public User(){}
 
@@ -59,13 +69,11 @@ public class User {
         this.email = email;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public void addRole(Role role) { this.roles.add(role); }
+//    public Set<Role> getRoles() {
+//        return roles;
+//    }
+//
+//    public void setRoles(Set<Role> roles) {
+//        this.roles = roles;
+//    }
 }

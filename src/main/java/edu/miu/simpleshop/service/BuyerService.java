@@ -11,6 +11,7 @@ public interface BuyerService {
     Buyer delete(Long id);
     Buyer save(Buyer buyer);
     Buyer getById(Long id);
+    Buyer update(Buyer buyer, Long id);
     //ShoppingCart getShoppingCart(Buyer buyer);
     ShoppingCart saveShoppingCart(Buyer buyer);
     CartItem removeCartItem(Buyer buyer, Long id);
