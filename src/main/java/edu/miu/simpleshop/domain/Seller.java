@@ -52,4 +52,7 @@ public class Seller{
     public void setUser(User user) {
         this.user = user;
     }
+    public boolean addOrderLine(OrderLine orderLine) {
+        return this.orderLines.add(orderLine);
+    }
 }

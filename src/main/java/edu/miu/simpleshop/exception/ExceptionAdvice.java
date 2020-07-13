@@ -29,4 +29,14 @@ public class ExceptionAdvice {
         modelAndView.setViewName("errors/undeletableProduct");
         return modelAndView;
     }
+
+    @ExceptionHandler(IllegalCustomerStateException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public ModelAndView handleIllegalCustomerState(IllegalCustomerStateException ex) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("exception", ex.getMessage());
+        modelAndView.setViewName("errors/invalidCustomerInfo");
+        return modelAndView;
+    }
+
 }

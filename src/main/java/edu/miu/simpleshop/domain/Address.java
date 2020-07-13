@@ -13,7 +13,7 @@ public class Address {
 	private String street;
 	private String city;
 	private String state;
-	private int zip;
+	private Integer zip;
 
 	public Address(){
 	}
@@ -44,12 +44,16 @@ public class Address {
 		this.state = state;
 	}
 
-	public int getZip() {
+	public Integer getZip() {
 		return zip;
 	}
 
-	public void setZip(int zip) {
+	public void setZip(Integer zip) {
 		this.zip = zip;
+	}
+
+	public boolean isValid() {
+		return street != null && city != null && state != null && zip != null;
 	}
 }
 

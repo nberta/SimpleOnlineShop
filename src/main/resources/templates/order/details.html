@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Order Details</title>
 </head>
 <body>
+
+    <div th:object="${order}">
+
+        <h3>Order Number <span th:text="*{billingInfo.orderNumber}"/></h3>
+
+        <p th:text="*{billingInfo.transactionDate}"></p>
+        <p th:each="orderLine :*{orderLines}">
+            <span th:text="${orderLine.product.name}"/>
+            <span th:text="${orderLine.product.price}"/>
+            <span th:text="${orderLine.product.quantity}"/>
+        </p>
+        <p>Total: <span th:text="*{totalCost}"/></p>
+    </div>
+
+
 
 </body>
 </html>
