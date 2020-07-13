@@ -8,7 +8,5 @@ import java.util.List;
 
 @Repository
 public interface BuyerRepository extends JpaRepository<Buyer, Long> {
-    Buyer findBuyerByUserId(Long id);
-    Buyer findBuyerByUserUsername(String username);
     List<Buyer> findAllByIsActiveFalse();
 }

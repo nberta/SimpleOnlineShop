@@ -20,4 +20,5 @@ public interface BuyerService {
     void unfollowSeller (Buyer buyer, Seller seller);
     List<Buyer> getPendingBuyers();
 
+
 }
