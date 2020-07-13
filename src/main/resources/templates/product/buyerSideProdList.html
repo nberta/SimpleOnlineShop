@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div layout:fragment="main-content" class="row" style="margin:2%;margin-left: 4%">
+    <!-- for each part using expression language  Iteration th:each   -->
+    <div class="col">
+        <div class="row">
+            <div th:each="product,iStat : ${products}">
+                <div th:class="${iStat.even}? 'col' : 'w-100' " style="margin:2%;">
+                    <div class="card" style="width:15rem;">
+                        <img th:src="@{'/img/' + ${product.imageIdentifier}+'.png'}" class="card-img-top" alt="...">
+
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${product.title}">Card title</h5>
+                            <p class="card-text" th:text="${product.description}">Some quick example text to build
+                                on the
+                                card title and make up the bulk of the card's content.</p>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon3">$</span>
+                                </div>
+                                <input type="text" readonly
+                                       th:value="${product.price}" class="form-control"
+                                       aria-describedby="basic-addon3"></input>
+                            </div>
+                            <a class="btn btn-primary"
+                               th:href="@{'/cartItem/viewDetails' (productId=${product.id})}">
+                                View Details &raquo;</a>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
