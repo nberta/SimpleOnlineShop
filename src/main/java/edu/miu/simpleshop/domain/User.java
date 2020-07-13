@@ -27,7 +27,7 @@ public class User {
     @NotBlank
     private String email;
 
-    @NotEmpty
+    //@NotEmpty
     @ElementCollection(targetClass = Role.class)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_role")
@@ -66,4 +66,6 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+    public void addRole(Role role) { this.roles.add(role); }
 }

@@ -1,6 +1,7 @@
 package edu.miu.simpleshop.controller;
 
 import edu.miu.simpleshop.domain.Buyer;
+import edu.miu.simpleshop.domain.ShoppingCart;
 import edu.miu.simpleshop.domain.User;
 import edu.miu.simpleshop.service.BuyerService;
 import edu.miu.simpleshop.service.UserService;
@@ -70,7 +71,11 @@ public class BuyerController {
     }
 
 
-
+    @GetMapping("/my-cart")
+    public String loadShoppingCart(@ModelAttribute("cart")ShoppingCart cart, Model model) {
+        model.addAttribute("cartItems", cart.getCartItems());
+        return "buyer/shoppingCart";
+    }
 
 
 
