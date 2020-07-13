@@ -25,8 +25,8 @@
                 <td th:text="${seller.user.username}">Nahom</td>
                 <td th:text="${seller.user.email}">Nahom@gmail.com</td>
                 <td>
-                    <a href="#" class="approveSeller" th:data-seller-id="${seller.user.id}">Approve</a>
-                    <a href="#" class="rejectSeller" th:data-seller-id="${seller.user.id}">Reject</a>
+                    <a href="#" class="approveSeller" th:href="@{/admin/pending-sellers/{id}/approve}" th:data-seller-id="${seller.user.id}">Approve</a>
+                    <a href="#" class="rejectSeller" th:href="@{/admin/pending-sellers/{id}/reject}" th:data-seller-id="${seller.user.id}">Reject</a>
                 </td>
             </tr>
             </tbody>
