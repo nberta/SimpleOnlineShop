@@ -25,6 +25,8 @@ public class Seller{
     @OneToOne (cascade = CascadeType.ALL)
     private User user;
 
+    private boolean isActive;
+
     public Seller(){}
 
     public Long getId() { return this.id; }
@@ -52,6 +54,11 @@ public class Seller{
     public void setUser(User user) {
         this.user = user;
     }
+
+    public boolean isActive() { return this.isActive; }
+
+    public void setIsActive(boolean isActive) { this.isActive = isActive; }
+
     public boolean addOrderLine(OrderLine orderLine) {
         return this.orderLines.add(orderLine);
     }
