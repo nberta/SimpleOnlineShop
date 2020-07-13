@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org/"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Pending buyers</title>
+</head>
+<body>
+<div id="contents" class="row" layout:fragment="main-content">
+<!--    <div th:replace="components/userAccessMenu :: mnu">User menu</div>-->
+    <div class="col-lg-9">
+        <div class="h4">Pending buyer</div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Buyer userName</th>
+                <th scope="col">Buyer email</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="buyer,iter : ${pendingBuyers}">
+                <th scope="row" th:text="${iter.index+1}">1</th>
+                <td th:text="${buyer.user.username}">Mark</td>
+                <td th:text="${buyer.user.email}">mark@gmail.com</td>
+                <td>
+                    <a href="#" class="approveSeller" th:data-buyer-id="${buyer.user.id}">Approve</a>
+                    <a href="#" class="rejectSeller" th:data-buyer-id="${buyer.user.id}">Reject</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/js/admin.js}"></script>
+</th:block>
+</body>
+</html>
