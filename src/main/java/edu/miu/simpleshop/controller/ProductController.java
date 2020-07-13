@@ -1,21 +1,19 @@
 package edu.miu.simpleshop.controller;
 
-import edu.miu.simpleshop.domain.Order;
 import edu.miu.simpleshop.domain.Product;
 import edu.miu.simpleshop.domain.Seller;
 import edu.miu.simpleshop.exception.IncorrectFileTypeException;
-import edu.miu.simpleshop.domain.ShoppingCart;
+import edu.miu.simpleshop.exception.UndeletableProductException;
 import edu.miu.simpleshop.service.CategoryService;
 import edu.miu.simpleshop.service.ProductService;
-import org.apache.tika.Tika;
-import edu.miu.simpleshop.service.ShoppingCartService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -51,24 +49,22 @@ public class ProductController {
                               @ModelAttribute("seller") Seller seller, HttpServletRequest request,
                               Model model) throws IOException{
         if (bindingResult.hasErrors()) {
-            //model.addAttribute("categories", categoryService.allCategories());
-            return "seller/add-product";
+            return "product/productForm";
         }
-        MultipartFile productImage = product.getProductImage();
+
+        //prep for image processing
         String rootDirectory = request.getSession().getServletContext().getRealPath("/");
-        product.setImageIdentifier(product.getName() + RandomStringUtils.randomAlphanumeric(10));
-        if (productImage != null && !productImage.isEmpty()) {
-            try {
-                Tika tika = new Tika();
-                String type = tika.detect(productImage.getBytes());
-                if (!type.equals("image/png"))
-                    throw new IncorrectFileTypeException("The uploaded file is an invalid type. Please enter an image.");
-                productImage.transferTo(
-                        new File(rootDirectory + "images\\products\\"
-                                + product.getImageIdentifier() + ".png"));
-            } catch (Exception e) {
-                throw new RuntimeException("Product Image saving failed", e);
-            }
+        //image identifier set here will also be used to retrieve image in view
+        //consider also including the whole path in the identifier
+        product.setImageIdentifier(product.getName() + RandomStringUtils.randomAlphanumeric(17));
+
+        try {
+            File file = productService.processImage(product, rootDirectory);
+            System.out.println(file.getAbsolutePath());
+        } catch(IncorrectFileTypeException e) {
+            //user entered a file that's not 'image/pgn' in type
+            bindingResult.addError(new FieldError("product","productImage", e.getMessage()));
+            return "product/productForm";
         }
 
         return "redirect:/seller/my-products";
@@ -77,15 +73,14 @@ public class ProductController {
 
     @GetMapping("/product/edit/{productId}")
     public String updateProduct(@PathVariable("productId") long productId, Model model) {
-        //model.addAttribute("categories", categoryService.allCategories());
         Product product = productService.getProduct(productId);
         return "seller/edit-product";
     }
 
     @DeleteMapping("/product/remove/{productId}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteProduct(@PathVariable("productId") long productId) {
+    public String deleteProduct(@PathVariable("productId") long productId) {
         productService.delete(productId);
+        return "redirect:/seller/my-products";
     }
 
 //    @GetMapping("/{id}")
@@ -103,6 +98,7 @@ public class ProductController {
 
 //    @DeleteMapping(value = "/delete/{id}")
 //    public String removeItemCart(@PathVariable Long id, Model model) {
+//
 //
 //        model.addAttribute("deleted", shoppingCartService.delete(id));
 //        return "shoppingCart/details";

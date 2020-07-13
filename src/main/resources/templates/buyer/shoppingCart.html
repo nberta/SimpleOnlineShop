@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body>
+
+    <h2>Shopping Cart</h2>
+    <hr/>
+    <h4>Please mark items you'd like to purchase</h4>
+
+    <form th:action="@{/buyers/my-cart/make-purchase}" method="post" action="#">
+        <div>
+            <p th:each="cartItem :${cartItems}">
+                <input type="checkbox">
+                <span th:text="${cartItem.product.name}"/>
+                <span th:text="${cartItem.product.price}"/>
+                <span th:text="${cartItem.product.quantity}"/>
+<!--  for total price              <span/>-->
+                <a th:href="@{/buyers/my-cart/remove/{id}(id=${cartItem.id})}">Remove from Cart</a>
+            </p>
+        </div>
+        <input type="submit" th:text="Purchase">
+    </form>
 
 </body>
 </html>

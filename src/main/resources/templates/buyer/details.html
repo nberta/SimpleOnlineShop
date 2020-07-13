@@ -9,11 +9,13 @@
     Username: <span th:text="${buyer.user.username}"></span></br>
     Password: <span th:text="${buyer.user.password}"></span></br>
     Email: <span th:text="${buyer.user.email}"></span></br>
-    Shipping Address: <span th:text="${buyer.shippingAddress}"></span></br>
-    Billing Address: <span th:text="${buyer.billingAddress}"></span></br>
-    Points: <span th:text="${buyer.gainPoints}"></span></br>
-    <form action="#" th:action="@{/buyer/edit}" th:object="${buyer}">
-        <input type="submit" value="Update"/>
+<!--    Shipping Address: <span th:text="${buyer.shippingAddress}"></span></br>-->
+<!--    Billing Address: <span th:text="${buyer.billingAddress}"></span></br>-->
+<!--    Points: <span th:text="${buyer.gainPoints}"></span></br>-->
+    <form action="#" th:action="@{/buyers/edit/{id}(id=${buyer.id})}" th:object="${buyer}">
+        <input type="submit" value="Update Profile"/>
+        <form action="#" th:action="@{/buyers/delete/{id}(id=${buyer.id})}" th:object="${buyer}">
+            <input type="submit" value="Delete Profile"/>
     </form>
 </div>
 
