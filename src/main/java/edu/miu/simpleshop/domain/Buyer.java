@@ -20,6 +20,8 @@ public class Buyer{
     @OneToOne(cascade = CascadeType.ALL)
     private User user;
 
+    private boolean isActive;
+
     private int gainPoints;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer")
@@ -119,5 +121,9 @@ public class Buyer{
     public void unfollowSeller(Seller seller){
      //  this.follows.remove(followSeller(follow))
     }
+    public boolean isActive() { return this.isActive; }
+
+    public void setIsActive(boolean isActive) { this.isActive = isActive; }
+
 }
 
