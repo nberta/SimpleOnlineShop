@@ -30,9 +30,6 @@ public class AdminController {
     @Autowired
     private BuyerService buyerService;
 
-    @Autowired
-    private UserService userService;
-
     @PostMapping("/products/{productId}/approve")
     public String approveProduct(@PathVariable("productId") Long productId, Model model){
         Product prod = productService.getProduct(productId);
