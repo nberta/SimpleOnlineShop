@@ -36,7 +36,7 @@
             </tr>
             </thead>
             <tbody>
-                <tr th:each="product,iStat : ${listProduct}">
+                <tr th:each="product,iStat : ${}">
                 <td>
 
                     <img th:src="@{'/img/' + ${product.productid}+'.png'}"  class="img-fluid img-thumbnail"
