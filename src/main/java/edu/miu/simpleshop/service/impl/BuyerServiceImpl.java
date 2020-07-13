@@ -9,10 +9,12 @@ import edu.miu.simpleshop.repository.ShoppingCartRepository;
 import edu.miu.simpleshop.service.BuyerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 
 @Service
+@Transactional
 public class BuyerServiceImpl implements BuyerService {
 
     @Autowired

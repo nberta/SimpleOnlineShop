@@ -14,7 +14,7 @@ public class OrderLine {
     @ManyToOne
     private Seller seller;
 
-    @OneToOne
+    @ManyToOne
     private Product product;
 
     @ManyToOne
