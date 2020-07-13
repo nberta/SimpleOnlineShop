@@ -38,7 +38,7 @@ public class SellerController {
     public String save(@Valid User user, BindingResult bindingResult, RedirectAttributes attributes) {
         if (bindingResult.hasErrors()) return "seller/sellerRegistrationForm";
         Seller seller = new Seller();
-        user.addRole(Role.SELLER);
+        //user.addRole(Role.SELLER);
         seller.setUser(user);
         seller = sellerService.save(seller);
         attributes.addFlashAttribute("seller", seller);
@@ -51,7 +51,7 @@ public class SellerController {
         return "seller/edit";
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update/{id}")
     public String update(@Valid Seller seller, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return "seller/edit";
         sellerService.save(seller);

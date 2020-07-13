@@ -4,6 +4,7 @@ import edu.miu.simpleshop.domain.Buyer;
 import edu.miu.simpleshop.domain.CartItem;
 import edu.miu.simpleshop.domain.Seller;
 import edu.miu.simpleshop.domain.ShoppingCart;
+import edu.miu.simpleshop.domain.enums.Role;
 import edu.miu.simpleshop.repository.BuyerRepository;
 import edu.miu.simpleshop.repository.ShoppingCartRepository;
 import edu.miu.simpleshop.service.BuyerService;
@@ -33,6 +34,7 @@ public class BuyerServiceImpl implements BuyerService {
 
     @Override
     public Buyer save(Buyer buyer) {
+        buyer.getUser().setRole(Role.BUYER);
        return repository.save(buyer);
     }
 
@@ -40,6 +42,15 @@ public class BuyerServiceImpl implements BuyerService {
     public Buyer getById(Long id) {
         return repository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Override
+    public Buyer update(Buyer buyer, Long id) {
+        Buyer oldBuyer = getById(id);
+        oldBuyer.getUser().setUsername(buyer.getUser().getUsername());
+        oldBuyer.getUser().setPassword(buyer.getUser().getPassword());
+        oldBuyer.getUser().setEmail(buyer.getUser().getEmail());
+        return repository.save(oldBuyer);
     }
 
 

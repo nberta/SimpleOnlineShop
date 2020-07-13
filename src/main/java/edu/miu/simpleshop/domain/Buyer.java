@@ -43,6 +43,7 @@ public class Buyer{
     private ShoppingCart shoppingCart;
 
 
+
     public Buyer() {
     }
 

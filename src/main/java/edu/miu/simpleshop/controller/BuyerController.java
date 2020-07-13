@@ -38,10 +38,10 @@ public class BuyerController {
     @PostMapping("/register")
     public String save(@ModelAttribute("buyer") Buyer buyer, RedirectAttributes attributes, Model model) {
 //        if (bindingResult.hasErrors()) return "register";
-        buyer.setUser(userService.save(buyer.getUser()));
+        //buyer.setUser(userService.save(buyer.getUser()));
         buyer = buyerService.save(buyer);
         model.addAttribute("buyer", buyer);
-      //  attributes.addFlashAttribute("buyer", buyer);
+        attributes.addFlashAttribute("buyer", buyer);
         return "buyer/details";
     }
 
@@ -51,10 +51,12 @@ public class BuyerController {
         return "buyer/edit";
     }
 
-    @PutMapping("/update")
-    public String update(@Valid Buyer buyer, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) return "buyer/edit";
-        buyerService.save(buyer);
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable("id") Long id, @ModelAttribute("buyer") Buyer buyer,
+                         BindingResult bindingResult, RedirectAttributes attributes, Model model) {
+        buyer = buyerService.update(buyer, id);
+        model.addAttribute("buyer", buyer);
+        attributes.addFlashAttribute("buyer", buyer);
         return "buyer/details";
     }
 
