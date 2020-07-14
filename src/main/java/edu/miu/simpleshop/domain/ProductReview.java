@@ -27,6 +27,15 @@ public class ProductReview {
     public ProductReview() {
     }
 
+    public ProductReview(Product product, Buyer buyer, String review){}
+
+    public ProductReview(Product product, Buyer buyer, String review, int rating) {
+        this.product = product;
+        this.buyer = buyer;
+        this.review = review;
+        this.rating = rating;
+    }
+
     public Long getId() {
         return this.id;
     }

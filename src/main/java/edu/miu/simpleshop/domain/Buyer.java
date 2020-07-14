@@ -46,6 +46,11 @@ public class Buyer{
     public Buyer() {
     }
 
+    public Buyer(User user, int gainPoints) {
+        this.user = user;
+        this.gainPoints = gainPoints;
+    }
+
     public Long getId() { return this.id; }
 
     public User getUser() {

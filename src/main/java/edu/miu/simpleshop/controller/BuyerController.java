@@ -7,7 +7,7 @@ import edu.miu.simpleshop.service.BuyerService;
 import edu.miu.simpleshop.service.OrderService;
 import edu.miu.simpleshop.service.UserService;
 import edu.miu.simpleshop.util.PdfReceiptDownload;
-import javassist.NotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -155,6 +155,12 @@ public class BuyerController {
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(new InputStreamResource(bis));
+    }
+    //Check Order History
+    @GetMapping("/buyer/orders")
+    public String orderList(@ModelAttribute("loggedInBuyer") Buyer buyer,  Model model) {
+        model.addAttribute("orders", buyer.getOrders());
+        return "buyer/orders";
     }
 
 }

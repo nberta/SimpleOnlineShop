@@ -42,12 +42,12 @@ public class PdfReceiptDownload {
             hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
             table.addCell(hcell);
 
-            hcell = new PdfPCell(new Phrase("Point payment", headFont));
-            hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            table.addCell(hcell);
-            hcell = new PdfPCell(new Phrase("Cash payment", headFont));
-            hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            table.addCell(hcell);
+//            hcell = new PdfPCell(new Phrase("Point payment", headFont));
+//            hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//            table.addCell(hcell);
+//            hcell = new PdfPCell(new Phrase("Cash payment", headFont));
+//            hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//            table.addCell(hcell);
 
             hcell = new PdfPCell(new Phrase("Total", headFont));
             hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -84,13 +84,13 @@ public class PdfReceiptDownload {
 //                cell.setPaddingRight(5);
 //                table.addCell(cell);
 
-//                float total = orderLine.getTotalPayment();
-//                totalSum += total;
-//                cell = new PdfPCell(new Phrase(String.valueOf(total)));
-//                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//                cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-//                cell.setPaddingRight(5);
-//                table.addCell(cell);
+                Double total = order.getTotalCost();
+                totalSum += total;
+                cell = new PdfPCell(new Phrase(String.valueOf(total)));
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                cell.setPaddingRight(5);
+                table.addCell(cell);
             }
 
             headFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
@@ -103,13 +103,13 @@ public class PdfReceiptDownload {
             hcell.setHorizontalAlignment(Element.ALIGN_RIGHT);
             table.addCell(hcell);
 
-            hcell = new PdfPCell(new Phrase(totalPointSum + "", headFont));
-            hcell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            table.addCell(hcell);
-
-            hcell = new PdfPCell(new Phrase(totalCashSum + "", headFont));
-            hcell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            table.addCell(hcell);
+//            hcell = new PdfPCell(new Phrase(totalPointSum + "", headFont));
+//            hcell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+//            table.addCell(hcell);
+//
+//            hcell = new PdfPCell(new Phrase(totalCashSum + "", headFont));
+//            hcell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+//            table.addCell(hcell);
 
             hcell = new PdfPCell(new Phrase(totalSum + "", headFont));
             hcell.setHorizontalAlignment(Element.ALIGN_RIGHT);

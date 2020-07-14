@@ -57,6 +57,16 @@ public class Product {
     public Product() {
     }
 
+    //Skipped multipartfile for now
+    public Product(String name, String description, int quantity, boolean enabled, int price,  Category category) {
+        this.name = name;
+        this.description = description;
+        this.quantity = quantity;
+        this.enabled = enabled;
+        this.price = price;
+        this.category = category;
+    }
+
     public Long getId() { return this.id; }
 
     public String getImageIdentifier() {

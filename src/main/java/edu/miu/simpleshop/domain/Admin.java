@@ -7,14 +7,19 @@ import javax.validation.Valid;
 public class Admin {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Long id;
 
     @Valid
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     private User user;
 
     public Admin(){}
+
+    public Admin(User user){
+        this.user = user;
+    }
+
 
     public Long getId() { return this.id; }
 

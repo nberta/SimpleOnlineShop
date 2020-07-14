@@ -39,9 +39,11 @@ public class ProductController {
 
     @GetMapping("/product/add")
     public String addProduct(@ModelAttribute("product") Product product,  Model model) throws IOException {
-        //model.addAttribute("categories", categoryService.allCategories());
+       // model.addAttribute("categories", categoryService.getAllCategories());
         return "product/productForm";
     }
+
+
 
     @PostMapping("/product/add")
     public String saveProduct(@Valid @ModelAttribute("product") Product product, BindingResult bindingResult,
@@ -66,7 +68,7 @@ public class ProductController {
             return "product/productForm";
         }
 
-        return "redirect:/seller/my-products";
+        return "redirect:/sellers/my-products";
     }
 
 
