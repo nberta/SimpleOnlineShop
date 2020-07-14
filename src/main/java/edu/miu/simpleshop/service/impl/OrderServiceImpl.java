@@ -4,6 +4,7 @@ import edu.miu.simpleshop.domain.*;
 import edu.miu.simpleshop.exception.IllegalCustomerStateException;
 import edu.miu.simpleshop.repository.OrderLineRepository;
 import edu.miu.simpleshop.repository.OrderRepository;
+import edu.miu.simpleshop.service.BuyerService;
 import edu.miu.simpleshop.service.OrderService;
 import edu.miu.simpleshop.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private SellerService sellerService;
+
+    @Autowired
+    private BuyerService buyerService;
 
     @Override
     public Order getById(Long id) {
@@ -87,6 +91,8 @@ public class OrderServiceImpl implements OrderService {
             billingInfo.setBillingAddress(buyer.getBillingAddress());
             Order order = new Order(orderLines, billingInfo, buyer.getShippingAddress());
             orderRepository.save(order);
+            buyer.setGainPoints(buyer.getGainPoints() + (int)Math.floor(order.getTotalCost()/10));
+            buyerService.save(buyer);
             return order;
         }
         throw new IllegalCustomerStateException("Invalid customer information");

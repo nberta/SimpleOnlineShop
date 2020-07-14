@@ -6,7 +6,7 @@ import edu.miu.simpleshop.service.BuyerService;
 import edu.miu.simpleshop.service.OrderService;
 import edu.miu.simpleshop.service.UserService;
 import edu.miu.simpleshop.util.PdfReceiptDownload;
-import javassist.NotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;

@@ -9,4 +9,5 @@ public interface OrderLineRepository extends JpaRepository<OrderLine, Long> {
 
     Collection<OrderLine> findAllByProductId(Long id);
     Collection<OrderLine> findAllByOrderId(Long id);
+    Collection<OrderLine> findAllBySellerId(Long id);
 }
