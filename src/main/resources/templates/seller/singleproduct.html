@@ -145,7 +145,7 @@
                         <p>Uploaded Image: <img th:src="@{/img/{id}(id=${product.imageIdentifier})}"></p>
                         <img th:src="@{/img/avatar1.jpg}">
 
-                        <a th:href="@{/img/{id}(id=${product.imageIdentifier})}" th:text="holder"></a>
+                        <p>Original Filename: <span th:text="${product.productImage.getOriginalFilename()}"></span></p>
                     </div>
 <!--                    <div class="bio-row">-->
 <!--                        <p>Sellers Following: <span th:text="${buyer.gainPoints}"></span></p>-->

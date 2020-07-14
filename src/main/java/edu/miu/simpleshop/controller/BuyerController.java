@@ -1,3 +1,4 @@
+
 package edu.miu.simpleshop.controller;
 
 
@@ -37,10 +38,6 @@ public class BuyerController {
     @Autowired
     private OrderService orderService;
 
-    @GetMapping("")
-    public String getHomepage() {
-        return "buyer/home";
-    }
 
     @GetMapping("/register")
     public String getRegistrationForm(@ModelAttribute("buyer") Buyer buyer) {
@@ -163,3 +160,4 @@ public class BuyerController {
     }
 
 }
+
