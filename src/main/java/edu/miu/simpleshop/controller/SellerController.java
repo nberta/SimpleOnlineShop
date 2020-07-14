@@ -15,13 +15,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/sellers")
 public class SellerController {
+
     @Autowired
     private SellerService sellerService;
+
     @Autowired
     private ProductService productService;
+
     @Autowired
     private OrderLineRepository orderLineRepository;
     @GetMapping
@@ -42,7 +46,7 @@ public class SellerController {
         seller.setUser(user);
         seller = sellerService.save(seller);
         attributes.addFlashAttribute("seller", seller);
-        return "redirect:/seller";
+        return "redirect:/sellers";
     }
 
     @GetMapping("/edit/{id}")
@@ -50,17 +54,20 @@ public class SellerController {
         model.addAttribute("seller", sellerService.getById(id));
         return "seller/edit";
     }
+
     @PutMapping("/update/{id}")
     public String update(@Valid Seller seller, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return "seller/edit";
         sellerService.save(seller);
         return "seller/details";
     }
+
     @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable Long id, Model model) {
         model.addAttribute("deleted", sellerService.delete(id));
         return "seller/details";
     }
+
 
     @GetMapping("/register/{id}")
     public String getRegistrationForm(@PathVariable Long id) {
@@ -70,13 +77,15 @@ public class SellerController {
     @GetMapping("/my-products")
     public String sellerProductPage(@ModelAttribute("seller") Seller seller, Model model) {
         model.addAttribute("products", productService.getBySellerId(seller.getId()));
-        return "singleproduct";
+        return "seller/singleproduct";
     }
+
     @GetMapping("/my-orders")
     public String sellerOrders(@ModelAttribute("loggedInSeller") Seller seller, Model model) {
         model.addAttribute("orderLines", orderLineRepository.findAllByOrderId(seller.getId()));
         return "seller/orders";
     }
+
     @GetMapping("/orders/{id}/set-status/shipped")
     public String sellerStatusUpdate(@PathVariable("id") Long id,
                                      @ModelAttribute("loggedInSeller") Seller seller) {

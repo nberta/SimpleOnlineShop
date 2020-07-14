@@ -141,8 +141,11 @@
                         <p>Price: <span th:text="${product.price}"></span></p>
                     </div>
                     <div class="bio-row">
-                        <p>Uploaded Image: <span th:text="${product.productImage}"></span></p><br/>
-                        <p>Uploaded Image: <span th:text="${product.imageIdentifier}"></span></p>
+                        <p>Uploaded Image: </span></p><br/>
+                        <p>Uploaded Image: <img th:src="@{/img/{id}(id=${product.imageIdentifier})}"></p>
+                        <img th:src="@{/img/avatar1.jpg}">
+
+                        <a th:href="@{/img/{id}(id=${product.imageIdentifier})}" th:text="holder"></a>
                     </div>
 <!--                    <div class="bio-row">-->
 <!--                        <p>Sellers Following: <span th:text="${buyer.gainPoints}"></span></p>-->

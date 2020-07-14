@@ -63,6 +63,11 @@ public class BuyerServiceImpl implements BuyerService {
         return buyerRepository.save(oldBuyer);
     }
 
+    @Override
+    public Buyer getByUser(User user) {
+        return buyerRepository.findByUserId(user.getId()).orElseThrow(EntityNotFoundException::new);
+    }
+
 
     @Override
     public void followSeller(Buyer buyer, Long sellerId) {

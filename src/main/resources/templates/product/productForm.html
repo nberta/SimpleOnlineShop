@@ -148,55 +148,48 @@
 
                 <div class="col-lg-06">
                     <section class="panel">
-                        <header class="panel-heading">Please enter your credentials</header>
+                        <header class="panel-heading">Please fill out the details for your product</header>
                         <div class="panel-body">
                             <div class="form">
-                                <form class="form-validate form-horizontal" th:object="${product}" action="#" th:action="@{/products/product/add}" method="post">
-                                    <!--                                    <div class="form-group ">-->
-                                    <!--                                        <label for="fullname" class="control-label col-lg-2">Full name <span class="required">*</span></label>-->
-                                    <!--                                        <div class="col-lg-10">-->
-                                    <!--                                            <input class="form-control error" id="fullname" name="fullname" type="text"><label for="fullname" class="error">Your Full Name must consist of at least 6 characters long.</label>-->
-                                    <!--                                        </div>-->
-                                    <!--                                    </div>-->
+                                <form class="form-validate form-horizontal" th:object="${product}" action="#" th:action="@{/products/product/add}" enctype="multipart/form-data" method="post">
+                                    <div class="error" th:if="${#fields.hasErrors('*')}">
+                                        <p th:each="error :${#fields.errors('*')}" th:text="${error}"></p>
+                                    </div>
+
                                     <div class="form-group ">
-                                        <label for="username" class="control-label col-lg-2" >Username <span class="required">*</span></label>
+                                        <label for="name" class="control-label col-lg-2" >Product name <span class="required">*</span></label>
                                         <div class="col-lg-06">
-                                            <input type="text" th:field="*{name}" class="form-control  error" id="username" name="username">
+                                            <input type="text" th:field="*{name}" th:value="*{name}" class="form-control  error" id="name" name="name">
                                         </div>
                                     </div>
                                     <div class="form-group ">
-                                        <label class="control-label col-lg-2">Password <span class="required">*</span></label>
+                                        <label for="description" class="control-label col-lg-2">Description <span class="required">*</span></label>
                                         <div class="col-lg-06">
-                                            <input th:field="*{description}" class="form-control  error"  >
+                                            <input th:field="*{description}" th:value="*{description}" class="form-control  error" id="description" name="description">
                                         </div>
                                     </div>
                                     <div class="form-group ">
-                                        <label  class="control-label col-lg-2">Quantity <span class="required">*</span></label>
+                                        <label for="quantity" class="control-label col-lg-2">Quantity <span class="required">*</span></label>
                                         <div class="col-lg-06">
-                                            <input class="form-control"  th:field="*{quantity}"  type="text">
+                                            <input class="form-control"  th:field="*{quantity}" th:value="*{quantity}"  type="text" id="quantity" name="quantity">
                                         </div>
                                     </div>
-                                    <!--                                    <div class="form-group ">-->
-                                    <!--                                        <label for="address" class="control-label col-lg-2">Address <span class="required">*</span></label>-->
-                                    <!--                                        <div class="col-lg-10">-->
-                                    <!--                                            <input class=" form-control" id="address" name="address" type="text">-->
-                                    <!--                                        </div>-->
-                                    <!--                                    </div>-->
+
                                     <div class="form-group ">
-                                        <label class="control-label col-lg-2">Price <span class="required">*</span></label>
+                                        <label for="price" class="control-label col-lg-2">Price <span class="required">*</span></label>
                                         <div class="col-lg-06">
-                                            <input type="number" th:field="*{price}" class="form-control"  >
+                                            <input type="number" th:field="*{price}" th:value="*{price}" class="form-control" id="price" name="price">
                                         </div>
                                     </div>
                                     <div class="form-group ">
-                                        <label class="control-label col-lg-2">Upload Product Image <span class="required">*</span></label>
+                                        <label for="productImage" class="control-label col-lg-2">Upload Product Image <span class="required">*</span></label>
                                         <div class="col-lg-06">
-                                            <input type="file" th:field="*{productImage}" class="form-control"  >
+                                            <input type="file" th:field="*{productImage}" class="form-control" id="productImage" name="productImage" >
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-lg-offset-2 col-lg-06">
-                                            <button class="btn btn-primary" type="submit">Register!</button>
+                                            <button class="btn btn-primary" type="submit">Upload product!</button>
                                             <button class="btn btn-default" type="button">Cancel</button>
                                         </div>
                                     </div>

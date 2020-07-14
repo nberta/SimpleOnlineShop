@@ -1,10 +1,7 @@
 package edu.miu.simpleshop.service;
 
 
-import edu.miu.simpleshop.domain.Buyer;
-import edu.miu.simpleshop.domain.CartItem;
-import edu.miu.simpleshop.domain.Seller;
-import edu.miu.simpleshop.domain.ShoppingCart;
+import edu.miu.simpleshop.domain.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -21,6 +18,7 @@ public interface BuyerService {
     Collection<Seller> getFollowedSellersForBuyer(Long id);
     List<Buyer> getPendingBuyers();
     Buyer update(Buyer buyer, Long id);
+    Buyer getByUser(User user);
 
 
 }
