@@ -29,6 +29,12 @@ public class Seller{
 
     public Seller(){}
 
+    public Seller(User user, boolean isActive) {
+        this.user = user;
+        this.isActive = isActive;
+    }
+
+
     public Long getId() { return this.id; }
 
     public List<Product> getProducts() {

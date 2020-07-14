@@ -15,14 +15,14 @@ public class Order  {
    @GeneratedValue(strategy = GenerationType.AUTO)
    private Long id;
 
-   @OneToOne
+   @OneToOne(cascade = CascadeType.ALL)
    private BillingInfo billingInfo;
 
    private LocalDate date;
 
    private Double totalCost;
 
-   @OneToOne
+   @OneToOne(cascade = CascadeType.ALL)
    private Address shippingAddress;
 
    @NotEmpty

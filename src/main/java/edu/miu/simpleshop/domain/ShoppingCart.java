@@ -21,6 +21,9 @@ public class ShoppingCart {
     private Buyer buyer;
 
     public ShoppingCart(){  }
+    public ShoppingCart(List<CartItem> cartItems){
+        this.cartItems = cartItems;
+    }
 
     public Long getId() { return this.id; }
 
