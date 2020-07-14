@@ -125,7 +125,7 @@
                 </div>
             </div>
             <!-- Today status end -->
-            <div th:each="product:${products}" class="col-lg-6">
+            <div class="col-lg-6">
                 <div class="row">
                     <div class="bio-row">
 
@@ -135,10 +135,14 @@
                         <p>Description: <span th:text="${product.description}"></span></p>
                     </div>
                     <div class="bio-row">
-                        <p>Email: <span th:text="${product.imageIdentifier}"></span></p>
+                        <p>Quantity: <span th:text="${product.quantity}"></span></p>
                     </div>
                     <div class="bio-row">
-                        <p>Image: <span th:text="${product.multipart.productImage}"></span></p>
+                        <p>Price: <span th:text="${product.price}"></span></p>
+                    </div>
+                    <div class="bio-row">
+                        <p>Uploaded Image: <span th:text="${product.productImage}"></span></p><br/>
+                        <p>Uploaded Image: <span th:text="${product.imageIdentifier}"></span></p>
                     </div>
 <!--                    <div class="bio-row">-->
 <!--                        <p>Sellers Following: <span th:text="${buyer.gainPoints}"></span></p>-->
@@ -146,8 +150,8 @@
                 </div>
 
                 <div class="col-lg-offset-2 col-lg-10">
-                    <form action="#" th:action="@{/buyers/edit/{id}(id=${buyer.id})}" th:object="${buyer}">
-                        <input class="btn btn-primary" type="submit" value="Update Profile"/></form>
+                    <form action="#" th:action="@{/buyers/edit/{id}(id=${product.id})}" th:object="${product}">
+                        <input class="btn btn-primary" type="submit" value="Edit Product"/></form>
                 </div>
             </div>
         </section>

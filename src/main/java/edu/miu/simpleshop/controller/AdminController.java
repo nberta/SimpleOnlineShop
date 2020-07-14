@@ -57,7 +57,8 @@ public class AdminController {
 
     @GetMapping("/reviews")
     public String getReviews(Model model) {
-        model.addAttribute("productReviews", productReviewService.getAllUnconfirmedReviews());
+          //not working, commented out
+       // model.addAttribute("productReviews", productReviewService.getAllUnconfirmedReviews());
         return "/admin/reviews";
     }
 

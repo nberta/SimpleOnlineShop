@@ -36,10 +36,10 @@
             </tr>
             </thead>
             <tbody>
-                <tr th:each="product,iStat : ${}">
+                <tr th:each="product,iStat : ${productsAll}">
                 <td>
 
-                    <img th:src="@{'/img/' + ${product.productid}+'.png'}"  class="img-fluid img-thumbnail"
+                    <img th:src="@{'/img/' + ${product.imageIdentifier}+'.png'}"  class="img-fluid img-thumbnail"
                          width="100" height="100"  alt="...">
                 </td>
                     <td th:text="${product.description}" style="text-align: center; vertical-align: middle">Text ...</td>

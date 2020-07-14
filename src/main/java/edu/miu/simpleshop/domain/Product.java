@@ -2,6 +2,7 @@ package edu.miu.simpleshop.domain;
 
 
 import edu.miu.simpleshop.exception.IllegalProductStateException;
+import net.minidev.json.annotate.JsonIgnore;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Entity;
@@ -38,6 +39,7 @@ public class Product {
     private int price;
 
     @Transient
+    @JsonIgnore
     private MultipartFile productImage;
 
     private String imageIdentifier;

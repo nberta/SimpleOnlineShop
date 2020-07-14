@@ -60,12 +60,9 @@ public class DbInit implements CommandLineRunner {
         Address address2 = new Address("21 Jump St", "Rabbit", "New York", 11000);
         Address address3 = new Address("55 Run St", "Mountain", "Everest", 10023);
 
-        User userAdmin = new User("rabbit", "rabbit", "rabbit@jump.com", Role.ADMIN);
-        User userBuyer = new User("rabbit", "rabbit", "rabbit@jump.com", Role.BUYER);
-        User userSeller = new User("rabbit", "rabbit", "rabbit@jump.com", Role.SELLER);
-//        userRepository.save(userAdmin);
-//        userRepository.save(userBuyer);
-//        userRepository.save(userSeller);
+        User userAdmin = new User("admin", "rabbit", "rabbit@jump.com", Role.ADMIN);
+        User userBuyer = new User("buyer", "rabbit", "rabbit@jump.com", Role.BUYER);
+        User userSeller = new User("seller", "rabbit", "rabbit@jump.com", Role.SELLER);
 
         Admin admin = new Admin(userAdmin);
         Buyer buyer1 = new Buyer(userBuyer, 40);

@@ -37,7 +37,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="product: ${products}" >
-                        <td th:text="${product.name}"></td>
+                        <td th:text="*{product.name}"></td>
                         <td th:text="${product.seller.user.username}"></td>
                         <td th:text="${product.seller.user.email}"></td>
                         <td th:text="${product.price}"></td>

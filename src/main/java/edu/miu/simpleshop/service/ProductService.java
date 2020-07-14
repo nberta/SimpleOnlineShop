@@ -16,6 +16,7 @@ public interface ProductService {
     Collection<Product> save(Collection<Product> products);
     Product delete(Long id);
     List<Product> getAllUnconfirmedProducts();
+    List<Product> getAllConfirmedProducts();
     List<Product> getBySellerId(Long id);
     Collection<Product> getByCategoryId(Long id);
     Product  getProduct(Long id); //added by Margulan

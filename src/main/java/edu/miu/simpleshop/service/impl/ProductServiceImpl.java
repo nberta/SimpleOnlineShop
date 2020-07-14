@@ -68,6 +68,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getAllConfirmedProducts() {
+        return null;
+    }
+
+    @Override
     public List<Product> getBySellerId(Long id) {
         List<Product> result;
         result = productRepository.findBySellerId(id);
@@ -97,7 +102,7 @@ public class ProductServiceImpl implements ProductService {
                 String type = tika.detect(productImage.getBytes());
                 if (!type.equals("image/png"))
                     throw new IncorrectFileTypeException("The uploaded file is an invalid type. Please enter an image.");
-                file = new File(storagePath + "images\\products\\"
+                file = new File(storagePath + "img\\products\\"
                                 + product.getImageIdentifier() + ".png");
                 productImage.transferTo(file);
             } catch (IOException e) {
