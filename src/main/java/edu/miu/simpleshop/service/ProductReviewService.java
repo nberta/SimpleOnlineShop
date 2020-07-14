@@ -14,5 +14,6 @@ public interface ProductReviewService {
     Collection<ProductReview> save(Collection<ProductReview> reviews);
     ProductReview delete(Long id);
     List<ProductReview> getAllUnconfirmedReviews();
+    List<ProductReview> getAllReviewsFor(Product product);
 
 }

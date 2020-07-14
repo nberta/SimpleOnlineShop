@@ -1,12 +1,20 @@
+
 <!DOCTYPE html>
-<html lang="en" layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org/"
-      xmlns:layout="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>Pending buyers</title>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div id="contents" class="row" layout:fragment="main-content">
+<div layout:fragment="main-content" class="row" style="margin-left: 4%">
+
+    <div class="card"  style="width: 80%;">
+        <div class="card-body">
 <!--    <div th:replace="components/userAccessMenu :: mnu">User menu</div>-->
     <div class="col-lg-9">
         <div class="h4">Pending buyer</div>
@@ -25,15 +33,20 @@
                 <td th:text="${buyer.user.username}">Mark</td>
                 <td th:text="${buyer.user.email}">mark@gmail.com</td>
                 <td>
-                    <a href="#" class="approveSeller" th:href="@{/admin/pending-buyers/{id}/approve(id=${buyer.id})}" th:data-buyer-id="${buyer.user.id}">Approve</a>
-                    <a href="#" class="rejectSeller" th:href="@{/admin/pending-buyers/{id}/reject(id=${buyer.id})}" th:data-buyer-id="${buyer.user.id}">Reject</a>
+                   <!-- <a href="#" class="approveSeller" th:href="@{/admin/pending-buyers/{id}/reject}" th:data-buyer-id="${buyer.user.id}"class="btn btn-primary btn-sm">Approve</a>
+                    <a href="#" class="rejectSeller" th:href="@{/admin/pending-buyers/{id}/reject}" th:data-buyer-id="${buyer.user.id}">Reject</a>
+                </td>-->
+
+                <a  th:href="@{/admin/pending-buyers/{id}/reject}" th:data-buyer-id="${buyer.user.id}" class="btn btn-primary btn-sm">Approve</a>
+                <a th:href="@{/admin/pending-buyers/{id}/reject}" th:data-buyer-id="${buyer.user.id}" class="btn btn-danger btn-sm">Reject</a>
                 </td>
+
+
             </tr>
             </tbody>
         </table>
     </div>
 </div>
-
 <th:block layout:fragment="script">
     <script th:src="@{/js/admin.js}"></script>
 </th:block>

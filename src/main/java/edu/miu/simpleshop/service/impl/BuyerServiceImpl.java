@@ -1,3 +1,4 @@
+/*
 package edu.miu.simpleshop.service.impl;
 
 import edu.miu.simpleshop.domain.*;
@@ -99,3 +100,4 @@ public class BuyerServiceImpl implements BuyerService {
         return buyerRepository.findAllByIsActiveFalse();
     }
 }
+*/

@@ -147,6 +147,14 @@ public class Product {
 
     public boolean isAvailable() { return quantity > 0; }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     public void decrementQuantity(int quantity) {
         if (quantity > 0) this.quantity -= quantity;
         if (quantity < 0) throw new IllegalProductStateException();

@@ -1,5 +1,6 @@
 package edu.miu.simpleshop.controller;
 
+import edu.miu.simpleshop.domain.Category;
 import edu.miu.simpleshop.domain.Product;
 import edu.miu.simpleshop.domain.Seller;
 import edu.miu.simpleshop.exception.IncorrectFileTypeException;
@@ -83,6 +84,7 @@ public class ProductController {
         return "redirect:/seller/my-products";
     }
 
+
 //    @GetMapping("/{id}")
 //    public Order getShoppingCartById(@PathVariable Long id) {
 ////        return CartItemService.getById(id);// will check what to return here
@@ -104,6 +106,7 @@ public class ProductController {
 //        return "shoppingCart/details";
 //    }
 }
+
 
 
 //    List<Product> products = productService.getAllUnconfirmedProducts(category);

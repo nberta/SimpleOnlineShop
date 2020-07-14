@@ -21,4 +21,5 @@ public interface ProductService {
     Product  getProduct(Long id); //added by Margulan
     File processImage(Product product, String storagePath);
 
+
 }
