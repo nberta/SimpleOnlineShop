@@ -20,6 +20,7 @@ public class ProductReviewServiceImpl implements ProductReviewService {
     private ReviewRepository reviewRepository;
 
 
+
     @Override
     public ProductReview getById(Long id) {
         ProductReview productReview = reviewRepository.findById(id).orElseThrow(EntityNotFoundException::new);
@@ -47,11 +48,14 @@ public class ProductReviewServiceImpl implements ProductReviewService {
 
     @Override
     public List<ProductReview> getAllUnconfirmedReviews() {
-        return null;
+        List<ProductReview> review = reviewRepository.getAllUnconfirmedReviews();
+        return review;
+
     }
 
     @Override
     public List<ProductReview> getAllReviewsFor(Product product) {
-        return null;
+        List<ProductReview> review = reviewRepository.getAllReviewsFor(product);
+        return review;
     }
 }
