@@ -63,26 +63,26 @@ public class ProductController {
                               BindingResult bindingResult,
                               RedirectAttributes redirectAttributes, HttpServletRequest request) throws IOException {
 
-//        if (bindingResult.hasErrors()) {
-//            return "product/productForm";
-//        }
-//        //prep for image processing
-//        String rootDirectory = request.getSession().getServletContext().getRealPath("/");
-//        //image identifier set here will also be used to retrieve image in view
-//        //consider also including the whole path in the identifier
-//        product.setImageIdentifier(product.getName() + RandomStringUtils.randomAlphanumeric(17));
-//
-//        try {
-//            File file = productService.processImage(product, rootDirectory);
-//            System.out.println(file.getAbsolutePath());
-//        } catch(IncorrectFileTypeException e) {
-//            //user entered a file that's not 'image/pgn' in type
-//            bindingResult.addError(new FieldError("product","productImage", e.getMessage()));
-//            return "product/productForm";
-//        }
-        MultipartFile multipartFile = product.getProductImage();
-        product.setImageIdentifier(RandomStringUtils.randomAlphanumeric(17) + multipartFile.getOriginalFilename());
-        saveFile(multipartFile, product.getImageIdentifier());
+        if (bindingResult.hasErrors()) {
+            return "product/productForm";
+        }
+        //prep for image processing
+        String rootDirectory = request.getSession().getServletContext().getRealPath("/");
+        //image identifier set here will also be used to retrieve image in view
+        //consider also including the whole path in the identifier
+        product.setImageIdentifier(RandomStringUtils.randomAlphanumeric(17) + product.getName());
+
+        try {
+            File file = productService.processImage(product, "src\\main\\resources\\static\\images\\");
+            System.out.println(file.getAbsolutePath());
+        } catch(IncorrectFileTypeException e) {
+            //user entered a file that's not 'image/pgn' in type
+            bindingResult.addError(new FieldError("product","productImage", e.getMessage()));
+            return "product/productForm";
+        }
+//        MultipartFile multipartFile = product.getProductImage();
+//        product.setImageIdentifier(RandomStringUtils.randomAlphanumeric(17) + multipartFile.getOriginalFilename());
+//        saveFile(multipartFile, product.getImageIdentifier());
 
         product = productService.save(product);
         redirectAttributes.addFlashAttribute("product", product);

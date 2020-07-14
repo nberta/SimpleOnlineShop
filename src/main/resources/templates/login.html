@@ -42,28 +42,46 @@
         <span class="fa fa-warning"></span> <span th:text="${errorMsg}">Email or Password invalid.</span>
       </div>
     </div>
-    <!-- display login error -->
+<!--     display login error -->
 
+    <form th:action="@{/login}" method="POST" class="form-signin">
+      <h3 class="form-signin-heading" th:text="Welcome"></h3>
+      <br/>
 
-    <form class="login-form" th:action="@{/login}" method="post">
-      <div class="login-wrap">
-        <p class="login-img"><i class="icon_lock_alt"></i></p>
-        <div class="input-group">
-          <span class="input-group-addon"><i class="icon_profile"></i></span>
-          <input type="text" value="username" class="form-control" placeholder="Username" autofocus>
-        </div>
-        <div class="input-group">
-          <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-          <input type="password" value="password" class="form-control" placeholder="Password">
-        </div>
-        <label class="checkbox">
-                <input type="checkbox" value="remember-me"> Remember me
-                <span class="pull-right"> <a href="#"> Forgot Password?</a></span>
-            </label>
-        <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
-        <button class="btn btn-info btn-lg btn-block" type="submit">Signup</button>
+      <input type="text" id="email" name="username" th:placeholder="Email"
+             class="form-control"/> <br/>
+      <input type="password" th:placeholder="Password"
+             id="password" name="password" class="form-control"/> <br/>
+
+      <div align="center" th:if="${loginError}">
+        <p style="font-size: 20; color: #FF1C19;">Email or Password invalid, please verify</p>
       </div>
+      <input type="checkbox" name="remember-me" /> Remember Me?<br/>
+      <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit"
+              th:text="Login"></button>
     </form>
+
+
+
+<!--    <form class="login-form" th:action="@{/login}" method="POST">-->
+<!--      <div class="login-wrap">-->
+<!--        <p class="login-img"><i class="icon_lock_alt"></i></p>-->
+<!--        <div class="input-group">-->
+<!--          <span class="input-group-addon"><i class="icon_profile"></i></span>-->
+<!--          <input type="text" value="username" name="username" class="form-control" placeholder="Username" autofocus>-->
+<!--        </div>-->
+<!--        <div class="input-group">-->
+<!--          <span class="input-group-addon"><i class="icon_key_alt"></i></span>-->
+<!--          <input type="password" value="password" name="password" class="form-control" placeholder="Password">-->
+<!--        </div>-->
+<!--        <label class="checkbox">-->
+<!--                <input type="checkbox" value="remember-me"> Remember me-->
+<!--                <span class="pull-right"> <a href="#"> Forgot Password?</a></span>-->
+<!--            </label>-->
+<!--        <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>-->
+<!--        <button class="btn btn-info btn-lg btn-block" type="submit">Signup</button>-->
+<!--      </div>-->
+<!--    </form>-->
     <div class="text-right">
       <div class="credits">
           <!--

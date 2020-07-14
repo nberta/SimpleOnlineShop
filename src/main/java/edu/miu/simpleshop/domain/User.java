@@ -10,6 +10,7 @@ import java.util.Set;
 
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
@@ -26,6 +27,8 @@ public class User {
     @NotBlank
     private String email;
 
+    private Boolean enabled = true;
+
     //@NotEmpty
 //    @ElementCollection(targetClass = Role.class)
 //    @Enumerated(EnumType.STRING)
@@ -33,6 +36,7 @@ public class User {
 //    private Set<Role> roles = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
+    @Column(name="authority")
     private Role role;
 
     public Role getRole() {
