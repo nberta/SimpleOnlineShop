@@ -7,10 +7,8 @@ import edu.miu.simpleshop.exception.IncorrectFileTypeException;
 import edu.miu.simpleshop.service.CategoryService;
 import edu.miu.simpleshop.service.ProductService;
 
-import org.apache.commons.io.FilenameUtils;
-import org.dom4j.rule.Mode;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.system.ApplicationHome;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,11 +20,9 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 import java.util.List;
-import java.util.UUID;
+
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,7 +51,7 @@ public class ProductController {
 
     //New image upload logic
     private String saveFile(MultipartFile file,String fileName) throws IOException{
-        final String imagePath = "src/main/resources/static/img/"; //path ... it might be different slash for windows
+        final String imagePath = "src\\main\\resources\\static\\images\\"; //path ... it might be different slash for windows
         FileOutputStream output = new FileOutputStream(imagePath+fileName);
         output.write(file.getBytes());
         return imagePath+fileName;
@@ -64,7 +60,8 @@ public class ProductController {
 
     @PostMapping("/product/add")
     public String saveProduct(@ModelAttribute("product") Product product,
-                              BindingResult bindingResult, RedirectAttributes redirectAttributes, HttpServletRequest request) throws IOException {
+                              BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes, HttpServletRequest request) throws IOException {
 
 //        if (bindingResult.hasErrors()) {
 //            return "product/productForm";
@@ -77,19 +74,18 @@ public class ProductController {
 //
 //        try {
 //            File file = productService.processImage(product, rootDirectory);
-////            System.out.println(file.getAbsolutePath());
+//            System.out.println(file.getAbsolutePath());
 //        } catch(IncorrectFileTypeException e) {
 //            //user entered a file that's not 'image/pgn' in type
 //            bindingResult.addError(new FieldError("product","productImage", e.getMessage()));
 //            return "product/productForm";
 //        }
         MultipartFile multipartFile = product.getProductImage();
-        saveFile(multipartFile, multipartFile.getOriginalFilename());
-        System.out.println(multipartFile.getName());
-        System.out.println(product.getImageIdentifier());
+        product.setImageIdentifier(RandomStringUtils.randomAlphanumeric(17) + multipartFile.getOriginalFilename());
+        saveFile(multipartFile, product.getImageIdentifier());
 
-        redirectAttributes.addFlashAttribute(product);
         product = productService.save(product);
+        redirectAttributes.addFlashAttribute("product", product);
 
         return "/seller/singleproduct";
     }

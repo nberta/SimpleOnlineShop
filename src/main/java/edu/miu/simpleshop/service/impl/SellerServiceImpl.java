@@ -3,6 +3,7 @@ package edu.miu.simpleshop.service.impl;
 import edu.miu.simpleshop.domain.OrderLine;
 import edu.miu.simpleshop.domain.Product;
 import edu.miu.simpleshop.domain.Seller;
+import edu.miu.simpleshop.domain.User;
 import edu.miu.simpleshop.repository.ProductRepository;
 import edu.miu.simpleshop.repository.SellerRepository;
 import edu.miu.simpleshop.service.SellerService;
@@ -39,16 +40,11 @@ public class SellerServiceImpl implements SellerService {
     public Seller getById(Long id) {
         return sellerRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
+
     @Override
     public List<Seller> getPendingSellers() {
         return sellerRepository.findAllByIsActiveFalse();
     }
-
-
-
-
-
-
 
     @Override
     public void notifySellers(List<OrderLine> orderLines) {
@@ -60,6 +56,11 @@ public class SellerServiceImpl implements SellerService {
             seller.addOrderLine(orderLine);
             sellerRepository.save(seller);
         });
+    }
+
+    @Override
+    public Seller getByUser(User user) {
+        return sellerRepository.findByUserId(user.getId()).orElseThrow(EntityNotFoundException::new);
     }
 
 }

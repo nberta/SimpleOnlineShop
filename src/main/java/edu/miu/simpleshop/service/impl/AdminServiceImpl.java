@@ -2,6 +2,7 @@ package edu.miu.simpleshop.service.impl;
 
 
 import edu.miu.simpleshop.domain.Admin;
+import edu.miu.simpleshop.domain.User;
 import edu.miu.simpleshop.repository.AdminRepository;
 import edu.miu.simpleshop.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,10 @@ public class AdminServiceImpl implements AdminService {
         Admin admin = getById(id);
         adminRepository.delete(admin);
         return admin;
+    }
+
+    @Override
+    public Admin getByUser(User user) {
+        return adminRepository.findByUserId(user.getId()).orElseThrow(EntityNotFoundException::new);
     }
 }

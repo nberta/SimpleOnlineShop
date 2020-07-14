@@ -12,6 +12,7 @@ import edu.miu.simpleshop.repository.ProductRepository;
 import edu.miu.simpleshop.service.ProductService;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.FieldError;
@@ -95,14 +96,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public File processImage(Product product, String storagePath) {
         MultipartFile productImage = product.getProductImage();
+        System.out.println(storagePath);
         File file = null;
         if (productImage != null && !productImage.isEmpty()) {
             try {
                 Tika tika = new Tika();
                 String type = tika.detect(productImage.getBytes());
-                if (!type.equals("image/png"))
+                if (!type.contains("image"))
                     throw new IncorrectFileTypeException("The uploaded file is an invalid type. Please enter an image.");
-                file = new File(storagePath + "img\\products\\"
+                file = new File( "src\\main\\resources\\static\\images\\products\\"
                                 + product.getImageIdentifier() + ".png");
                 productImage.transferTo(file);
             } catch (IOException e) {
