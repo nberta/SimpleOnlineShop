@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Shopping Cart</title>
+</head>
+
+<body>
+<div class="row" style="margin:2%;margin-left: 4%">
+
+    <div class="col">
+        <div class="card-body">
+            <div id="feedback"></div>
+
+            <!--// submitting to /productReview/create-review/{orderProductId}
+            //created toString method in ProductReview object-->
+
+            <form class="form-horizontal" th:action="@{/productReview/create-review/{orderProductId}}"
+                  method="post" th:object="${ProductReview}" action="#">
+                <h4>
+                    Comments
+                </h4>
+                <input th:field="${ProductReview.product.id}" type="hidden">
+                <div>
+                    <input type="text" id="comment" th:field="${ProductReview.review}"
+                           placeholder="Write something.." style="height:70px; width:400px;">
+                </div>
+                <br>
+                <button class="btn btn-primary btn-sm" id="btn-comment" >Submit &raquo;</button>
+                <!--p th:text ="${ProductReview}">// checking if its submitting-->
+                    </form>
+                </div>
+            </div>
+        </div>
+        </body>
+        </html>

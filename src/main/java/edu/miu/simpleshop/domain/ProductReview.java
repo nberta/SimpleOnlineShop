@@ -1,6 +1,7 @@
 package edu.miu.simpleshop.domain;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class ProductReview {
@@ -15,14 +16,20 @@ public class ProductReview {
     @ManyToOne
     private Buyer buyer;
 
+    /*@Column(name = "comment_time", columnDefinition = "TIMESTAMP")
+    private LocalDateTime commentTime = LocalDateTime.now();*/
+
     private String review;
     private int rating;
     private Boolean isConfirmed;
     private boolean enabled;
 
-    public ProductReview(){}
+    public ProductReview() {
+    }
 
-    public Long getId() { return this.id; }
+    public Long getId() {
+        return this.id;
+    }
 
     public Product getProduct() {
         return product;
@@ -68,4 +75,13 @@ public class ProductReview {
     public boolean isEnabled() {
         return enabled;
     }
+
+    @Override
+    public String toString() {
+        return "ProductReview{" +
+                "id=" + id +
+                ", review='" + review + '\'' +
+                '}';
+    }
 }
+
