@@ -1,13 +1,16 @@
 package edu.miu.simpleshop.controller;
 
+import edu.miu.simpleshop.SimpleshopApplication;
 import edu.miu.simpleshop.domain.Category;
 import edu.miu.simpleshop.domain.Product;
-import edu.miu.simpleshop.domain.Seller;
 import edu.miu.simpleshop.exception.IncorrectFileTypeException;
 import edu.miu.simpleshop.service.CategoryService;
 import edu.miu.simpleshop.service.ProductService;
 
+import org.apache.commons.io.FilenameUtils;
+import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.system.ApplicationHome;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,10 +20,17 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/products")
@@ -38,37 +48,56 @@ public class ProductController {
     }
 
     @GetMapping("/product/add")
-    public String addProduct(@ModelAttribute("product") Product product,  Model model) throws IOException {
-       // model.addAttribute("categories", categoryService.getAllCategories());
+    public String addProduct(@ModelAttribute("product") Product product) throws IOException {
+        // model.addAttribute("categories", categoryService.getAllCategories());
         return "product/productForm";
     }
 
+    //New image upload logic
+    private String saveFile(MultipartFile file,String fileName) throws IOException{
+        final String imagePath = "src/main/resources/static/img/"; //path ... it might be different slash for windows
+        FileOutputStream output = new FileOutputStream(imagePath+fileName);
+        output.write(file.getBytes());
+        return imagePath+fileName;
+    }
 
 
     @PostMapping("/product/add")
-    public String saveProduct(@Valid @ModelAttribute("product") Product product, BindingResult bindingResult,
-                              @ModelAttribute("seller") Seller seller, HttpServletRequest request,
-                              Model model) throws IOException{
-        if (bindingResult.hasErrors()) {
-            return "product/productForm";
-        }
+    public String saveProduct(@ModelAttribute("product") Product product,
+                              BindingResult bindingResult, RedirectAttributes redirectAttributes, HttpServletRequest request) throws IOException {
 
-        //prep for image processing
-        String rootDirectory = request.getSession().getServletContext().getRealPath("/");
-        //image identifier set here will also be used to retrieve image in view
-        //consider also including the whole path in the identifier
-        product.setImageIdentifier(product.getName() + RandomStringUtils.randomAlphanumeric(17));
+//        if (bindingResult.hasErrors()) {
+//            return "product/productForm";
+//        }
+//        //prep for image processing
+//        String rootDirectory = request.getSession().getServletContext().getRealPath("/");
+//        //image identifier set here will also be used to retrieve image in view
+//        //consider also including the whole path in the identifier
+//        product.setImageIdentifier(product.getName() + RandomStringUtils.randomAlphanumeric(17));
+//
+//        try {
+//            File file = productService.processImage(product, rootDirectory);
+////            System.out.println(file.getAbsolutePath());
+//        } catch(IncorrectFileTypeException e) {
+//            //user entered a file that's not 'image/pgn' in type
+//            bindingResult.addError(new FieldError("product","productImage", e.getMessage()));
+//            return "product/productForm";
+//        }
+        MultipartFile multipartFile = product.getProductImage();
+        saveFile(multipartFile, multipartFile.getOriginalFilename());
+        System.out.println(multipartFile.getName());
+        System.out.println(product.getImageIdentifier());
 
-        try {
-            File file = productService.processImage(product, rootDirectory);
-            System.out.println(file.getAbsolutePath());
-        } catch(IncorrectFileTypeException e) {
-            //user entered a file that's not 'image/pgn' in type
-            bindingResult.addError(new FieldError("product","productImage", e.getMessage()));
-            return "product/productForm";
-        }
+        redirectAttributes.addFlashAttribute(product);
+        product = productService.save(product);
 
-        return "redirect:/sellers/my-products";
+        return "/seller/singleproduct";
+    }
+
+    @GetMapping("/productList")
+    public String getAllProducts(Model model){
+        model.addAttribute("productsAll", productService.getAllUnconfirmedProducts());
+        return "product/productList";
     }
 
 
@@ -83,7 +112,6 @@ public class ProductController {
         productService.delete(productId);
         return "redirect:/seller/my-products";
     }
-
 
 //    @GetMapping("/{id}")
 //    public Order getShoppingCartById(@PathVariable Long id) {
@@ -106,7 +134,6 @@ public class ProductController {
 //        return "shoppingCart/details";
 //    }
 }
-
 
 
 //    List<Product> products = productService.getAllUnconfirmedProducts(category);

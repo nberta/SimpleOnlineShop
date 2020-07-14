@@ -12,8 +12,9 @@ import java.util.List;
 public interface ReviewRepository extends JpaRepository<ProductReview, Long> {
 
     List<ProductReview> findAllByEnabledFalse();
-    //Collection<ProductReview> findByCategoryId(Long Id);
-     List<ProductReview> getAllUnconfirmedReviews();
-     List<ProductReview> getAllReviewsFor(Product product);
-}
 
+    //Collection<ProductReview> findByCategoryId(Long Id);
+
+   // List<ProductReview> getAllUnconfirmedReviews();
+    //List<ProductReview> getAllReviewsFor(Product product); <-- This wasn't working so I've commented out.
+}

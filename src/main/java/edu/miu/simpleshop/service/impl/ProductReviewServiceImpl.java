@@ -46,16 +46,16 @@ public class ProductReviewServiceImpl implements ProductReviewService {
         return review;
     }
 
-    @Override
-    public List<ProductReview> getAllUnconfirmedReviews() {
-        List<ProductReview> review = reviewRepository.getAllUnconfirmedReviews();
-        return review;
+    //commented out cuz not working!
+//    @Override
+//    public List<ProductReview> getAllUnconfirmedReviews() {
+//        List<ProductReview> review = reviewRepository.getAllUnconfirmedReviews();
+//        return review;
+//
+//    }
 
-    }
-
-    @Override
-    public List<ProductReview> getAllReviewsFor(Product product) {
-        List<ProductReview> review = reviewRepository.getAllReviewsFor(product);
-        return review;
-    }
+//    @Override
+//    public List<ProductReview> getAllReviewsFor(Product product) {
+//        return reviewRepository.findProductReviewsByProduct(product);
+//    }
 }

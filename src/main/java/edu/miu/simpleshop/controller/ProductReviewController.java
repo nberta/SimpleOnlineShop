@@ -39,7 +39,8 @@ public class ProductReviewController {
     //read all review
     @GetMapping("/created-reviews")
     public String readReviews(Model model){
-        model.addAttribute("createdReviews", productReviewService.getAllUnconfirmedReviews());
+        //getAllUnconfirmedReviews() Not working. So commented out
+       // model.addAttribute("createdReviews", productReviewService.getAllUnconfirmedReviews());
         return "admin/created-reviews";
     }
     //update review
