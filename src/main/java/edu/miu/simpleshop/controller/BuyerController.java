@@ -155,5 +155,11 @@ public class BuyerController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(new InputStreamResource(bis));
     }
+    //Check Order History
+    @GetMapping("/buyer/orders")
+    public String orderList(@ModelAttribute("loggedInBuyer") Buyer buyer,  Model model) {
+        model.addAttribute("orders", buyer.getOrders());
+        return "buyer/orders";
+    }
 
 }
