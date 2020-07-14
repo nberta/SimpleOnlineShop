@@ -59,7 +59,7 @@ public class AdminController {
     public String getReviews(Model model) {
           //not working, commented out
        // model.addAttribute("productReviews", productReviewService.getAllUnconfirmedReviews());
-        return "/admin/reviews";
+        return "pending-reviews";
     }
 
     @PostMapping("/reviews/{productReviewId}/approve")

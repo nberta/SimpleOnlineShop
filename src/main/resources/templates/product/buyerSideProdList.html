@@ -18,7 +18,7 @@
             <div th:each="product,iStat : ${products}">
                 <div th:class="${iStat.even}? 'col' : 'w-100' " style="margin:2%;">
                     <div class="card" style="width:15rem;">
-                        <img th:src="@{'/img/' + ${product.imageIdentifier}+'.png'}" class="card-img-top" alt="...">
+                        <img th:src="@{'/img/' + ${product.imageIdentifier}}" class="card-img-top" alt="...">
 
                         <div class="card-body">
                             <h5 class="card-title" th:text="${product.title}">Card title</h5>
