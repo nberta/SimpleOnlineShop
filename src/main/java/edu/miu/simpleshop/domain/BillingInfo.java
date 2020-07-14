@@ -20,7 +20,7 @@ public class BillingInfo {
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Address billingAddress;
 
     private Long orderNumber;
@@ -35,4 +35,12 @@ public class BillingInfo {
         this.orderNumber = Long.parseLong(RandomStringUtils.randomNumeric(7));
         this.creditCardNumber = Long.parseLong(RandomStringUtils.randomNumeric(10));
     }
+
+    public BillingInfo(Address billingAddress) {
+        this.billingAddress = billingAddress;
+        this.orderNumber = Long.parseLong(RandomStringUtils.randomNumeric(7));
+        this.creditCardNumber = Long.parseLong(RandomStringUtils.randomNumeric(10));
+        this.transactionDate = LocalDate.now();
+    }
+
 }

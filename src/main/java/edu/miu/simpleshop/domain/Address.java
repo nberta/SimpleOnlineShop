@@ -18,6 +18,13 @@ public class Address {
 	public Address(){
 	}
 
+	public Address(String street, String city, String state, Integer zip) {
+		this.street = street;
+		this.city = city;
+		this.state = state;
+		this.zip = zip;
+	}
+
 	public Long getId() { return this.id; }
 
 	public String getStreet() {

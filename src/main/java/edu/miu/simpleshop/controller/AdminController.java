@@ -30,13 +30,10 @@ public class AdminController {
     @Autowired
     private BuyerService buyerService;
 
-<<<<<<< Updated upstream
-=======
     @Autowired
     private UserService userService;
 
 
->>>>>>> Stashed changes
     @PostMapping("/products/{productId}/approve")
     public String approveProduct(@PathVariable("productId") Long productId, Model model){
         Product prod = productService.getProduct(productId);

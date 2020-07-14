@@ -17,6 +17,11 @@ public class Follow {
 
     public Follow(){}
 
+    public Follow(Buyer buyer, Seller seller){
+        this.buyer = buyer;
+        this.seller = seller;
+    }
+
     public Long getId() { return this.id; }
 
     public Buyer getBuyer() {
