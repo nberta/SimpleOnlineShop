@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <h2>My Orders</h2>
+
+    <section th:if="${not #lists.isEmpty(orderLines)}">
+        <div th:each="orderLine :${orderLines}">
+            <p>
+                <span th:text="${orderLine.product.name}"></span>
+                <span th:text="${orderLine.product.price}"></span>
+                <span th:text="${orderLine.product.quantity}"></span>
+                <span th:if="${orderLine.status == 'CREATED'}">
+                    <a th:href="@{/sellers/order/{id}/set-status/shipped(id=${orderLine.id})}" th:text="Mark as shipped"></a>
+                    <a th:href="@{/seller/orders/{id}/set-status/canceled(id=${orderLine.id})}" th:text="Decline Order"></a>
+                </span>
+                <span th:if="${orderLine.status != 'CREATED'}" th:text="FINALIZED"></span>
+
+            </p>
+        </div>
+
+    </section>
+    <h4 th:if="${#lists.isEmpty(orderLines)}" th:text="You have no pending orders..."></h4>
+</body>
+</html>
