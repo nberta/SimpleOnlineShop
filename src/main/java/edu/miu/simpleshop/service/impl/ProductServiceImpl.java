@@ -1,5 +1,6 @@
 package edu.miu.simpleshop.service.impl;
 
+import edu.miu.simpleshop.domain.Category;
 import edu.miu.simpleshop.domain.OrderLine;
 import edu.miu.simpleshop.domain.Product;
 import edu.miu.simpleshop.domain.enums.OrderStatus;

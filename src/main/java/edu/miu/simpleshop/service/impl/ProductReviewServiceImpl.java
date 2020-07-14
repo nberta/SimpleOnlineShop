@@ -22,17 +22,20 @@ public class ProductReviewServiceImpl implements ProductReviewService {
 
     @Override
     public ProductReview getById(Long id) {
-        return reviewRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        ProductReview productReview = reviewRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return productReview;
     }
 
     @Override
     public ProductReview save(ProductReview productReview) {
-        return reviewRepository.save(productReview);
+        ProductReview review = reviewRepository.save(productReview);
+        return review;
     }
 
     @Override
     public Collection<ProductReview> save(Collection<ProductReview> reviews) {
-        return reviewRepository.saveAll(reviews);
+        Collection<ProductReview> result = reviewRepository.saveAll(reviews);
+        return result;
     }
 
     @Override
@@ -44,7 +47,11 @@ public class ProductReviewServiceImpl implements ProductReviewService {
 
     @Override
     public List<ProductReview> getAllUnconfirmedReviews() {
-        return reviewRepository.findAllByEnabledFalse();
+        return null;
     }
 
+    @Override
+    public List<ProductReview> getAllReviewsFor(Product product) {
+        return null;
+    }
 }
