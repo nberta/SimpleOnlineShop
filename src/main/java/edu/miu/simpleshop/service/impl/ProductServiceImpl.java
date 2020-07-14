@@ -104,8 +104,8 @@ public class ProductServiceImpl implements ProductService {
                 String type = tika.detect(productImage.getBytes());
                 if (!type.contains("image"))
                     throw new IncorrectFileTypeException("The uploaded file is an invalid type. Please enter an image.");
-                file = new File( "src\\main\\resources\\static\\images\\products\\"
-                                + product.getImageIdentifier() + ".png");
+                file = new File( storagePath
+                                + product.getImageIdentifier());
                 productImage.transferTo(file);
             } catch (IOException e) {
                 e.printStackTrace();
