@@ -59,22 +59,23 @@ public class AdminController {
     public String getReviews(Model model) {
           //not working, commented out
        // model.addAttribute("productReviews", productReviewService.getAllUnconfirmedReviews());
-        return "pending-reviews";
+        return "admin/pending-reviews";
     }
 
-    @PostMapping("/reviews/{productReviewId}/approve")
+    @GetMapping("/reviews/{productReviewId}/approve")
     public String approveReview(@PathVariable("productReviewId") Long productReviewId, Model model) {
         ProductReview prod= productReviewService.getById(productReviewId);
         model.addAttribute("productReview", prod);
         return "redirect:/admin/reviews";
     }
 
-    @PostMapping("/reviews/{productReviewId}/reject")
+    @GetMapping("/reviews/{productReviewId}/reject")
     public String rejectReview(@PathVariable("productReviewId") Long productReviewId, Model model) {
         ProductReview prod= productReviewService.getById(productReviewId);
         model.addAttribute("productReview", prod);
         return "redirect:/admin/reviews";
     }
+
     @GetMapping("/pending-sellers")
     public String pendingSellers(Model model){
         model.addAttribute("pendingSellers", sellerService.getPendingSellers());
