@@ -7,7 +7,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Creative - Bootstrap Admin Template</title>
+    <title>Simple Online Shop</title>
 
     <!-- Bootstrap CSS -->
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
@@ -121,7 +121,7 @@
                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                     <div class="info-box blue-bg">
                         <i class="fa fa-shopping-cart"></i>
-                        <div class="count">6.674</div>
+                        <div th:text="${categories}" class="count"></div>
                         <div class="title">Categories</div>
                     </div>
                     <!--/.info-box-->
@@ -131,7 +131,7 @@
                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                     <div class="info-box green-bg">
                         <i class="fa fa-cubes"></i>
-                        <div class="count">7.538</div>
+                        <div th:text="${productsCount}" class="count"></div>
                         <div class="title">Products</div>
                     </div>
                     <!--/.info-box-->
@@ -143,15 +143,41 @@
             <!-- Today status end -->
             <div class="row">
 
-                <div class="col-lg-12 col-md-12">
+                <div class="col-lg-07 col-md-07">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h2><i class="fa fa-flag-o red"></i><strong>All Products!</strong></h2>
                         </div>
                         <div class="col-lg-8">
-                            PRODUCTS COMING SOON ....
-                            <br>
-                            <br>
+                                <!-- for each part using expression language  Iteration th:each   -->
+                                <div class="col">
+                                    <div class="row">
+                                        <div th:each="product,iStat : ${productsHome}">
+                                            <div th:class="${iStat.even}? 'col' : 'w-100' " style="margin:2%;">
+                                                <div class="card" style="width:15rem;">
+<!--                                                    <img th:src="@{'/img/' + ${productsHome.imageIdentifier}}" class="card-img-top" alt="...">-->
+
+                                                    <div class="card-body">
+                                                        <h5 class="card-title" th:text="${productsHome}">Card title</h5>
+                                                        <p class="card-text" th:text="*{details}">Here goes the description</p>
+
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon3">$</span>
+                                                            </div>
+<!--                                                            <input type="text" readonly th:value="*{price}" class="form-control" aria-describedby="basic-addon3"></input>-->
+                                                        </div>
+                                                        <a class="btn btn-primary"
+                                                           th:href="@{'/cartItem/viewDetails' (productId=${productsHome})}">
+                                                            View Details &raquo;</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

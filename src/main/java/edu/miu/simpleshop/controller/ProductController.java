@@ -1,30 +1,30 @@
 package edu.miu.simpleshop.controller;
 
 import edu.miu.simpleshop.SimpleshopApplication;
-import edu.miu.simpleshop.domain.Category;
 import edu.miu.simpleshop.domain.Product;
-import edu.miu.simpleshop.exception.IncorrectFileTypeException;
+import edu.miu.simpleshop.exception.WrongImageException;
 import edu.miu.simpleshop.service.CategoryService;
 import edu.miu.simpleshop.service.ProductService;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.system.ApplicationHome;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -36,6 +36,11 @@ public class ProductController {
 
     @Autowired
     private CategoryService categoryService;
+
+    //@Autowired
+ //   private MultipartHelper multipartService;
+
+    private List<String> files = new ArrayList<String>();
 
     public String mainPage(@RequestParam(value = "category", required = false) Integer category, Model model) {
         List<Product> products = productService.getAllUnconfirmedProducts();
@@ -49,18 +54,17 @@ public class ProductController {
         return "product/productForm";
     }
 
-    //New image upload logic
-    private String saveFile(MultipartFile file,String fileName) throws IOException{
-        final String imagePath = "src/main/resources/static/images/"; //path ... it might be different slash for windows
-        FileOutputStream output = new FileOutputStream(imagePath+fileName);
-        output.write(file.getBytes());
-        return imagePath+fileName;
-    }
+//    //New image upload logic
+//    private String saveFile(MultipartFile file,String fileName) throws IOException{
+//        final String imagePath = "src/main/resources/static/images/"; //path ... it might be different slash for windows
+//        FileOutputStream output = new FileOutputStream(imagePath+fileName);
+//        output.write(file.getBytes());
+//        return imagePath+fileName;
+//    }
 
 
     @PostMapping("/product/add")
-    public String saveProduct(@ModelAttribute("product") Product product, BindingResult bindingResult,
-                              RedirectAttributes redirectAttributes, @RequestParam("multipartFile") MultipartFile file) throws IOException {
+    public String saveProduct( Product product, BindingResult bindingResult, Model model) {
 
 //        if (bindingResult.hasErrors()) {
 //            return "product/productForm";
@@ -80,12 +84,47 @@ public class ProductController {
 //            return "product/productForm";
 //        }
 
-        MultipartFile multipartFile = product.getProductImage();
-        product.setImageIdentifier(RandomStringUtils.randomAlphanumeric(17) + ".png");
-        saveFile(multipartFile, product.getImageIdentifier());
+//        MultipartFile multipartFile = product.getProductImage();
+//        product.setImageIdentifier(RandomStringUtils.randomAlphanumeric(17) + ".png");
+//        saveFile(multipartFile, product.getImageIdentifier());
+//        try{
+//            multipartService.store(file);
+//            files.add(file.getOriginalFilename());
+//            product.setImageIdentifier("img/"+filename);
+//
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }
+//        Files.copy(file.getInputStream(), this.rootLocation.resolve(filename),
+//                StandardCopyOption.REPLACE_EXISTING);
 
-        product = productService.save(product);
-        redirectAttributes.addFlashAttribute("product", product);
+
+        MultipartFile productImage = product.getProductImage();
+        String uploadLocation = "src/main/resources/static/images/";
+        String imageName;
+        if (productImage != null) {
+            if (productImage.getContentType().contains("image/")) {
+                System.out.println("Image is not null. " + productImage.getContentType());
+                try {
+                    imageName = UUID.randomUUID().toString() +productImage.getOriginalFilename();
+                    imageName = imageName.toLowerCase().replaceAll(" ", "-");
+                    System.out.println(uploadLocation + imageName);
+                    FileOutputStream output = new FileOutputStream(uploadLocation+imageName);
+                    //productImage.transferTo(new File(uploadLocation+imageName));
+                    output.write(productImage.getBytes());
+                    System.out.println("Image Uploaded");
+                } catch (Exception e) {
+                    throw new RuntimeException("Problem on saving product picture.", e);
+                }
+            } else {
+                throw new WrongImageException();
+            }
+        } else {
+            System.out.println("Please select image.");
+        }
+
+        productService.save(product);
+       // redirectAttributes.addFlashAttribute("product", product);
 
         return "/seller/singleproduct";
     }
