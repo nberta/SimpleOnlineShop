@@ -153,11 +153,18 @@ public class BuyerController {
                 .body(new InputStreamResource(bis));
     }
     //Check Order History
-    @GetMapping("/buyer/orders")
+//    @GetMapping("/buyer/orders")
+//    public String orderList(@ModelAttribute("loggedInBuyer") Buyer buyer,  Model model) {
+//        model.addAttribute("orders", buyer.getOrders());
+//        return "buyer/orders";
+//    }
+    @GetMapping("/order/list")
     public String orderList(@ModelAttribute("loggedInBuyer") Buyer buyer,  Model model) {
         model.addAttribute("orders", buyer.getOrders());
-        return "buyer/orders";
+        return "order/list";
     }
+
+
 
 }
 

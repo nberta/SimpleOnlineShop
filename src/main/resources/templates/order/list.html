@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org/"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders list</title>
+</head>
+<body>
+<div id="contents" class="row" layout:fragment="main-content">
+    <div th:replace="components/userAccessMenu :: mnu">User menu</div>
+    <div class="col-lg-9">
+        <div class="h4">Orders</div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+
+                <th scope="col">Ordered products</th>
+                <th scope="col">Total sum</th>
+<!--                <th scope="col">Seller</th>-->
+                <th scope="col">Sipping address</th>
+                <th scope="col">Dates</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order,iter : ${orders}">
+                <th scope="row" th:text="${iter.index+1}">1</th>
+
+                <td>
+                    <div th:each="op :${order.orderLines}" th:text="${op}">iPhone</div>
+                </td>
+                <td th:text="${order.totalCost}">$100</td>
+<!--                <td th:text="${order.}">Good seller</td>-->
+                <td th:text="${order.shippingAddress}">07/14/2020</td>
+
+<!--                <td>-->
+<!--                    <a th:if="${order!=null}" href="#" class="cancelOrder" th:data-order-id="${order.id}">Cancel-->
+<!--                        order</a>-->
+<!--                    <a target="_blank" th:if="${order!=null}" class="downloadReceipt"-->
+<!--                       th:href="@{/buyer/receipt/download/{orderId}(orderId=${order.id})}">Download Receipt</a>-->
+<!--                    <div th:each="op : ${order.orderLines}">-->
+<!--                        <a th:if="${order!=null}" class="leave-feedback" th:data-product-id="${order.id}"-->
+<!--                           href="#" th:href="@{/buyer/product/leave-review/{orderProductId}(orderProductId=${op.id})}"-->
+<!--                            th:text="${'Leave a review on '+op.product.name}">-->
+<!--                            Leave a review on iPhone-->
+<!--                        </a>-->
+<!--                    </div>-->
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/buyer.js}"></script>
+</th:block>
+</body>
+</html>
