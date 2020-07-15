@@ -37,8 +37,8 @@
                     <a href="#" class="rejectSeller" th:href="@{/admin/pending-buyers/{id}/reject}" th:data-buyer-id="${buyer.user.id}">Reject</a>
                 </td>-->
 
-                <a  th:href="@{/admin/pending-buyers/{id}/reject}" th:data-buyer-id="${buyer.user.id}" class="btn btn-primary btn-sm">Approve</a>
-                <a th:href="@{/admin/pending-buyers/{id}/reject}" th:data-buyer-id="${buyer.user.id}" class="btn btn-danger btn-sm">Reject</a>
+                <a  th:href="@{/admin/pending-buyers/{id}/approve(id=${buyer.id}})}" th:data-buyer-id="${buyer.user.id}" class="btn btn-primary btn-sm">Approve</a>
+                <a th:href="@{/admin/pending-buyers/{id}/reject(id=${buyer.id}})}" th:data-buyer-id="${buyer.user.id}" class="btn btn-danger btn-sm">Reject</a>
                 </td>
 
 

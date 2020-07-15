@@ -38,8 +38,8 @@
 
                 
                 <td>
-                    <a th:href="@{/admin/pending-sellers/{id}/approve}" th:data-seller-id="${seller.user.id}" class="btn btn-primary btn-sm">Approve</a>
-                    <a th:href="@{/admin/pending-sellers/{id}/reject}" th:data-seller-id="${seller.user.id}" class="btn btn-danger btn-sm">Reject</a>
+                    <a th:href="@{/admin/pending-sellers/{id}/approve(id=${seller.id}})}" th:data-seller-id="${seller.user.id}" class="btn btn-primary btn-sm">Approve</a>
+                    <a th:href="@{/admin/pending-sellers/{id}/reject(id=${seller.id}})}" th:data-seller-id="${seller.user.id}" class="btn btn-danger btn-sm">Reject</a>
                 </td>
 
             </tr>
