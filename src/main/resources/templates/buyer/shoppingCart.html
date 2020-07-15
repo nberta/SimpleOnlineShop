@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
@@ -13,15 +14,17 @@
 
     <form th:action="@{/buyers/my-cart/make-purchase}" th:object="${itemsForCheckOut}" method="post" action="#">
         <div>
-            <p th:each="cartItem :${cartItems}">
-                <input type="checkbox" name="itemsForCheckOut" th:value="${cartItem}" th:text="${cartItem.product.name}">
-                <span th:text="${cartItem.product.price}"/>
-                <span th:text="${cartItem.product.quantity}"/>
-<!--  for total price              <span/>-->
-                <a th:href="@{/buyers/my-cart/remove/{id}(id=${cartItem.id})}">Remove from Cart</a>
+            <p th:each="cartItems :${cartItems}">
+                <input type="checkbox" name="itemsForCheckOut" th:value="${cartItems}" th:text="${cartItems.product.name}">
+                <span th:text="${cartItems.product.price}"/>
+                <span th:text="${cartItems.product.quantity}"/>
+                <a th:href="@{/buyers/my-cart/remove/{id}(id=${cartItems.id})}">Remove from Cart</a>
             </p>
         </div>
-        <input type="submit" th:text="Purchase">
+        <button class="btn btn-primary" type="submit">Purchase</button>
+        <form action="https://google.com">
+            <button class="btn btn-default" type="submit">Continue Shopping</button>
+        </form>
     </form>
 
 </body>
