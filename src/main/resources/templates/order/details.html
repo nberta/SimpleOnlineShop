@@ -11,9 +11,7 @@
 <section class="wrapper" layout:fragment="wrapper">
     <div class="col-lg-8">
         <div class="row">
-
             <div th:object="${order}">
-
                 <h3>Order Number <span th:text="*{billingInfo.orderNumber}"/></h3>
                 <p> Order Date:<p th:text="*{billingInfo.transactionDate}"></p>
                 <p> Total Price:<span th:text="*{totalCost}"/></p>
@@ -23,13 +21,11 @@
                 <fieldset>
                     <legend>Product Details</legend>
                     <hr/>
-
                     <p th:each="orderLine :${order.orderLines}">
                     <p><b> Product Name: <span th:text="${orderLine.product.name}"/></b></p>
                     <p><b> Product Price: <span th:text="${orderLine.product.price}"/></b></p>
                     <p><b> Product qnt: <span th:text="${orderLine.product.quantity}"/></b></p>
                     <p><b> Product Description: <span th:text="${orderLine.product.description}"/></b></p>
-
                     </p>
                     <!-- <p><b> Total Price:<p>Total: <span th:text="*{totalCost}"/></p>-->
                 </fieldset>
