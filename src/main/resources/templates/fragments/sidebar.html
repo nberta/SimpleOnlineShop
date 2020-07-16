@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html style="overflow: hidden;" xmlns:th="http://www.thymeleaf.org/" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<aside th:fragment="sidebar">
+    <div id="sidebar" style="overflow: visible; outline: currentcolor none medium; margin-left: -180px;" tabindex="5000">
+        <!-- sidebar menu start-->
+        <ul class="sidebar-menu" style="display: block;">
+            <li class="active">
+            </li>
+            <li class="sub-menu">
+                <a th:href="@{/login}" class="">
+                    <i class="icon_document_alt"></i>
+                    <span>LOGIN</span>
+                </a>
+            </li>
+            <li class="sub-menu">
+                <a href="#" class="">
+                    <i class="icon_desktop"></i>
+                    <span>SIGNUP</span>
+                </a>
+            </li>
+        </ul>
+        <!-- sidebar menu end-->
+    </div>
+</aside>
+<!--sidebar end-->
+
+</body>
+</html>

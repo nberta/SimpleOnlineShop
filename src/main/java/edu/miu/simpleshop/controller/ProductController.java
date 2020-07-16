@@ -101,7 +101,7 @@ public class ProductController {
 
         MultipartFile productImage = product.getProductImage();
         String uploadLocation = "src/main/resources/static/images/";
-        String imageName;
+        String imageName = "";
         if (productImage != null) {
             if (productImage.getContentType().contains("image/")) {
                 System.out.println("Image is not null. " + productImage.getContentType());
@@ -110,7 +110,8 @@ public class ProductController {
                     imageName = imageName.toLowerCase().replaceAll(" ", "-");
                     System.out.println(uploadLocation + imageName);
                     FileOutputStream output = new FileOutputStream(uploadLocation+imageName);
-                    //productImage.transferTo(new File(uploadLocation+imageName));
+                    //System.out.println(uploadLocation + imageName+" 2nd");
+                   // productImage.transferTo(new File(uploadLocation+imageName));
                     output.write(productImage.getBytes());
                     System.out.println("Image Uploaded");
                 } catch (Exception e) {
@@ -122,9 +123,9 @@ public class ProductController {
         } else {
             System.out.println("Please select image.");
         }
-
+        product.setImageIdentifier("img/" + imageName);
         productService.save(product);
-       // redirectAttributes.addFlashAttribute("product", product);
+       //redirectAttributes.addFlashAttribute("product", product);
 
         return "/seller/singleproduct";
     }
