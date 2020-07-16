@@ -23,6 +23,7 @@ public class ShoppingCart {
     public ShoppingCart(){  }
     public ShoppingCart(List<CartItem> cartItems){
         this.cartItems = cartItems;
+        for (CartItem c : cartItems) c.setShoppingCart(this);
     }
 
     public Long getId() { return this.id; }
@@ -33,6 +34,15 @@ public class ShoppingCart {
 
     public void addCartItem(CartItem cartItem) {
         cartItems.add(cartItem);
+        cartItem.setShoppingCart(this);
+    }
+
+    public Buyer getBuyer() {
+        return buyer;
+    }
+
+    public void setBuyer(Buyer buyer) {
+        this.buyer = buyer;
     }
 
     public CartItem removeLastCartItem() {

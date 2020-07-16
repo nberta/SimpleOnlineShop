@@ -36,7 +36,6 @@
                     <table class="class=table table-bordered table-striped" id="myTable" width="100%" cellspacing="0" data-toggle="table" data-maintain-meta-data="true">
 
                         <thead class="thead-dark">
-
                         <tr>
                             <th data-sortable="true">Buyer's UserName</th>
                             <th data-sortable="true">Buyer's email </th>
@@ -59,13 +58,13 @@
                             <td>
                                 <!--                            <form action="#" th:action="@{/admin/reviews/} + ${prod.id} + @{/approve}" method="post">-->
 
-                                <form action="#" th:action="@{admin/reviews/{id}/approve(id=${prod.id})}"  method="post">
+                                <form action="#" th:action="@{/admin/reviews/{id}/approve(id=${prod.id})}"  method="post">
                                     <input type="submit" value="Approve" th:if="${prod.isEnabled() ==false}"  class="btn btn-sm btn-primary"/>
                                 </form>
 
 
                                 <!--                            <form action="#" th:action="@{/admin/reviews/} + ${prod.id} + @{/reject}" method="post">-->
-                                <form action="#" th:action="@{admin/reviews/{id}/reject(id=${prod.id})}" method="post">
+                                <form action="#" th:action="@{/admin/reviews/{id}/reject(id=${prod.id})}" method="post">
                                     <input type="submit" value="Reject" th:if="${prod.isEnabled()== true}" class="btn btn-danger btn-sm mt-2"/>
                                 </form>
                             </td>

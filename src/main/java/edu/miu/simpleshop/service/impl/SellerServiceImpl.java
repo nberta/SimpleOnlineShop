@@ -4,6 +4,10 @@ import edu.miu.simpleshop.domain.OrderLine;
 import edu.miu.simpleshop.domain.Product;
 import edu.miu.simpleshop.domain.Seller;
 import edu.miu.simpleshop.domain.User;
+import edu.miu.simpleshop.domain.enums.OrderStatus;
+import edu.miu.simpleshop.exception.ForbiddenAccessException;
+import edu.miu.simpleshop.exception.IllegalOrderStateException;
+import edu.miu.simpleshop.repository.OrderLineRepository;
 import edu.miu.simpleshop.repository.ProductRepository;
 import edu.miu.simpleshop.repository.SellerRepository;
 import edu.miu.simpleshop.service.SellerService;
@@ -23,6 +27,9 @@ public class SellerServiceImpl implements SellerService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private OrderLineRepository orderLineRepository;
 
     @Override
     public Seller save(Seller seller) {
@@ -61,6 +68,26 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public Seller getByUser(User user) {
         return sellerRepository.findByUserId(user.getId()).orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Override
+    public boolean cancelOrderLineForSeller(Long id, Seller seller) {
+        OrderLine orderLine = orderLineRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        if(!seller.getId().equals(orderLine.getSeller().getId()))
+            throw new ForbiddenAccessException();
+        if(orderLine.getStatus().equals(OrderStatus.CREATED)) {
+            orderLine.setStatus(OrderStatus.CANCELLED);
+            orderLineRepository.save(orderLine);
+            return true;
+        } else throw new IllegalOrderStateException("Order has already been handled, and cannot be shipped.");
+    }
+
+    @Override
+    public Seller approve(Long id) {
+        Seller seller = getById(id);
+        seller.setIsActive(true);
+        save(seller);
+        return seller;
     }
 
 }
