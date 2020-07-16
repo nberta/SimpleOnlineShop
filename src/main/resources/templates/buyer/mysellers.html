@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Shopping Cart</title>
+    <meta charset="UTF-8">
+    <title>My Follows</title>
 </head>
 <body>
 <div class="row" style="margin:2%;margin-left: 4%">
@@ -46,5 +46,28 @@
     </div>
 </div>
 </div>
+
+
+
+<section>
+    <table>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Seller username</th>
+            <th>Number of products on site</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="seller, followStd :${follows}">
+            <td th:text="${followStd.count}"></td>
+            <td th:text="${#lists.size(seller.products)}"></td>
+            <td th:href="@{/buyers/following/{id}/unfollow(id=${seller.id})}" th:text="Unfollow"/>
+        </tr>
+        </tbody>
+    </table>
+</section>
 </body>
 </html>

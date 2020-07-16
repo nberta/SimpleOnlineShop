@@ -8,7 +8,6 @@ import edu.miu.simpleshop.service.ProductService;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.system.ApplicationHome;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -40,7 +39,6 @@ public class ProductController {
     //@Autowired
  //   private MultipartHelper multipartService;
 
-    private List<String> files = new ArrayList<String>();
 
     public String mainPage(@RequestParam(value = "category", required = false) Integer category, Model model) {
         List<Product> products = productService.getAllUnconfirmedProducts();
