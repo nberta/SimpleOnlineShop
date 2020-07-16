@@ -1,61 +1,10 @@
-<!--<!DOCTYPE html>
-<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/dashboard_layout}"
-      xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Order Detail Page</title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
-</head>
-
-<body>
-<div class="row">
-    &lt;!&ndash; for each part using expression language  Iteration th:each   &ndash;&gt;
-    &lt;!&ndash;<div class="col">
-        <div class="card" style="width: 100%;" layout:fragment="main-content">
-            <div class="card-body">&ndash;&gt;
-
-
-                <div th:object="${order}">
-
-                    <h3>Order Number <span th:text="*{billingInfo.orderNumber}"/></h3>
-                    <p> Order Date:<p th:text="*{billingInfo.transactionDate}"></p>
-                    <p> Total Price:<span th:text="*{totalCost}"/></p>
-
-                         &lt;!&ndash;   <p><b> Billing Address:<p th:text="*{billingInfo.getBillingAddress()}"></p>&ndash;&gt;
-
-                            <fieldset>
-                                <legend>Product Details</legend>
-                                <hr/>
-
-                    <p th:each="orderLine :${order.orderLines}">
-                            <p><b> Product Name: <span th:text="${orderLine.product.name}"/></b></p>
-                            <p><b> Product Price: <span th:text="${orderLine.product.price}"/></b></p>
-                            <p><b> Product qnt: <span th:text="${orderLine.product.quantity}"/></b></p>
-                                <p><b> Product Description: <span th:text="${orderLine.product.description}"/></b></p>
-
-                    </p>
-                           &lt;!&ndash; <p><b> Total Price:<p>Total: <span th:text="*{totalCost}"/></p>&ndash;&gt;
-                            </fieldset>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-            </div>
-        </div>
-    </div>
-</div>
-</body>
-</html>-->
-
-
 <!DOCTYPE html>
 <html xmlns:layout="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layouts/main}"
       xmlns:th="http://www.thymeleaf.org" >
 
 <head>
-    <title>SimpleOnlineShop - Home</title>
+    <title>Order Detail Page</title>
 </head>
 
 <body>
@@ -84,51 +33,9 @@
                     </p>
                     <!-- <p><b> Total Price:<p>Total: <span th:text="*{totalCost}"/></p>-->
                 </fieldset>
-
-            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                <div class="info-box blue-bg">
-                    <i class="fa fa-shopping-cart"></i>
-                    <div th:text="${categories}" class="count"></div>
-                    <div class="title">Categories</div>
-                </div>
             </div>
-            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                <div class="info-box green-bg">
-                    <i class="fa fa-cubes"></i>
-                    <div th:text="${productsCount}" class="count"></div>
-                    <div class="title">Products</div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-
-            <div th:each="products: ${productsHome}" class="col-12 col-sm-8 col-md-6 col-lg-4">
-                <div class="card">
-                    <img class="card-img" th:src="@{/images/{value}(value=${products.id})}" alt="Vans">
-                    <div class="card-img-overlay d-flex justify-content-end">
-                        <a href="#" class="card-link text-danger like"></a>
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-title" th:text="${products.name}"></h4>
-                        <h6 class="card-subtitle mb-2 text-muted" th:text="${products.quantity}"></h6>
-                        <p class="card-text" th:text="${products.description}"></p>
-
-                        <div class="buy d-flex justify-content-between align-items-center">
-                            <div class="price text-success" th:text="${products.price}"><h5 class="mt-4"></h5></div>
-                            <a href="#" class="btn btn-danger mt-3"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
-
-
 </section>
 
-
-
-</body>
-</html>
 
