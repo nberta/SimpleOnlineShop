@@ -49,6 +49,8 @@ public class Buyer{
     public Buyer(User user, int gainPoints) {
         this.user = user;
         this.gainPoints = gainPoints;
+        this.shoppingCart = new ShoppingCart();
+        this.shoppingCart.setBuyer(this);
     }
 
     public Long getId() { return this.id; }
@@ -111,6 +113,7 @@ public class Buyer{
 
     public void setShoppingCart(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
+        shoppingCart.setBuyer(this);
     }
 
     //Follows

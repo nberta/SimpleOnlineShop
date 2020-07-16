@@ -49,7 +49,7 @@ public class AdminController {
 
     @PostMapping("/products/{productId}/reject")
     public String rejectProduct(@PathVariable("productId") Long productId, Model model) {
-        Product prod= productService.getProduct(productId);
+        Product prod = productService.getProduct(productId);
         model.addAttribute("product", prod);
         return "redirect:/admin/products";
     }
@@ -57,22 +57,19 @@ public class AdminController {
 
     @GetMapping("/reviews")
     public String getReviews(Model model) {
-          //not working, commented out
-       // model.addAttribute("productReviews", productReviewService.getAllUnconfirmedReviews());
+        model.addAttribute("productReviews", productReviewService.getAllUnconfirmedReviews());
         return "admin/pending-reviews";
     }
 
-    @GetMapping("/reviews/{productReviewId}/approve")
+    @PostMapping("/reviews/{productReviewId}/approve")
     public String approveReview(@PathVariable("productReviewId") Long productReviewId, Model model) {
-        ProductReview prod= productReviewService.getById(productReviewId);
-        model.addAttribute("productReview", prod);
+        productReviewService.confirm(productReviewId);
         return "redirect:/admin/reviews";
     }
 
-    @GetMapping("/reviews/{productReviewId}/reject")
+    @PostMapping("/reviews/{productReviewId}/reject")
     public String rejectReview(@PathVariable("productReviewId") Long productReviewId, Model model) {
-        ProductReview prod= productReviewService.getById(productReviewId);
-        model.addAttribute("productReview", prod);
+        productReviewService.delete(productReviewId);
         return "redirect:/admin/reviews";
     }
 
@@ -82,18 +79,16 @@ public class AdminController {
         return "/admin/pending-sellers";
     }
 
-    @GetMapping("/pending-sellers/{id}/reject")
+    @PostMapping("/pending-sellers/{id}/reject")
     public String rejectSeller(@PathVariable("id") Long id) {
         sellerService.delete(id);
-        return "/admin/pending-sellers";
+        return "redirect:/admin/pending-sellers";
     }
 
-    @GetMapping("/pending-sellers/{id}/approve")
+    @PostMapping("/pending-sellers/{id}/approve")
     public String approveSeller(@PathVariable("id") Long id) {
-        Seller seller = sellerService.getById(id);
-        seller.setIsActive(true);
-        sellerService.save(seller);
-        return "/admin/pending-sellers";
+        sellerService.approve(id);
+        return "redirect:/admin/pending-sellers";
     }
 
     @GetMapping("/pending-buyers")
@@ -102,18 +97,15 @@ public class AdminController {
         return "/admin/pending-buyers";
     }
 
-    @GetMapping("pending-buyers/{id}/reject")
+    @PostMapping("pending-buyers/{id}/reject")
     public String rejectBuyer(@PathVariable("id") Long id) {
         buyerService.delete(id);
-        return "/admin/pending-buyers";
+        return "redirect:/admin/pending-buyers";
     }
 
-    @GetMapping("/pending-buyers/{id}/approve")
+    @PostMapping("/pending-buyers/{id}/approve")
     public String approveBuyer(@PathVariable("id") Long id) {
-        Buyer buyer = buyerService.getById(id);
-        buyer.setIsActive(true);
-        buyerService.save(buyer);
+        buyerService.approve(id);
         return "/admin/pending-buyers";
     }
-
 }

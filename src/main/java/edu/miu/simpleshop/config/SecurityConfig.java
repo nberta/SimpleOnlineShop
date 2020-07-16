@@ -1,6 +1,7 @@
 package edu.miu.simpleshop.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -41,26 +42,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/sellers").hasRole("SELLER")
-                .antMatchers("/buyers").hasRole("BUYER")
+        http.authorizeRequests()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/sellers/**").hasAuthority("SELLER")
+                .antMatchers("/buyers/**").hasAuthority("BUYER")
                 .antMatchers("/").permitAll()
                 .anyRequest().authenticated()
-                .and().formLogin().successHandler(successHandler)
-                .loginPage("/login").permitAll().and().logout().permitAll();
+                .and().formLogin()
+                .loginPage("/login").defaultSuccessUrl("/").successHandler(successHandler).permitAll()
+                .and().logout().permitAll();
+
 
         http.csrf().disable();
     }
-//
-//    @Bean
-//    public BCryptPasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-
-        @Bean
-        public PasswordEncoder passwordEncoder() {
+    @Bean
+    public PasswordEncoder passwordEncoder() {
             return NoOpPasswordEncoder.getInstance();
         }
 
