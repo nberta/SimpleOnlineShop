@@ -22,12 +22,11 @@ public class HomeController {
 
 
     @GetMapping("/")
-    public String getIndex(Model model){
+    public String getIndex(Model model, Model model1, Model model3){
         model.addAttribute("productsHome",service.getAllUnconfirmedProducts());
-        model.addAttribute("categories", categoryService.getAllCategories().size() );
-        model.addAttribute("productsCount", service.getAllUnconfirmedProducts().size());
+        model1.addAttribute("categories", categoryService.getAllCategories().size());
+        model3.addAttribute("productsCount", service.getAllUnconfirmedProducts().size());
         return "index";
-
     }
 
     @GetMapping("/login")
