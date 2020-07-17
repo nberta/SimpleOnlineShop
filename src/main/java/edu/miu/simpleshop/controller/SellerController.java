@@ -34,15 +34,17 @@ public class SellerController {
 
     @GetMapping("/register")
     public String getRegistrationForm(@ModelAttribute("user") User user) {
+
         return "seller/sellerRegistrationForm";
     }
 
     @PostMapping("/register")
-    public String save(@Valid User user, BindingResult bindingResult, RedirectAttributes attributes) {
+    public String save( User user, BindingResult bindingResult, RedirectAttributes attributes, Model model) {
         if (bindingResult.hasErrors()) return "seller/sellerRegistrationForm";
         Seller seller = new Seller();
         seller.setUser(user);
         seller = sellerService.save(seller);
+        model.addAttribute("productTop", productService.getAllUnconfirmedProducts());
         attributes.addFlashAttribute("seller", seller);
         return "redirect:/sellers";
     }

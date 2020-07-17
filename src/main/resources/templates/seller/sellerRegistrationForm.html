@@ -1,49 +1,158 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/main}"
+      xmlns:th="http://www.thymeleaf.org" >
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-
-    <!--  bootstrap, css, js  -->
+    <title>SimpleOnlineShop - Home</title>
 </head>
+
 <body>
-
-<!--    seller registration form -->
-    <form th:object="${user}" th:action="@{/seller/register}" method="post" action="#">
-        <fieldset>
-            <legend>Seller sign-up</legend>
-
-<!--            <div class="text-danger" th:if="${#fields.hasErrors('*')}">-->
-<!--                <p th:each="error :${#fields.errors('*')}" th:text="${error}"></p>-->
-<!--            </div>-->
-
-            <div class="form-group">
-                <label for="email">Email: </label>
-                <input th:field="*{email}"  th:value="*{email}" id="email" />
-                <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+<section class="wrapper" layout:fragment="wrapper">
+    <div class="col-lg-6">
+        <section class="panel">
+            <header class="panel-heading">
+                Basic Forms
+            </header>
+            <div class="panel-body">
+                <form role="form" th:object="${user}" action="#" th:action="@{/sellers/register}" method="POST">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="icon_profile"></i></span>
+                            <input type="text" th:field="*{username}" name="username" class="form-control" placeholder="*Username" autofocus="">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                            <input name="password" type="password" th:field="*{password}" class="form-control" placeholder="*Password">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="icon_mail"></i></span>
+                            <input name="email" type="password" th:field="*{email}" class="form-control" placeholder="*Email">
+                        </div>
+                        <br />
+                        <button class="btn btn-info btn-block" type="submit">Signup</button>
+                    </div>
             </div>
+    </div>
+    <!-- this one is for sidebar, don't modify-->
+    <div class="col-lg-4">
+        <section class="panel">
+            <header class="panel-heading">
+                TOP PRODUCTS!
+            </header>
+            <ul class="list-group" th:each="product: ${productTop}" >
+                <a class="list-group-item" th:text="${product.name}" th:href="@{/products(product=${product.id})}"></a>
+            </ul>
+        </section>
+    </div>
+</section>
 
-            <div class="form-group">
-                <label for="username">Username: </label>
-                <input th:field="*{username}"  th:value="*{username}" id="username" />
-                <span class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password: </label>
-                <input th:field="*{password}"  th:value="*{password}" id="password" />
-                <ul class="text-danger" th:each="error: ${#fields.errors('password')}">
-                    <li th:each="message : ${error.split(',')}">
-                        <p class="error-message" th:text="${message}"></p>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="col-md-6 mt-5">
-                <input type="submit" class="btn btn-primary" value="Submit">
-            </div>
-        </fieldset>
-    </form>
 
 </body>
 </html>
+
+<!--<form class="login-form form-signin" th:object="${buyerRegister}" action="#" th:action="@{/buyers/register}" method="POST">-->
+<!--        &lt;!&ndash;            <p class="login-img"><i class="icon_lock_alt"></i></p>&ndash;&gt;-->
+<!--        &lt;!&ndash;div class="input-group">-->
+<!--            <span class="input-group-addon"><i class="icon_profile"></i></span>-->
+<!--            <input type="text" name="fullName" class="form-control" placeholder="*Full Name" id="fullname" name="fullname" type="text" autofocus="">-->
+<!--        </div&ndash;&gt;-->
+<!--        <div class="input-group">-->
+<!--            <span class="input-group-addon"><i class="icon_profile"></i></span>-->
+<!--            <input type="text" th:field="*{user.username}" name="username" class="form-control" placeholder="*Username" autofocus="">-->
+<!--        </div>-->
+<!--        <div class="input-group">-->
+<!--            <span class="input-group-addon"><i class="icon_key_alt"></i></span>-->
+<!--            <input name="password" type="password" th:field="*{user.password}" class="form-control" placeholder="*Password">-->
+<!--        </div>-->
+<!--        <div class="input-group">-->
+<!--            <label>Shipping Address</label>-->
+<!--            <input type="text" th:field="*{shippingAddress.street}" id="sStreet" class="form-control" placeholder="*Street">-->
+<!--            <input type="text" th:field="*{shippingAddress.city}" id="sCity" class="form-control" placeholder="*City">-->
+<!--            <input type="text" th:field="*{shippingAddress.state}" id="sState" class="form-control" placeholder="*State">-->
+<!--            <input type="text" th:field="*{shippingAddress.zip}" id="sZip" class="form-control" placeholder="*Zipcode">-->
+<!--        </div>-->
+<!--        &lt;!&ndash;Same as shipping code &ndash;&gt;-->
+<!--        <input type="checkbox" onclick="SetBilling(this.checked);"/> Same as Shipping-->
+
+<!--        <div class="input-group input-box">-->
+<!--            &lt;!&ndash;                <span class="input-group-addon"><i class="icon_map"></i></span>&ndash;&gt;-->
+<!--            <label>Shipping Address</label>-->
+<!--            <input type="text" th:field="*{billingAddress.street}" id="bStreet" class="form-control" placeholder="*Street">-->
+<!--            <input type="text" th:field="*{billingAddress.city}" id="bCity" class="form-control" placeholder="*City">-->
+<!--            <input type="text" th:field="*{billingAddress.state}" id="bState" class="form-control" placeholder="*State">-->
+<!--            <input type="text" th:field="*{billingAddress.zip}" id="bZip" class="form-control" placeholder="*Zipcode">-->
+<!--        </div>-->
+<!--        <button class="btn btn-info btn-lg btn-block" type="submit">Signup</button>-->
+<!--    </div>-->
+<!--</form>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Title</title>-->
+
+<!--    &lt;!&ndash;  bootstrap, css, js  &ndash;&gt;-->
+<!--</head>-->
+<!--<body>-->
+
+<!--&lt;!&ndash;    seller registration form &ndash;&gt;-->
+<!--    <form th:object="${user}" th:action="@{/seller/register}" method="post" action="#">-->
+<!--        <fieldset>-->
+<!--            <legend>Seller sign-up</legend>-->
+
+<!--&lt;!&ndash;            <div class="text-danger" th:if="${#fields.hasErrors('*')}">&ndash;&gt;-->
+<!--&lt;!&ndash;                <p th:each="error :${#fields.errors('*')}" th:text="${error}"></p>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+
+<!--            <div class="form-group">-->
+<!--                <label for="email">Email: </label>-->
+<!--                <input th:field="*{email}"  th:value="*{email}" id="email" />-->
+<!--                <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>-->
+<!--            </div>-->
+
+<!--            <div class="form-group">-->
+<!--                <label for="username">Username: </label>-->
+<!--                <input th:field="*{username}"  th:value="*{username}" id="username" />-->
+<!--                <span class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>-->
+<!--            </div>-->
+
+<!--            <div class="form-group">-->
+<!--                <label for="password">Password: </label>-->
+<!--                <input th:field="*{password}"  th:value="*{password}" id="password" />-->
+<!--                <ul class="text-danger" th:each="error: ${#fields.errors('password')}">-->
+<!--                    <li th:each="message : ${error.split(',')}">-->
+<!--                        <p class="error-message" th:text="${message}"></p>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+
+<!--            <div class="col-md-6 mt-5">-->
+<!--                <input type="submit" class="btn btn-primary" value="Submit">-->
+<!--            </div>-->
+<!--        </fieldset>-->
+<!--    </form>-->
+
+<!--</body>-->
+<!--</html>-->

@@ -14,7 +14,7 @@
             <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                 <div class="info-box blue-bg">
                     <i class="fa fa-shopping-cart"></i>
-                    <div th:text="${categories}" class="count"></div>
+                    <div th:text="${categories.size()}" class="count"></div>
                     <div class="title">Categories</div>
                 </div>
             </div>
@@ -31,16 +31,15 @@
                 <div class="card">
                     <img class="card-img" th:src="@{/images/{value}(value=${products.id})}" alt="Vans">
                     <div class="card-img-overlay d-flex justify-content-end">
-                        <a th:text="${products.quantity}" data-placement="right" data-toggle="tooltip" class="card-link text-danger like" data-original-title="Tooltip on right"></a>
+                        <a th:text="${products.quantity}"  class="card-link text-danger like"></a>
                     </div>
                     <div class="card-body">
                         <h4 class="card-title" th:text="${products.name}"></h4>
-                        <h6 class="card-subtitle mb-2 text-muted">Sold By:</h6>
-                        <p class="card-text" th:text="${products.description}"></p>
-                        <p th:text="${products.seller.user.username}"></p>
+                        <h6 class="card-subtitle mb-2 text-muted">Sold By: <span th:href="@{/products/}"  th:text="${products.seller.user.username}"></span></h6>
+                        <p>Descrition: <span th:text="${products.description}"></span></p>
                         <div class="buy d-flex justify-content-between align-items-center">
                             <div class="price text-success" th:text="${products.price}"><h5 class="mt-4"></h5></div>
-                            <a href="#" class="btn btn-danger mt-3"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                            <a href="#" class="btn btn-danger mt-3"><i class="fa-shopping-cart"></i> Add to Cart</a>
                         </div>
                     </div>
                 </div>
@@ -48,12 +47,12 @@
         </div>
     </div>
     <div class="col-lg-4">
-        <section class="panel">
+        <section class="panel" layout:fragment="categories">
             <header class="panel-heading">
                 CATEGORIES
             </header>
-                <ul class="list-group" th:each="categories: ${categoriesHome}">
-                    <a class="list-group-item" th:text="${categories.}" th:href="@{/products(category=${categories.id})}"></a>
+                <ul class="list-group" th:each="category: ${categories}" >
+                    <a class="list-group-item" th:text="${category.name}" th:href="@{/products(category=${category.id})}"></a>
                 </ul>
             </section>
     </div>
