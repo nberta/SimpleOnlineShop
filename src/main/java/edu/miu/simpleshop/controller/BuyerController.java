@@ -3,6 +3,7 @@ package edu.miu.simpleshop.controller;
 
 
 import edu.miu.simpleshop.domain.*;
+import edu.miu.simpleshop.domain.enums.Role;
 import edu.miu.simpleshop.service.BuyerService;
 import edu.miu.simpleshop.service.OrderService;
 import edu.miu.simpleshop.service.UserService;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,7 +48,7 @@ public class BuyerController {
     }
 
     @PostMapping("/register")
-    public String save(@ModelAttribute("buyer") Buyer buyer, RedirectAttributes attributes, Model model) {
+    public String save(@Valid Buyer buyer, RedirectAttributes attributes, Model model) {
 //        if (bindingResult.hasErrors()) return "register";
         //buyer.setUser(userService.save(buyer.getUser()));
         buyer = buyerService.save(buyer);
@@ -77,30 +80,35 @@ public class BuyerController {
 
     //Follows
     @GetMapping("/following")
-    public String getSellersFollowed(@ModelAttribute("loggedInBuyer") Buyer buyer, Model model){
+    public String getSellersFollowed(Model model, HttpSession session) {
+        Buyer buyer = (Buyer)session.getAttribute("loggedInBuyer");
+        model.addAttribute("follows", buyerService.getFollowedSellersForBuyer(buyer.getId()));
+        return "buyer/mysellers";
+    }
+
+    @GetMapping("/following/{id}/follow")
+    public String followSeller(@PathVariable("id") Long id, Model model, HttpSession session) {
+        Buyer buyer = (Buyer)session.getAttribute("loggedInBuyer");
+        buyerService.followSeller(buyer, id);
+        model.addAttribute("follows", buyerService.getFollowedSellersForBuyer(buyer.getId()));
+        return "buyer/mysellers";
+    }
+
+    @GetMapping("/following/{id}/unfollow")
+    public String unfollowSeller(@PathVariable("id") Long id, Model model, HttpSession session) {
+        Buyer buyer = (Buyer)session.getAttribute("loggedInBuyer");
+        buyerService.unfollowSeller(buyer, id);
         model.addAttribute("follows", buyerService.getFollowedSellersForBuyer(buyer.getId()));
         return "buyer/mySellers";
-    }
-
-    @PutMapping("/following/{id}/follow")
-    public String followSeller(@ModelAttribute("loggedInBuyer") Buyer buyer,
-                               @PathVariable("id") Long id, Model model) {
-        buyerService.followSeller(buyer, id);
-        return "redirect:/buyers/following";
-    }
-
-    @PutMapping("/following/{id}/unfollow")
-    public String unfollowSeller(@ModelAttribute("loggedInBuyer") Buyer buyer,
-                                 @PathVariable("id") Long id, Model model) {
-        buyerService.unfollowSeller(buyer, id);
-        return "redirect:/buyers/following";
     }
 
 
     //shopping cart and order processing
     @GetMapping("/my-cart")
-    public String loadShoppingCart(@ModelAttribute("cart")ShoppingCart cart,
-                                   Model model, @ModelAttribute("errorMessage") String errorMessage) {
+    public String loadShoppingCart(Model model,
+                                   @ModelAttribute("errorMessage") String errorMessage, HttpSession session) {
+        Buyer buyer = (Buyer)session.getAttribute("loggedInBuyer");
+        ShoppingCart cart = buyerService.getShoppingCartForBuyer(buyer);
         model.addAttribute("cartItems", cart.getCartItems());
         model.addAttribute("itemsForCheckOut", new ArrayList<CartItem>());
         return "buyer/shoppingCart";
@@ -108,8 +116,9 @@ public class BuyerController {
 
     @PostMapping("/my-cart/make-purchase")
     public String makePurchase(@ModelAttribute("itemsForCheckOut")List<CartItem> itemsForCheckOut,
-                               @ModelAttribute("loggedInBuyer") Buyer buyer,
-                               RedirectAttributes redirectAttributes) {
+                               RedirectAttributes redirectAttributes, HttpSession session) {
+        Buyer buyer = (Buyer)session.getAttribute("loggedInBuyer");
+        buyer = buyerService.getById(buyer.getId());
         if (itemsForCheckOut.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Order failed. Attempted to make purchase without any items");
@@ -154,10 +163,10 @@ public class BuyerController {
     }
     //Check Order History
     @GetMapping("/buyer/orders")
-    public String orderList(@ModelAttribute("loggedInBuyer") Buyer buyer,  Model model) {
+    public String orderList(Model model, HttpSession session) {
+        Buyer buyer = (Buyer)session.getAttribute("loggedInBuyer");
         model.addAttribute("orders", buyer.getOrders());
         return "buyer/orders";
     }
-
 }
 

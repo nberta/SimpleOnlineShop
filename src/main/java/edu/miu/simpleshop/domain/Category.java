@@ -15,7 +15,7 @@ public class Category {
     private Long id;
     private String name;
 
-    @OneToMany (cascade = CascadeType.PERSIST, mappedBy = "category")
+    @OneToMany (mappedBy = "category")
     private List<Product> products = new ArrayList<>();
 
 

@@ -2,7 +2,7 @@ package edu.miu.simpleshop.service.impl;
 
 import edu.miu.simpleshop.domain.Product;
 import edu.miu.simpleshop.domain.ProductReview;
-import edu.miu.simpleshop.repository.ReviewRepository;
+import edu.miu.simpleshop.repository.ProductReviewRepository;
 import edu.miu.simpleshop.service.ProductReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,45 +17,50 @@ import java.util.List;
 public class ProductReviewServiceImpl implements ProductReviewService {
 
     @Autowired
-    private ReviewRepository reviewRepository;
+    private ProductReviewRepository productReviewRepository;
 
 
 
     @Override
     public ProductReview getById(Long id) {
-        ProductReview productReview = reviewRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        ProductReview productReview = productReviewRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         return productReview;
     }
 
     @Override
     public ProductReview save(ProductReview productReview) {
-        ProductReview review = reviewRepository.save(productReview);
+        ProductReview review = productReviewRepository.save(productReview);
         return review;
     }
 
     @Override
     public Collection<ProductReview> save(Collection<ProductReview> reviews) {
-        Collection<ProductReview> result = reviewRepository.saveAll(reviews);
+        Collection<ProductReview> result = productReviewRepository.saveAll(reviews);
         return result;
     }
 
     @Override
     public ProductReview delete(Long id) {
-        ProductReview review = reviewRepository.findById(id).orElseThrow();
-        reviewRepository.delete(review);
+        ProductReview review = productReviewRepository.findById(id).orElseThrow();
+        productReviewRepository.delete(review);
         return review;
     }
 
-    //commented out cuz not working!
-//    @Override
-//    public List<ProductReview> getAllUnconfirmedReviews() {
-//        List<ProductReview> review = reviewRepository.getAllUnconfirmedReviews();
-//        return review;
-//
-//    }
+    @Override
+    public ProductReview confirm(Long id) {
+        ProductReview productReview = productReviewRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        productReview.setConfirmed(true);
+        productReviewRepository.save(productReview);
+        return productReview;
+    }
 
-//    @Override
-//    public List<ProductReview> getAllReviewsFor(Product product) {
-//        return reviewRepository.findProductReviewsByProduct(product);
-//    }
+    @Override
+    public List<ProductReview> getAllUnconfirmedReviews() {
+        return productReviewRepository.findAllByIsConfirmedFalse();
+    }
+
+    @Override
+    public List<ProductReview> getAllReviewsFor(Product product) {
+        return productReviewRepository.findAllByProductId(product.getId());
+    }
 }

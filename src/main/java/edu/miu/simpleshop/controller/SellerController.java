@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -42,7 +43,6 @@ public class SellerController {
     public String save(@Valid User user, BindingResult bindingResult, RedirectAttributes attributes) {
         if (bindingResult.hasErrors()) return "seller/sellerRegistrationForm";
         Seller seller = new Seller();
-        //user.addRole(Role.SELLER);
         seller.setUser(user);
         seller = sellerService.save(seller);
         attributes.addFlashAttribute("seller", seller);
@@ -55,7 +55,7 @@ public class SellerController {
         return "seller/edit";
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/update")
     public String update(@Valid Seller seller, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return "seller/edit";
         sellerService.save(seller);
@@ -75,20 +75,22 @@ public class SellerController {
     }
 
     @GetMapping("/my-products")
-    public String sellerProductPage(@ModelAttribute("seller") Seller seller, Model model) {
+    public String sellerProductPage(Model model, HttpSession session) {
+        Seller seller = (Seller)session.getAttribute("loggedInSeller");
         model.addAttribute("products", productService.getBySellerId(seller.getId()));
         return "seller/singleproduct";
     }
 
     @GetMapping("/my-orders")
-    public String sellerOrders(@ModelAttribute("loggedInSeller") Seller seller, Model model) {
+    public String sellerOrders(Model model, HttpSession session) {
+        Seller seller = (Seller)session.getAttribute("loggedInSeller");
         model.addAttribute("orderLines", orderLineRepository.findAllByOrderId(seller.getId()));
         return "seller/orders";
     }
 
     @GetMapping("/orders/{id}/set-status/shipped")
     public String sellerStatusUpdate(@PathVariable("id") Long id,
-                                     @ModelAttribute("loggedInSeller") Seller seller) {
+                                     Seller seller) {
         OrderLine orderLine = orderLineRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         if(orderLine.getStatus().equals(OrderStatus.CREATED)) {
             orderLine.setStatus(OrderStatus.SHIPPED);
@@ -98,12 +100,9 @@ public class SellerController {
     }
     @GetMapping("/orders/{id}/set-status/canceled")
     public String sellerCancelOrder(@PathVariable("id") Long id,
-                                    @ModelAttribute("loggedInSeller") Seller seller) {
-        OrderLine orderLine = orderLineRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        if(orderLine.getStatus().equals(OrderStatus.CREATED)) {
-            orderLine.setStatus(OrderStatus.CANCELLED);
-            orderLineRepository.save(orderLine);
-            return "redirect:/sellers/my-orders";
-        } else throw new IllegalOrderStateException("Order has already been handled, and cannot be shipped.");
+                                    HttpSession session) {
+        Seller seller = (Seller)session.getAttribute("loggedInSeller");
+        sellerService.cancelOrderLineForSeller(id, seller);
+        return "redirect:/sellers/my-orders";
     }
 }

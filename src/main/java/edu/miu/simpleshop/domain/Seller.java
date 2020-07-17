@@ -68,4 +68,6 @@ public class Seller{
     public boolean addOrderLine(OrderLine orderLine) {
         return this.orderLines.add(orderLine);
     }
+
+    public void addProduct(Product product) { this.products.add(product); }
 }

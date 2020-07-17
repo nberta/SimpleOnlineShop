@@ -49,7 +49,7 @@ public class Product {
     @OneToMany (cascade = CascadeType.ALL, mappedBy = "product")
     private List<ProductReview> productReviews = new ArrayList<>();
 
-    @OneToOne (cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private Seller seller;
 
     //Added later
@@ -67,6 +67,17 @@ public class Product {
         this.enabled = enabled;
         this.price = price;
         this.category = category;
+    }
+
+    public Product(String name, String description, int quantity, boolean enabled, int price,  Category category, Seller seller) {
+        this.name = name;
+        this.description = description;
+        this.quantity = quantity;
+        this.enabled = enabled;
+        this.price = price;
+        this.category = category;
+        this.seller = seller;
+        this.seller.addProduct(this);
     }
 
     public Long getId() { return this.id; }
@@ -160,5 +171,9 @@ public class Product {
     public void decrementQuantity(int quantity) {
         if (quantity > 0) this.quantity -= quantity;
         if (quantity < 0) throw new IllegalProductStateException();
+    }
+
+    public void addReview(ProductReview productReview) {
+        this.productReviews.add(productReview);
     }
 }

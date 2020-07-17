@@ -55,6 +55,12 @@ public class BuyerServiceImpl implements BuyerService {
     }
 
     @Override
+    public ShoppingCart getShoppingCartForBuyer(Buyer buyer) {
+        buyer = buyerRepository.findById(buyer.getId()).orElseThrow(EntityNotFoundException::new);
+        return buyer.getShoppingCart();
+    }
+
+    @Override
     public Buyer update(Buyer buyer, Long id) {
         Buyer oldBuyer = getById(id);
         oldBuyer.getUser().setUsername(buyer.getUser().getUsername());
@@ -66,6 +72,14 @@ public class BuyerServiceImpl implements BuyerService {
     @Override
     public Buyer getByUser(User user) {
         return buyerRepository.findByUserId(user.getId()).orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Override
+    public Buyer approve(Long id) {
+        Buyer buyer = getById(id);
+        buyer.setIsActive(true);
+        save(buyer);
+        return buyer;
     }
 
 

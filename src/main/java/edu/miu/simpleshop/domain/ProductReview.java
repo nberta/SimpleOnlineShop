@@ -21,8 +21,8 @@ public class ProductReview {
 
     private String review;
     private int rating;
-    private Boolean isConfirmed;
-    private boolean enabled;
+    private Boolean isConfirmed = false;
+    private boolean enabled = false;
 
     public ProductReview() {
     }
@@ -34,6 +34,7 @@ public class ProductReview {
         this.buyer = buyer;
         this.review = review;
         this.rating = rating;
+        product.addReview(this);
     }
 
     public Long getId() {

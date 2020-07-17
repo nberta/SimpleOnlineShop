@@ -16,4 +16,6 @@ public interface SellerService {
     List<Seller> getPendingSellers();
     void notifySellers(List<OrderLine> orderLines);
     Seller getByUser(User user);
+    boolean cancelOrderLineForSeller(Long id, Seller seller);
+    Seller approve(Long id);
 }
