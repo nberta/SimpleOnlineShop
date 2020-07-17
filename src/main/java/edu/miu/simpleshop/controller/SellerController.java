@@ -49,6 +49,12 @@ public class SellerController {
         return "redirect:/sellers";
     }
 
+    @GetMapping("/profile/{id}")
+    public String sellerProfile(@PathVariable Long id, Model model){
+        model.addAttribute("sellerPro", sellerService.getById(id));
+        return "seller/details";
+    }
+
     @GetMapping("/edit/{id}")
     public String update(@PathVariable Long id, Model model) {
         model.addAttribute("seller", sellerService.getById(id));

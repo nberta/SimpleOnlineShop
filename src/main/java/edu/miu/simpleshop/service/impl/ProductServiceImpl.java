@@ -16,6 +16,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -34,6 +35,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private OrderLineRepository orderLineRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
     public Product getById(Long id) {
@@ -67,6 +71,7 @@ public class ProductServiceImpl implements ProductService {
         result = productRepository.findAll();
         return result;
     }
+
 
     @Override
     public List<Product> getAllConfirmedProducts() {
