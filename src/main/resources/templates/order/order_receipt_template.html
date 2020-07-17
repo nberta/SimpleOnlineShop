@@ -10,6 +10,7 @@
 <body>
     <div class="col-lg-8">
         <div class="row">
+            <h2 style="justify-content: center">Simple Shop Receipt</h2>
             <div th:object="${order}">
                 <h3>
                     Order Number <span th:text="*{billingInfo.orderNumber}"/>
@@ -21,15 +22,22 @@
                     Total Price:<span th:text="*{totalCost}"/>
                 </p>
 
-                <!--   <p>Billing Address:<span th:text="*{billingInfo.getBillingAddress()}"/></p>-->
+                <h4>Shipping Address:</h4>
+                <p class="tab" th:object="${order.shippingAddress}">
+                    Street: <span th:text="*{street}"/> <br/>
+                    City: <span th:text="*{city}"/> <br/>
+                    State: <span th:text="*{state}"/> <br/>
+                    Zip code: <span th:text="*{zip}"/> <br/>
+                </p>
 
                 <h3>Product Details</h3>
                 <hr/>
                 <div class="tab" th:each="orderLine :${order.orderLines}">
                     Product Name: <span th:text="${orderLine.product.name}"/> <br/>
                     Product Price: <span th:text="${orderLine.product.price}"/><br/>
-                    Product qnt: <span th:text="${orderLine.product.quantity}"/><br/>
+                    Product Quantity: <span th:text="${orderLine.product.quantity}"/><br/>
                     Product Description: <span th:text="${orderLine.product.description}"/><br/>
+                    <p> </p>
                 </div>
                 <hr/>
                 Total Price:

@@ -39,4 +39,14 @@ public class ExceptionAdvice {
         return modelAndView;
     }
 
+    @ExceptionHandler(SessionlessUserException.class)
+    @ResponseStatus(value = HttpStatus.TEMPORARY_REDIRECT)
+    public ModelAndView handleIllegalCustomerState(SessionlessUserException ex) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("exception", ex);
+        modelAndView.setViewName("login");
+        return modelAndView;
+    }
+
+
 }

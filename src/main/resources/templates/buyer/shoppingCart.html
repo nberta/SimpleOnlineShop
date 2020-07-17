@@ -70,21 +70,22 @@
                 <th>Product</th>
                 <th class="text-center" >Quantity</th>
                 <th class="text-right" >Price</th>
+                <th>Action</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="cartItems :${cartItems}">
+            <tr th:each="cartItem :${cartItems}">
                 <td>
-                    <img th:src="@{'/img/' + ${cartItems.product.imageIdentifier}+'.png'}"  class="img-fluid img-thumbnail"
+                    <img th:src="@{'/img/' + ${cartItem.product.imageIdentifier}+'.png'}"  class="img-fluid img-thumbnail"
                          width="200" height="200"  alt="...">
                 </td>
-                <td th:text="${cartItems.product.description}" style="text-align: center; vertical-align: middle">Text ...</td>
-                <td class="text-center" th:text="${cartItems.product.quantity}" style="text-align: center; vertical-align: middle">Text ...</td>
-                <td class="text-right"th:text="${cartItems.product.price}" style="text-align: center; vertical-align: middle"> Text ...</td>
+                <td th:text="${cartItem.product.description}" style="text-align: center; vertical-align: middle">Text ...</td>
+                <td class="text-center" th:text="${cartItem.product.quantity}" style="text-align: center; vertical-align: middle">Text ...</td>
+                <td class="text-right"th:text="${cartItem.product.price}" style="text-align: center; vertical-align: middle"> Text ...</td>
                 <td style="text-align: center; vertical-align: middle">
-                    <a th:href="@{/buyers/my-cart/remove/{id}(id=${cartItems.id})}" class="btn btn-light btn-sm">
-                        &laquo;Remove&raquo;
-                    </a>
+                    <form action="#" th:action="@{/buyers/my-cart/remove/{id}(id=${cartItem.id})}" method="post">
+                        <input type="submit" value="Remove">
+                    </form>
                 </td>
             </tr>
             </tbody>
@@ -97,9 +98,9 @@
             </tr>
             <tr>
                 <th colspan="4">
-
-                    <a class="btn btn-primary" th:if="${shoppingCart != null}"  th:href="@{'/payment/{id}' (id=${shopingCart.shopingcartId})}"  >
-                        Check Out &raquo;</a>
+                    <form action="#" th:action="@{/buyers/my-cart/make-purchase}" method="post">
+                        <input type="submit" value="Check Out">
+                    </form>
                 </th>
             </tr>
             </tfoot>

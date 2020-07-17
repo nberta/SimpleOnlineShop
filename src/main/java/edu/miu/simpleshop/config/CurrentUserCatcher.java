@@ -37,7 +37,7 @@ public class CurrentUserCatcher implements AuthenticationSuccessHandler {
     @Autowired
     private AdminService adminService;
 
-    RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {

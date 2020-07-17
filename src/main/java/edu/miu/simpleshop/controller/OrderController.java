@@ -65,7 +65,7 @@ public class OrderController {
     @PutMapping("cancel/{id}")
     public String cancelWholeOrder(@PathVariable Long id) {
         orderService.cancel(id);
-        return "redirect:/buyer/my-orders";
+        return "redirect:/buyers/my-orders";
     }
 
 }

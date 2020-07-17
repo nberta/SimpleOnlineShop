@@ -9,18 +9,17 @@
     <section class="wrapper" layout:fragment="wrapper">
 
         <div class="card"  style="width: 80%;">
-            
-            <div sec:authorize="hasRole('SELLER')">SELLER</div>
-            <div sec:authorize="hasRole('ROLE_SELLER')">ROLE_SELLER</div>
+
+            <div sec:authorize="!isAuthenticated()">Hello, Guest</div>
+
 
             <div class="card-body" sec:authorize="hasRole('SELLER')">
                 <a th:href="@{/seller/update}"
                    class="btn btn-primary btn-sm mb-3">
                     Add Product
                 </a>
-                <h4>List of Product</h4>
             </div>
-
+            <h4>List of Product</h4>
             <table class="table ">
                 <thead>
                 <tr>
@@ -35,24 +34,25 @@
                 <tr th:each="product,iStat : ${productsAll}">
                     <td>
 
-                        <img th:src="@{'/img/' + ${product.imageIdentifier}+'.png'}"  class="img-fluid img-thumbnail"
+                        <img th:src="@{'/img/' + ${product.imageIdentifier}}"  class="img-fluid img-thumbnail"
                              width="100" height="100"  alt="...">
                     </td>
                     <td th:text="${product.description}" style="text-align: center; vertical-align: middle">Text ...</td>
                     <td class="text-center" th:text="${product.quantity}" style="text-align: center; vertical-align: middle">Text ...</td>
                     <td class="text-right"th:text="${product.price}" style="text-align: center; vertical-align: middle"> Text ...</td>
                     <td style="text-align: center; vertical-align: middle">
-
-                        <!--a th:href="@{/seller/showFormForUpdate(productId=${product.id})}       "
-                             class="btn btn-primary btn-sm">
-                              Update </a-->
-
-                        <a th:href="@{/seller/delete(productId=${product.id})}"
-                           class="btn btn-danger btn-sm"
-                           onclick="if (!(confirm('Are you sure you want to delete this Product?'))) return false">
-                            Delete
-                        </a>
-
+                        <div sec:authorize="hasRole('SELLER')">
+                            <a th:href="@{/sellers/product/remove/{productId}(productId=${product.id})}"
+                               class="btn btn-danger btn-sm"
+                               onclick="if (!(confirm('Are you sure you want to delete this Product?'))) return false">
+                                Delete
+                            </a>
+                        </div>
+                        <div sec:authorize="hasRole('BUYER')">
+                            <form action="#" th:action="@{/buyers/cart/add/{productId}(productId=${product.id})}">
+                                <input type="submit" th:text="Add to Cart">
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 </tbody>

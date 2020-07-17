@@ -8,6 +8,7 @@ import edu.miu.simpleshop.repository.OrderRepository;
 import edu.miu.simpleshop.service.BuyerService;
 import edu.miu.simpleshop.service.OrderService;
 import edu.miu.simpleshop.service.SellerService;
+import edu.miu.simpleshop.service.ShoppingCartService;
 import edu.miu.simpleshop.util.ReceiptMaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private SellerService sellerService;
+
+    @Autowired
+    private ShoppingCartService shoppingCartService;
 
     @Autowired
     private BuyerService buyerService;
@@ -77,8 +81,7 @@ public class OrderServiceImpl implements OrderService {
     public boolean canMakeOrder(Collection<CartItem> cartItems, Collection<CartItem> refuse) {
         Collection<CartItem> unavailableItems = cartItems.stream()
                 .filter(cartItem ->
-                        cartItem.getProduct().getQuantity() < cartItem.getQuantity() ||
-                        !cartItem.getProduct().isEnabled())
+                        cartItem.getProduct().getQuantity() < cartItem.getQuantity())
                 .collect(Collectors.toList());
         return unavailableItems.isEmpty();
     }
@@ -100,10 +103,14 @@ public class OrderServiceImpl implements OrderService {
             ReceiptMaker.prepareOrderReceipt(order);
 
             buyer.setGainPoints(buyer.getGainPoints() + (int)Math.floor(order.getTotalCost()/10));
+            shoppingCartService
+                    .clearShoppingCart(shoppingCartService
+                            .getById(buyer.getShoppingCart().getId()));
             buyerService.save(buyer);
 
             return order;
         }
         throw new IllegalCustomerStateException("Invalid customer information. Please set billing and shipping address");
     }
+
 }

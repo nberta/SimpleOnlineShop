@@ -37,7 +37,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/img/**", "/fonts/**", "/images/**", "/h2-console/**");
+                .antMatchers("/resources/**",
+                        "/static/**", "/css/**", "/js/**",
+                        "/img/**", "/fonts/**", "/images/**",
+                        "/receipts/**","/h2-console/**");
     }
 
     @Override
@@ -51,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin()
-                .loginPage("/login").defaultSuccessUrl("/").successHandler(successHandler).permitAll()
+                .loginPage("/login").successHandler(successHandler).permitAll()
                 .and().logout().permitAll();
 
 

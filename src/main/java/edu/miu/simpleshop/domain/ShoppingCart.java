@@ -14,7 +14,8 @@ public class ShoppingCart {
     private Long id;
 
     @NotNull
-    @OneToMany (fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "shoppingCart")
+    @OneToMany (fetch = FetchType.EAGER, orphanRemoval = true,
+            cascade = CascadeType.ALL)
     private List<@NotNull CartItem> cartItems = new ArrayList<>();
 
     @OneToOne
@@ -23,18 +24,18 @@ public class ShoppingCart {
     public ShoppingCart(){  }
     public ShoppingCart(List<CartItem> cartItems){
         this.cartItems = cartItems;
-        for (CartItem c : cartItems) c.setShoppingCart(this);
+       // for (CartItem c : cartItems) c.setShoppingCart(this);
     }
 
     public Long getId() { return this.id; }
 
     public List<CartItem> getCartItems() {
-        return Collections.unmodifiableList(cartItems);
+        return cartItems;
     }
 
     public void addCartItem(CartItem cartItem) {
         cartItems.add(cartItem);
-        cartItem.setShoppingCart(this);
+        //cartItem.setShoppingCart(this);
     }
 
     public Buyer getBuyer() {
@@ -54,5 +55,11 @@ public class ShoppingCart {
         for (CartItem c : cartItems)
             if (c.getId().equals(id)) return c;
             return null;
+    }
+
+    public void clear() {
+        int size = cartItems.size();
+        while (size-- > 0)
+            cartItems.remove(size);
     }
 }
