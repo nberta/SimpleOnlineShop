@@ -4,9 +4,7 @@ package edu.miu.simpleshop.controller;
 
 import edu.miu.simpleshop.domain.*;
 import edu.miu.simpleshop.domain.enums.Role;
-import edu.miu.simpleshop.service.BuyerService;
-import edu.miu.simpleshop.service.OrderService;
-import edu.miu.simpleshop.service.UserService;
+import edu.miu.simpleshop.service.*;
 import edu.miu.simpleshop.util.PdfReceiptDownload;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +34,13 @@ public class BuyerController {
     private BuyerService buyerService;
 
     @Autowired
-    private UserService userService;
+    private OrderService orderService;
 
     @Autowired
-    private OrderService orderService;
+    private ProductService productService;
+
+    @Autowired
+    private ProductReviewService productReviewService;
 
 
     @GetMapping("/register")
@@ -161,6 +162,7 @@ public class BuyerController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(new InputStreamResource(bis));
     }
+
     //Check Order History
     @GetMapping("/buyer/orders")
     public String orderList(Model model, HttpSession session) {
@@ -168,5 +170,30 @@ public class BuyerController {
         model.addAttribute("orders", buyer.getOrders());
         return "buyer/orders";
     }
+
+    //reviews
+    @GetMapping("/product/{id}/review")
+    public String getReviewPageForProduct(@ModelAttribute("productReview") ProductReview productReview,
+                                          @PathVariable("id") Long id, Model model) {
+        productReview.setProduct(productService.getProduct(id));
+        model.addAttribute("productId", productReview.getProduct().getId());
+        return "product/create-review";
+    }
+
+    @PostMapping("/product/{id}/review")
+    public String createReview(@Valid ProductReview productReview, BindingResult bindingResult,
+                               @PathVariable("id") Long id, Model model, HttpSession session) {
+        if (bindingResult.hasErrors()) {
+            productReview.setProduct(productService.getProduct(id));
+            model.addAttribute("productId", productReview.getProduct().getId());
+            return "product/create-review";
+        }
+        Buyer buyer = (Buyer)session.getAttribute("loggedInBuyer");
+        productReview.setBuyer(buyer);
+        productReview.setProduct(productService.getProduct(id));
+        productReviewService.save(productReview);
+        return "redirect:/buyers/buyer/orders";
+    }
+
 }
 

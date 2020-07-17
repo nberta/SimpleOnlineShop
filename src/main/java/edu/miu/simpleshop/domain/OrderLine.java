@@ -14,7 +14,7 @@ public class OrderLine {
     @ManyToOne
     private Seller seller;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Product product;
 
     @ManyToOne

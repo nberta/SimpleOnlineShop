@@ -20,12 +20,15 @@ public class OrderController {
     private OrderService orderService;
 
 
+/*
+    //method seems unnecessary
     //need to find order related to buyer only
     @GetMapping("/all")
     public String getAllOrders(@ModelAttribute("newOrder") Order order, Model model){
         model.addAttribute("orders", orderService.getAllOrders());
         return "order/details";
     }
+*/
 
     //Need OrderLine Service as well
 
@@ -34,12 +37,14 @@ public class OrderController {
         return orderService.getById(id);
     }
 
+/*
     @GetMapping("/edit/{id}")
     public String update(@PathVariable Long id, Model model) {
         model.addAttribute("seller", orderService.getById(id));
         return "order/edit";
     }
-
+*/
+    // would only be useful if we allow changing address after purchase
     @PutMapping("/update")
     public String update(@Valid Order order, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return "order/edit";
@@ -47,21 +52,20 @@ public class OrderController {
         return "order/details";
     }
 
+/*
+    //unnecessary for our model
     @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable Long id, Model model) {
         model.addAttribute("deleted", orderService.delete(id));
         return "order/details";
     }
+*/
 
+    //refactor into buyer's controller
     @PutMapping("cancel/{id}")
     public String cancelWholeOrder(@PathVariable Long id) {
-        Order order = orderService.getById(id);
-        for (OrderLine ol : order.getOrderLines()) {
-            if (!ol.getStatus().equals(OrderStatus.SHIPPED) || !ol.getStatus().equals(OrderStatus.DELIVERED))
-                ol.setStatus(OrderStatus.CANCELLED);
-        }
-        return "redirect:/orders/all";
+        orderService.cancel(id);
+        return "redirect:/buyer/my-orders";
     }
-
 
 }

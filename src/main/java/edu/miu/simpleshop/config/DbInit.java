@@ -4,6 +4,7 @@ package edu.miu.simpleshop.config;
 import edu.miu.simpleshop.domain.*;
 import edu.miu.simpleshop.domain.enums.Role;
 import edu.miu.simpleshop.repository.*;
+import edu.miu.simpleshop.util.ReceiptMaker;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
@@ -80,14 +81,9 @@ public class DbInit implements CommandLineRunner {
         Seller seller1 = new Seller(userSeller1, true);
         Seller seller2 = new Seller(userSeller2, false);
 
-
-
-
         Product guava = new Product("Guava", "A Fruit", 40, false, 99, category2, seller1);
         Product laptop = new Product("Laptop", "An Electronics", 3, true, 1400, category1, seller2);
         Product mobile = new Product("Mobile", "An Electronics", 5, true, 5000, category1, seller2);
-
-        List<Product> products = Arrays.asList(guava, laptop, mobile);
 
         CartItem cartItem = new CartItem(laptop, 5);
         CartItem cartItem1 = new CartItem(mobile, 44);
@@ -108,16 +104,13 @@ public class DbInit implements CommandLineRunner {
         OrderLine orderLine2 = new OrderLine(cartItem2);
         List<OrderLine> orderLines = Arrays.asList(orderLine, orderLine1, orderLine2);
 
-
         Order order1 = new Order(orderLines, billingInfo, address3);
 
         adminRepository.save(admin);
         buyerRepository.saveAll(Arrays.asList(buyer1, buyer2, buyer3));
         sellerRepository.saveAll(Arrays.asList(seller1, seller2));
 
-        //orderRepository.save(order1);
-
-
+        orderRepository.save(order1);
 
     }
 }

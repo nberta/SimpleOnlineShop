@@ -11,6 +11,8 @@ import edu.miu.simpleshop.service.SellerService;
 import edu.miu.simpleshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -35,6 +37,8 @@ public class CurrentUserCatcher implements AuthenticationSuccessHandler {
     @Autowired
     private AdminService adminService;
 
+    RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         HttpSession session = request.getSession(false);
@@ -44,12 +48,15 @@ public class CurrentUserCatcher implements AuthenticationSuccessHandler {
             if (user.getRole().equals(Role.BUYER)) {
                 Buyer loggedInBuyer = buyerService.getByUser(user);
                 session.setAttribute("loggedInBuyer", loggedInBuyer);
+                redirectStrategy.sendRedirect(request, response, "/");
             } else if (user.getRole().equals(Role.SELLER)) {
                 Seller loggedInSeller = sellerService.getByUser(user);
                 session.setAttribute("loggedInSeller", loggedInSeller);
+                redirectStrategy.sendRedirect(request, response, "/");
             } else if (user.getRole().equals(Role.ADMIN)) {
                 Admin loggedInAdmin = adminService.getByUser(user);
                 session.setAttribute("loggedInAdmin", loggedInAdmin);
+                redirectStrategy.sendRedirect(request, response, "/");
             } else {
                 throw new IllegalStateException("Roles are out of bound");
             }

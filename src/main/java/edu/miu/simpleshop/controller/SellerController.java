@@ -1,10 +1,8 @@
 package edu.miu.simpleshop.controller;
-import edu.miu.simpleshop.domain.OrderLine;
+
 import edu.miu.simpleshop.domain.Seller;
 import edu.miu.simpleshop.domain.User;
-import edu.miu.simpleshop.domain.enums.OrderStatus;
-import edu.miu.simpleshop.exception.IllegalOrderStateException;
-import edu.miu.simpleshop.repository.OrderLineRepository;
+import edu.miu.simpleshop.service.OrderLineService;
 import edu.miu.simpleshop.service.ProductService;
 import edu.miu.simpleshop.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -28,7 +25,8 @@ public class SellerController {
     private ProductService productService;
 
     @Autowired
-    private OrderLineRepository orderLineRepository;
+    private OrderLineService orderLineService;
+
     @GetMapping
     public String getHomepage() {
         return "seller/home";
@@ -90,19 +88,15 @@ public class SellerController {
     @GetMapping("/my-orders")
     public String sellerOrders(Model model, HttpSession session) {
         Seller seller = (Seller)session.getAttribute("loggedInSeller");
-        model.addAttribute("orderLines", orderLineRepository.findAllByOrderId(seller.getId()));
+        model.addAttribute("orderLines", orderLineService.findAllByOrderId(seller.getId()));
         return "seller/orders";
     }
 
     @GetMapping("/orders/{id}/set-status/shipped")
-    public String sellerStatusUpdate(@PathVariable("id") Long id,
-                                     Seller seller) {
-        OrderLine orderLine = orderLineRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        if(orderLine.getStatus().equals(OrderStatus.CREATED)) {
-            orderLine.setStatus(OrderStatus.SHIPPED);
-            orderLineRepository.save(orderLine);
-            return "redirect:/sellers/my-orders";
-        } else throw new IllegalOrderStateException("Order has already been handled, and cannot be shipped.");
+    public String sellerStatusUpdate(@PathVariable("id") Long id, HttpSession session) {
+        Seller seller = (Seller)session.getAttribute("loggedInSeller");
+        orderLineService.updateToShipped(id, seller);
+        return "redirect:/sellers/my-orders";
     }
     @GetMapping("/orders/{id}/set-status/canceled")
     public String sellerCancelOrder(@PathVariable("id") Long id,

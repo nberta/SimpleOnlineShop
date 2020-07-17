@@ -19,7 +19,6 @@
                     <a th:href="@{/seller/orders/{id}/set-status/canceled(id=${orderLine.id})}" th:text="Decline Order"></a>
                 </span>
                 <span th:if="${orderLine.status != 'CREATED'}" th:text="FINALIZED"></span>
-
             </p>
         </div>
 
