@@ -1,34 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/main}"
+      xmlns:th="http://www.thymeleaf.org" >
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
 <head>
-    <title>Bootstrap Example</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <title>Pending Buyers</title>
 </head>
 
-
-
-
-<!--        <link rel='stylesheet' type='text/css' media='screen' th:href="@{/css/main.css}">&ndash;&gt;-->
-<!--    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css">-->
-<!--    <link rel="stylesheet" href="css/bootstrap.min.css">-->
-
-<!--    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>-->
-<!--    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>-->
-
-<!--    <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>-->
-<!--    <script src="js/bootstrap.min.js"></script>-->
-
 <body>
-<div class="container" layout:fragment="main-content">
-    <!-- BUYER HOME START-->
-    <section>
-        <div class="row justify-content-md-center">
-            <div class="col-12">
+<section class="wrapper" layout:fragment="wrapper" style="margin-left: 4%">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="card"  style="width: 80%;">
+                <div class="card-body">
+
                 <h3 align="center">Buyers Comments to approve </h3>
 
                 <div th:if="${not #lists.isEmpty(productReviews)}">
@@ -53,17 +39,10 @@
                                 <span th:if="${prod.enabled}">Approved</span>
                                 <span th:unless="${prod.enabled}">Pending</span>
                             </td>
-
-
                             <td>
-                                <!--                            <form action="#" th:action="@{/admin/reviews/} + ${prod.id} + @{/approve}" method="post">-->
-
                                 <form action="#" th:action="@{/admin/reviews/{id}/approve(id=${prod.id})}"  method="post">
-                                    <input type="submit" value="Approve" th:if="${prod.isEnabled() ==false}"  class="btn btn-sm btn-primary"/>
+                                    <input type="submit" value="Approve" th:if="${prod.isEnabled() ==false}"  class="btn btn-success btn-sm mt-2"/>
                                 </form>
-
-
-                                <!--                            <form action="#" th:action="@{/admin/reviews/} + ${prod.id} + @{/reject}" method="post">-->
                                 <form action="#" th:action="@{/admin/reviews/{id}/reject(id=${prod.id})}" method="post">
                                     <input type="submit" value="Reject" th:if="${prod.isEnabled()== true}" class="btn btn-danger btn-sm mt-2"/>
                                 </form>
@@ -73,12 +52,10 @@
                     </table>
 
                 </div>
-
-
             </div>
         </div>
-    </section>
-</div>
+        </div>
+    </div>
+</section>
+
     <!-- BUYER HOME END-->
-</body>
-</html>

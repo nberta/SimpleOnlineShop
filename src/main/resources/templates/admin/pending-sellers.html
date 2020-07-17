@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
-<head>
-    <title>Bootstrap Example</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-</head>
-<body>
-<div layout:fragment="main-content" class="row" style="margin-left: 4%">
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/main}"
+      xmlns:th="http://www.thymeleaf.org" >
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 
-    <div class="card"  style="width: 80%;">
-        <div class="card-body">
+<head>
+    <title>Pending Buyers</title>
+</head>
+
+<body>
+<section class="wrapper" layout:fragment="wrapper" style="margin-left: 4%">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="card"  style="width: 80%;">
+                <div class="card-body">
 <!--    <div th:replace="components/userAccessMenu :: mnu">User menu</div>-->
     <div class="col-lg-9" th:if="${not #lists.isEmpty(pendingSellers)}">
         <div class="h4">Pending sellers</div>
@@ -31,12 +31,6 @@
                 <th scope="row" th:text="${iter.index+1}">1</th>
                 <td th:text="${seller.user.username}">Nahom</td>
                 <td th:text="${seller.user.email}">Nahom@gmail.com</td>
-               <!-- <td>
-                    <a href="#" class="approveSeller" th:href="@{/admin/pending-sellers/{id}/approve}" th:data-seller-id="${seller.user.id}">Approve</a>
-                    <a href="#" class="rejectSeller" th:href="@{/admin/pending-sellers/{id}/reject}" th:data-seller-id="${seller.user.id}">Reject</a>
-                </td>-->
-
-                
                 <td>
                     <form action="#" th:action="@{/admin/pending-sellers/{id}/approve(id=${seller.id})}" method="post">
                         <input type="submit" value="Approve" class="btn btn-success btn-sm mt-2"/>
@@ -45,7 +39,6 @@
                         <input type="submit" value="Reject" class="btn btn-danger btn-sm mt-2"/>
                     </form>
                 </td>
-
             </tr>
             </tbody>
         </table>
@@ -56,5 +49,7 @@
 <th:block layout:fragment="script">
     <script th:src="@{/js/admin.js}"></script>
 </th:block>
-</body>
-</html>
+            </div>
+        </div>
+    </div>
+</section>
