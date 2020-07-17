@@ -34,6 +34,9 @@ public class BuyerController {
     private BuyerService buyerService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private OrderService orderService;
 
     @Autowired
@@ -44,7 +47,9 @@ public class BuyerController {
 
 
     @GetMapping("/register")
-    public String getRegistrationForm(@ModelAttribute("buyer") Buyer buyer) {
+    public String getRegistrationForm(@ModelAttribute("buyer") Buyer buyer, Model model) {
+        //This is to shop Top Products on registration page sidebar!
+        model.addAttribute("productTop", productService.getAllUnconfirmedProducts());
         return "buyer/register";
     }
 

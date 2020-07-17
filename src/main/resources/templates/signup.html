@@ -34,29 +34,19 @@
 <body class="login-img3-body">
 
   <div class="container">
-    <div th:if="${param.error}">
-      <div class="alert alert-danger"
-           th:with="errorMsg=${session['SPRING_SECURITY_LAST_EXCEPTION'].message}">
-        <span class="fa fa-warning"></span> <span th:text="${errorMsg}">Email or Password invalid.</span>
-      </div>
-    </div>
-
-    <form class="login-form form-signin" th:action="@{/login}" method="POST">
+  <div class="login-form form-signin">
       <div class="login-wrap">
-        <p class="login-img"><i class="icon_lock_alt"></i></p>
-        <div class="input-group">
-          <span class="input-group-addon"><i class="icon_profile"></i></span>
-          <input type="text" name="username" class="form-control" placeholder="Username" id="email" autofocus="">
-        </div>
-        <div class="input-group">
-          <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-          <input type="password" name="password" class="form-control" placeholder="Password" id="password">
-        </div>
-        <button class="btn btn-primary btn-lg btn-block" value="Login" type="submit">Login</button>
-        <button class="btn btn-info btn-lg btn-block" onclick="location.href='/signup'">Signup</button>
+        <span class="input-group-addon"><i class="icon_cart"></i></span>
+        <button class="btn btn-primary btn-lg btn-block" value="Signup" onclick="location.href='/buyers/register'" >Buy Items!</button>
       </div>
-    </form>
-
+      <div class="login-wrap">
+        <span class="input-group-addon"><i class="icon_profile"></i></span>
+        <button class="btn btn-primary btn-lg btn-block" onclick="location.href='/sellers/register'" value="Signup" >Sell Something!</button>
+      </div>
+  </div>
+  </div>
+  <br />
+    <br />
     <div class="text-right">
       <div class="credits">
           <!--
@@ -69,6 +59,7 @@
         </div>
     </div>
   </div>
+
 
 </body>
 
