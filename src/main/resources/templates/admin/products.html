@@ -1,20 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/main}"
+      xmlns:th="http://www.thymeleaf.org" >
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
 <head>
-    <title>Bootstrap Example</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <title>Products</title>
 </head>
+
 <body>
-<div class="container" layout:fragment="main-content">
-    <!-- BUYER HOME START-->
-    <section>
-        <div class="row justify-content-md-center">
-            <div class="col-12">
+<section class="wrapper" layout:fragment="wrapper" style="margin-left: 4%">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="card"  style="width: 80%;">
+                <div class="card-body">
                 <h3 align="center">Products to be approved</h3>
                 <table class="class=table table-bordered table-striped" id="myTable" width="100%" cellspacing="0" data-toggle="table" data-maintain-meta-data="true">
 
@@ -38,7 +37,7 @@
 
                         <td>
                             <form action="#" th:action="@{admin/products/{id}/approve(id=${product.id})}" method="post">
-                                <input type="submit" value="Approve" th:if="${product.isEnabled() ==false}" class="btn btn-sm btn-primary btn-lg"/>
+                                <input type="submit" value="Approve" th:if="${product.isEnabled() ==false}" class="btn btn-success btn-sm mt-2"/>
                             </form>
 
                             <form action="#" th:action="@{admin/products/{id}/reject(id=${product.id})}" method="post">
@@ -50,9 +49,7 @@
                 </table>
             </div>
         </div>
-    </section>
+        </div>
+    </div>
+</section>
     <!-- BUYER HOME END-->
-</div>
-</body>
-
-</html>
