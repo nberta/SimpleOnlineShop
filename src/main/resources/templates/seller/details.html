@@ -1,10 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/main}"
+      xmlns:th="http://www.thymeleaf.org" >
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Seller Profile</title>
 </head>
+
 <body>
+<section class="wrapper" layout:fragment="wrapper">
+    <div class="col-lg-4">
+        <div class="row">
+            <div th:text="${sellerPro}" class="card" style="width: 18rem;">
+                <img class="card-img-top" src="..." alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${sellerPro.user.username}"></h5>
+                    <p class="card-text" th:text="${sellerPro.user.email}"></p>
+                </div>
+                <div class="card-body">
+                    <button href="#" class="btn-success"><span class="icon_heart"></span> Follow</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
+
 
 </body>
 </html>

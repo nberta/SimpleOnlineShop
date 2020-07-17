@@ -1,6 +1,5 @@
 package edu.miu.simpleshop.controller;
 
-import edu.miu.simpleshop.SimpleshopApplication;
 import edu.miu.simpleshop.domain.Product;
 import edu.miu.simpleshop.exception.WrongImageException;
 import edu.miu.simpleshop.service.CategoryService;
@@ -10,22 +9,18 @@ import edu.miu.simpleshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/products")
@@ -146,6 +141,21 @@ public class ProductController {
         productService.delete(productId);
         return "redirect:/seller/my-products";
     }
+
+//    @GetMapping("/category/{id}")
+//    public String getCategoriesById(@PathVariable("id") Long id, Model model){
+//        model.addAttribute("categoryLink", categoryService.getById(id));
+//        return "product/singlecategory";
+//    }
+
+    @GetMapping
+    public String getProductsByCategory(@RequestParam("category") Long id, Model model){
+        model.addAttribute("productsFromCat", productService.getByCategoryId(id));
+        return "product/singlecategory";
+    }
+
+
+
 
 //    @GetMapping("/{id}")
 //    public Order getShoppingCartById(@PathVariable Long id) {
