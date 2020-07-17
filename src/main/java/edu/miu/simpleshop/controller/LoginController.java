@@ -21,8 +21,9 @@ public class LoginController {
     @GetMapping("/")
     public String getIndex(Model model){
         model.addAttribute("productsHome",service.getAllUnconfirmedProducts());
-        model.addAttribute("categories", categoryService.getAllCategories().size() );
+        model.addAttribute("categoriesHome", categoryService.getAllCategories().size() );
         model.addAttribute("productsCount", service.getAllUnconfirmedProducts().size());
+        //model.addAttribute("productsCount", service.getAllUnconfirmedProducts().size());
         return "index";
 
     }

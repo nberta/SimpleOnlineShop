@@ -27,18 +27,17 @@
             </div>
         </div>
         <div class="row">
-
             <div th:each="products: ${productsHome}" class="col-12 col-sm-8 col-md-6 col-lg-4">
                 <div class="card">
                     <img class="card-img" th:src="@{/images/{value}(value=${products.id})}" alt="Vans">
                     <div class="card-img-overlay d-flex justify-content-end">
-                        <a href="#" class="card-link text-danger like"></a>
+                        <a th:text="${products.quantity}" data-placement="right" data-toggle="tooltip" class="card-link text-danger like" data-original-title="Tooltip on right"></a>
                     </div>
                     <div class="card-body">
                         <h4 class="card-title" th:text="${products.name}"></h4>
-                        <h6 class="card-subtitle mb-2 text-muted" th:text="${products.quantity}"></h6>
+                        <h6 class="card-subtitle mb-2 text-muted">Sold By:</h6>
                         <p class="card-text" th:text="${products.description}"></p>
-
+                        <p th:text="${products.seller.user.username}"></p>
                         <div class="buy d-flex justify-content-between align-items-center">
                             <div class="price text-success" th:text="${products.price}"><h5 class="mt-4"></h5></div>
                             <a href="#" class="btn btn-danger mt-3"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
@@ -46,8 +45,17 @@
                     </div>
                 </div>
             </div>
-
         </div>
+    </div>
+    <div class="col-lg-4">
+        <section class="panel">
+            <header class="panel-heading">
+                CATEGORIES
+            </header>
+                <ul class="list-group" th:each="categories: ${categoriesHome}">
+                    <a class="list-group-item" th:text="${categories.}" th:href="@{/products(category=${categories.id})}"></a>
+                </ul>
+            </section>
     </div>
 
 
