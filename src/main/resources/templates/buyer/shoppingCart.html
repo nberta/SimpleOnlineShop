@@ -1,11 +1,16 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/main}"
+      xmlns:th="http://www.thymeleaf.org" >
+
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Shopping Cart </title>
 </head>
 
+<body>
+<section class="wrapper" layout:fragment="wrapper">
+    <div class="col-lg-8">
+        <div class="row">
     <h2>Shopping Cart</h2>
     <hr/>
     <h4>Please mark items you'd like to purchase</h4>
@@ -26,6 +31,81 @@
             <button class="btn btn-default" type="submit">Continue Shopping</button>
         </form>
     </form>
+        </div>
+    </div>
+</section>-->
 
-</body>
-</html>
+
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/main}"
+      xmlns:th="http://www.thymeleaf.org" >
+
+<head>
+    <title>Shopping Cart </title>
+</head>
+
+<body>
+<section class="wrapper" layout:fragment="wrapper">
+    <div class="col-lg-8">
+        <div class="row">
+
+<div layout:fragment="main-content" class="row" style="margin-left: 4%">
+    <div  th:if="${errorMessage}">
+        <p class="alert alert-danger" > <span th:text="${errorMessage}" th:remove="tag" ></span></p>
+    </div>
+    <div class="card"  style="width: 80%;">
+
+        <div class="card-body">
+            <h4>Shopping Cart</h4>
+            <p><hr>
+                You have items in your shopping cart.
+                <button  class="float-right btn btn-light btn-sm">Clear Shopping Cart</button>
+            </p>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Product</th>
+                <th class="text-center" >Quantity</th>
+                <th class="text-right" >Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cartItems :${cartItems}">
+                <td>
+                    <img th:src="@{'/img/' + ${cartItems.product.imageIdentifier}+'.png'}"  class="img-fluid img-thumbnail"
+                         width="200" height="200"  alt="...">
+                </td>
+                <td th:text="${cartItems.product.description}" style="text-align: center; vertical-align: middle">Text ...</td>
+                <td class="text-center" th:text="${cartItems.product.quantity}" style="text-align: center; vertical-align: middle">Text ...</td>
+                <td class="text-right"th:text="${cartItems.product.price}" style="text-align: center; vertical-align: middle"> Text ...</td>
+                <td style="text-align: center; vertical-align: middle">
+                    <a th:href="@{/buyers/my-cart/remove/{id}(id=${cartItems.id})}" class="btn btn-light btn-sm">
+                        &laquo;Remove&raquo;
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th class="text-right"></th>
+            </tr>
+            <tr>
+                <th colspan="4">
+
+                    <a class="btn btn-primary" th:if="${shoppingCart != null}"  th:href="@{'/payment/{id}' (id=${shopingCart.shopingcartId})}"  >
+                        Check Out &raquo;</a>
+                </th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+        </div>
+    </div>
+</section>
