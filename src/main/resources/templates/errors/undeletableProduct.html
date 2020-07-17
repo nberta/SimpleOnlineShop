@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/main}"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Sorry, but you can't do that</title>
 </head>
 <body>
-    <h2 th:text="${exception}"></h2>
+<section class="wrapper" layout:fragment="wrapper">
+    <h3 th:text="${exception.message}">
+        A user has already placed an order for the product you.
+        Please process the order before attempting to delete.
+    </h3>
+</section>
 </body>
 </html>

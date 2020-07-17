@@ -15,7 +15,7 @@ public class ExceptionAdvice {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "The item you're looking for does not exist")
     public ModelAndView handleEntityNotFound(EntityNotFoundException ex) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("exception", ex.getMessage());
+        modelAndView.addObject("exception", ex);
         modelAndView.setViewName("errors/itemNotFound");
         return modelAndView;
     }
@@ -25,7 +25,7 @@ public class ExceptionAdvice {
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
     public ModelAndView handleUndeletableProduct(UndeletableProductException ex) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("exception", ex.getMessage());
+        modelAndView.addObject("exception", ex);
         modelAndView.setViewName("errors/undeletableProduct");
         return modelAndView;
     }
@@ -34,7 +34,7 @@ public class ExceptionAdvice {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public ModelAndView handleIllegalCustomerState(IllegalCustomerStateException ex) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("exception", ex.getMessage());
+        modelAndView.addObject("exception", ex);
         modelAndView.setViewName("errors/invalidCustomerInfo");
         return modelAndView;
     }

@@ -25,6 +25,13 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/products")
 public class ProductController {
+
+    /*
+        ALL PARTS NEED TO BE REFACTORED INTO OTHER CONTROLLERS
+            -addProduct, saveProduct, updateProduct, and deleteProduct will move to SellerController
+            -getAll will move to LoginController(?)
+    */
+
     @Autowired
     private ProductService productService;
 

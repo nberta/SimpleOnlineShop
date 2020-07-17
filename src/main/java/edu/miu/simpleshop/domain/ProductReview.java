@@ -1,6 +1,9 @@
 package edu.miu.simpleshop.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,8 +22,13 @@ public class ProductReview {
     /*@Column(name = "comment_time", columnDefinition = "TIMESTAMP")
     private LocalDateTime commentTime = LocalDateTime.now();*/
 
+    @NotBlank
     private String review;
+
+    @Min(value = 1, message = "Rating should be between 1 and 5")
+    @Max(value = 5, message = "Rating should be between 1 and 5")
     private int rating;
+
     private Boolean isConfirmed = false;
     private boolean enabled = false;
 

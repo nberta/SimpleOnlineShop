@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <style type="text/css">
+        .tab { margin-left: 40px; }
+    </style>
+    <title>Receipt</title>
+</head>
+<body>
+    <div class="col-lg-8">
+        <div class="row">
+            <div th:object="${order}">
+                <h3>
+                    Order Number <span th:text="*{billingInfo.orderNumber}"/>
+                </h3>
+                <p>
+                    Order Date:<span th:text="*{billingInfo.transactionDate}"/>
+                </p>
+                <p>
+                    Total Price:<span th:text="*{totalCost}"/>
+                </p>
+
+                <!--   <p>Billing Address:<span th:text="*{billingInfo.getBillingAddress()}"/></p>-->
+
+                <h3>Product Details</h3>
+                <hr/>
+                <div class="tab" th:each="orderLine :${order.orderLines}">
+                    Product Name: <span th:text="${orderLine.product.name}"/> <br/>
+                    Product Price: <span th:text="${orderLine.product.price}"/><br/>
+                    Product qnt: <span th:text="${orderLine.product.quantity}"/><br/>
+                    Product Description: <span th:text="${orderLine.product.description}"/><br/>
+                </div>
+                <hr/>
+                Total Price:
+                <p class="tab">Total: <span th:text="*{totalCost}"/></p>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
