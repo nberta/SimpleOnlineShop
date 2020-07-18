@@ -17,7 +17,6 @@ public class MainApi {
     private ProductService service;
 
     @GetMapping("/getAll")
-    @ResponseBody
     public List<Product> getAllAdminsByStatus() {
         return service.getAllUnconfirmedProducts();
     }

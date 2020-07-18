@@ -146,67 +146,26 @@ public class SellerController {
         return "product/productForm";
     }
 
-//    //New image upload logic
-//    private String saveFile(MultipartFile file,String fileName) throws IOException{
-//        final String imagePath = "src/main/resources/static/images/"; //path ... it might be different slash for windows
-//        FileOutputStream output = new FileOutputStream(imagePath+fileName);
-//        output.write(file.getBytes());
-//        return imagePath+fileName;
-//    }
-
-
     @PostMapping("/product/add")
     public String saveProduct( Product product, BindingResult bindingResult,
                                RedirectAttributes redirectAttributes, Model model, HttpSession session) {
         if (!getLoggedInSeller(session).isActive())
             return "product/productForm";
 
-//        if (bindingResult.hasErrors()) {
-//            return "product/productForm";
-//        }
-//        //prep for image processing
-//        String rootDirectory = request.getSession().getServletContext().getRealPath("/");
-//        //image identifier set here will also be used to retrieve image in view
-//        //consider also including the whole path in the identifier
-//        product.setImageIdentifier(product.getName() + RandomStringUtils.randomAlphanumeric(17));
-//
-//        try {
-//            File file = productService.processImage(product, rootDirectory);
-//            System.out.println(file.getAbsolutePath());
-//        } catch(IncorrectFileTypeException e) {
-//            //user entered a file that's not 'image/pgn' in type
-//            bindingResult.addError(new FieldError("product","productImage", e.getMessage()));
-//            return "product/productForm";
-//        }
-
-//        MultipartFile multipartFile = product.getProductImage();
-//        product.setImageIdentifier(RandomStringUtils.randomAlphanumeric(17) + ".png");
-//        saveFile(multipartFile, product.getImageIdentifier());
-//        try{
-//            multipartService.store(file);
-//            files.add(file.getOriginalFilename());
-//            product.setImageIdentifier("img/"+filename);
-//
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
-//        Files.copy(file.getInputStream(), this.rootLocation.resolve(filename),
-//                StandardCopyOption.REPLACE_EXISTING);
-
-
+        if (bindingResult.hasErrors()) {
+            return "product/productForm";
+        }
         MultipartFile productImage = product.getProductImage();
-        String uploadLocation = "src/main/resources/static/images/";
+        String uploadLocation = "src\\main\\resources\\static\\images\\";
         String imageName = "";
         if (productImage != null) {
             if (productImage.getContentType().contains("image/")) {
                 System.out.println("Image is not null. " + productImage.getContentType());
                 try {
-                    imageName = UUID.randomUUID().toString() +productImage.getOriginalFilename();
+                    imageName = UUID.randomUUID().toString() + productImage.getOriginalFilename();
                     imageName = imageName.toLowerCase().replaceAll(" ", "-");
                     System.out.println(uploadLocation + imageName);
-                    FileOutputStream output = new FileOutputStream(uploadLocation+imageName);
-                    //System.out.println(uploadLocation + imageName+" 2nd");
-                    // productImage.transferTo(new File(uploadLocation+imageName));
+                    FileOutputStream output = new FileOutputStream(uploadLocation + imageName);
                     output.write(productImage.getBytes());
                     System.out.println("Image Uploaded");
                 } catch (Exception e) {
@@ -221,12 +180,7 @@ public class SellerController {
         product.setImageIdentifier("images/" + imageName);
         productService.save(product);
         redirectAttributes.addFlashAttribute("product", product);
-/*
-
-        redirect to single product display page url : PRG
-*/
-
-        return "product/productForm";
+        return "redirect:/thisProduct/" + product.getId();
     }
 
     @GetMapping("/product/edit/{productId}")
