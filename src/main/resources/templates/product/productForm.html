@@ -151,7 +151,7 @@
                         <header class="panel-heading">Please fill out the details for your product</header>
                         <div class="panel-body">
                             <div class="form">
-                                <form class="form-validate form-horizontal" th:object="${product}" action="#" th:action="@{/products/product/add}" enctype="multipart/form-data" method="post">
+                                <form class="form-validate form-horizontal" th:object="${product}" action="#" th:action="@{/sellers/product/add}" enctype="multipart/form-data" method="post">
                                     <div class="error" th:if="${#fields.hasErrors('*')}">
                                         <p th:each="error :${#fields.errors('*')}" th:text="${error}"></p>
                                     </div>
