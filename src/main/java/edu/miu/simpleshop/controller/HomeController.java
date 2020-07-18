@@ -2,15 +2,20 @@ package edu.miu.simpleshop.controller;
 
 import edu.miu.simpleshop.domain.Buyer;
 import edu.miu.simpleshop.domain.Seller;
+import edu.miu.simpleshop.domain.User;
 import edu.miu.simpleshop.service.CategoryService;
 import edu.miu.simpleshop.service.ProductService;
+import edu.miu.simpleshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
+@SessionAttributes({"username", "userObject"})
 public class HomeController {
 
     @Autowired
@@ -19,15 +24,24 @@ public class HomeController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/")
     public String getIndex(Model model){
         Buyer buyer = new Buyer();
         Seller seller = new Seller();
+        User userK = userService.getSignedInUser();
         model.addAttribute("productsHome", productService.getAllUnconfirmedProducts());
         model.addAttribute("categories", categoryService.getAllCategories() );
         model.addAttribute("productsCount", productService.getAllUnconfirmedProducts().size());
         model.addAttribute("buyerRegister", buyer);
         model.addAttribute("sellerRegister", seller);
+        //Using session attribute, so that the username could be used sitewide as long as the session lasts.
+        if(userK!=null){
+            model.addAttribute("username", userK.getUsername());
+            model.addAttribute("userObject", userK);
+        }
         //model.addAttribute("productsCount", service.getAllUnconfirmedProducts().size());
         return "index";
 
@@ -65,6 +79,12 @@ public class HomeController {
     public String getProductsByCategory(@RequestParam("category") Long id, Model model){
         model.addAttribute("productsFromCat", productService.getByCategoryId(id));
         return "product/singlecategory";
+    }
+
+    @GetMapping("/thisProduct/{id}")
+    public String getSingleProductDetails(@PathVariable Long id, Model model){
+        model.addAttribute("singleProduct", productService.getById(id));
+        return "product/singleproduct";
     }
 
     @GetMapping("/products/productList")

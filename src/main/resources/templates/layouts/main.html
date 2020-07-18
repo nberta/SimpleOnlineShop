@@ -7,7 +7,7 @@
     <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
     <meta name="author" content="GeeksLabs">
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
-    <link rel="shortcut icon" href="img/favicon.png">
+    <link rel="shortcut icon" th:href="@{images/favicon.png}">
 
     <title>Simple Online Shop</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -39,22 +39,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 
+</head>
 
-    </head>
 <body>
-<section id="container" class="">
 <header th:replace="fragments/header :: header"></header>
-<section id="main-content">
-
-        <section class="wrapper" layout:fragment="wrapper">
-            <section class="panel" th:replace="fragments/modals :: categories"></section>
-        </section>
+<section id="container">
     <div class="modal"  th:replace="fragments/modals :: loginModal"></div>
-</section>
-</section>
-<br />
-<br />
-<br/>
+        <section class="wrapper" layout:fragment="wrapper">
+        </section>
 <footer th:replace="fragments/footer :: footer"></footer>
 
 <!-- javascripts -->
