@@ -48,8 +48,6 @@
 <body>
 <section class="wrapper" layout:fragment="wrapper">
     <div class="col-lg-8">
-        <div class="row">
-
 <div layout:fragment="main-content" class="row" style="margin-left: 4%">
     <div  th:if="${errorMessage}">
         <p class="alert alert-danger" > <span th:text="${errorMessage}" th:remove="tag" ></span></p>

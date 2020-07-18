@@ -92,7 +92,7 @@ public class SellerController {
     public String sellerProductPage(Model model, HttpSession session) {
         Seller seller = getLoggedInSeller(session);
         model.addAttribute("products", productService.getBySellerId(seller.getId()));
-        return "seller/singleproduct";
+        return "seller/sellerProductsList";
     }
 
     @DeleteMapping("/product/remove/{productId}")
@@ -213,7 +213,7 @@ public class SellerController {
         redirect to single product display page url : PRG
 */
 
-        return "/seller/singleproduct";
+        return "redirect:/";
     }
 
     @GetMapping("/product/edit/{productId}")

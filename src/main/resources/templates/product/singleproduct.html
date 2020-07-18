@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/main}"
+      xmlns:th="http://www.thymeleaf.org" >
+
+<head>
+    <title>SimpleOnlineShop - Home</title>
+</head>
+
+<body>
+<section class="wrapper" layout:fragment="wrapper">
+    <div class="row">
+            <div class="col-lg-3">
+                <div class="info-box blue-bg">
+                    <img th:href="@{/images/cool-status.jpg}"/>
+                </div>
+            </div>
+            <div class="col-lg-6" th:object="${singleProduct}">
+                <div class="dress-card">
+                    <div class="dress-card-head">
+                        <p>Sold By: <span th:text="*{seller.user.username}"></span></p>
+                        <h3 th:text="*{name}"></h3>
+                        <h3 th:text="*{price}"></h3>
+                        <br/>
+                        <p th:text="*{description}"> </p>
+                        <br />
+                        <h4> Add Review!</h4>
+                        <textarea rows="5" cols="50" form="reviewForm"></textarea>
+                        <form method="post" th:action="@{/buyers/product/{id}(id=${singleProduct.id})/review}" id="reviewFOrm">
+                            <br />
+                            <button class="btn btn-success centered">Post Review!</button>
+                        </form>
+<!--              </span><a th:href="@{/sellers/profile/{id}(id=${products.seller.id})}"> <span th:text="${products.seller.user.username}"></span></a></div>-->
+                    </div>
+            </div>
+        </div>
+    <div class="col-lg-3">
+        <section class="panel" layout:fragment="categories">
+            <header class="panel-heading">
+                Recent Reviews!
+            </header>
+            <ul class="list-group" th:each="product: ${singleProduct}" >
+                <p class="list-group-item" th:text="${singleProduct.productReviews}"></p>
+            </ul>
+        </section>
+    </div>
+    </div>
+</section>
+
+</body>
+</html>

@@ -25,6 +25,16 @@ public class Buyer{
 
     private int gainPoints;
 
+    private String fullName;
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer")
     private List<Follow> follows = new ArrayList<>();
 

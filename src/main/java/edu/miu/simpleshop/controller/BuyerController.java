@@ -151,6 +151,7 @@ public class BuyerController {
             order = orderService.prepareOrder(itemsForCheckOut, buyer);
             redirectAttributes.addFlashAttribute("order", order);
             return "redirect:/buyers/my-orders/order-successful";
+            //Fire Email
         }
         else {
             Collection<CartItem> current = buyer.getShoppingCart().getCartItems();

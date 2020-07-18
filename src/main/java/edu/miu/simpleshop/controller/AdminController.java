@@ -27,6 +27,7 @@ public class AdminController {
     public String approveProduct(@PathVariable("productId") Long productId, Model model){
         Product prod = productService.getProduct(productId);
         model.addAttribute("product", prod);
+        //Fire Email
         return "redirect:/admin/products";
     }
 
