@@ -5,6 +5,7 @@ import edu.miu.simpleshop.domain.Product;
 import edu.miu.simpleshop.domain.Seller;
 import edu.miu.simpleshop.domain.User;
 import edu.miu.simpleshop.exception.SessionlessUserException;
+import edu.miu.simpleshop.exception.WrongImageException;
 import edu.miu.simpleshop.service.OrderLineService;
 import edu.miu.simpleshop.service.ProductService;
 import edu.miu.simpleshop.service.SellerService;
@@ -13,10 +14,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/sellers")
@@ -120,9 +125,107 @@ public class SellerController {
         return "redirect:/sellers/my-orders";
     }
 
+
+    @GetMapping("/product/add")
+    public String addProduct(@ModelAttribute("product") Product product, HttpSession session)  {
+        if (!getLoggedInSeller(session).isActive())
+            return "redirect:/";
+        return "product/productForm";
+    }
+
+//    //New image upload logic
+//    private String saveFile(MultipartFile file,String fileName) throws IOException{
+//        final String imagePath = "src/main/resources/static/images/"; //path ... it might be different slash for windows
+//        FileOutputStream output = new FileOutputStream(imagePath+fileName);
+//        output.write(file.getBytes());
+//        return imagePath+fileName;
+//    }
+
+
+    @PostMapping("/product/add")
+    public String saveProduct( Product product, BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes, Model model, HttpSession session) {
+        if (!getLoggedInSeller(session).isActive())
+            return "redirect:/";
+
+//        if (bindingResult.hasErrors()) {
+//            return "product/productForm";
+//        }
+//        //prep for image processing
+//        String rootDirectory = request.getSession().getServletContext().getRealPath("/");
+//        //image identifier set here will also be used to retrieve image in view
+//        //consider also including the whole path in the identifier
+//        product.setImageIdentifier(product.getName() + RandomStringUtils.randomAlphanumeric(17));
+//
+//        try {
+//            File file = productService.processImage(product, rootDirectory);
+//            System.out.println(file.getAbsolutePath());
+//        } catch(IncorrectFileTypeException e) {
+//            //user entered a file that's not 'image/pgn' in type
+//            bindingResult.addError(new FieldError("product","productImage", e.getMessage()));
+//            return "product/productForm";
+//        }
+
+//        MultipartFile multipartFile = product.getProductImage();
+//        product.setImageIdentifier(RandomStringUtils.randomAlphanumeric(17) + ".png");
+//        saveFile(multipartFile, product.getImageIdentifier());
+//        try{
+//            multipartService.store(file);
+//            files.add(file.getOriginalFilename());
+//            product.setImageIdentifier("img/"+filename);
+//
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }
+//        Files.copy(file.getInputStream(), this.rootLocation.resolve(filename),
+//                StandardCopyOption.REPLACE_EXISTING);
+
+
+        MultipartFile productImage = product.getProductImage();
+        String uploadLocation = "src/main/resources/static/images/";
+        String imageName = "";
+        if (productImage != null) {
+            if (productImage.getContentType().contains("image/")) {
+                System.out.println("Image is not null. " + productImage.getContentType());
+                try {
+                    imageName = UUID.randomUUID().toString() +productImage.getOriginalFilename();
+                    imageName = imageName.toLowerCase().replaceAll(" ", "-");
+                    System.out.println(uploadLocation + imageName);
+                    FileOutputStream output = new FileOutputStream(uploadLocation+imageName);
+                    //System.out.println(uploadLocation + imageName+" 2nd");
+                    // productImage.transferTo(new File(uploadLocation+imageName));
+                    output.write(productImage.getBytes());
+                    System.out.println("Image Uploaded");
+                } catch (Exception e) {
+                    throw new RuntimeException("Problem on saving product picture.", e);
+                }
+            } else {
+                throw new WrongImageException();
+            }
+        } else {
+            System.out.println("Please select image.");
+        }
+        product.setImageIdentifier("img/" + imageName);
+        productService.save(product);
+        redirectAttributes.addFlashAttribute("product", product);
+/*
+
+        redirect to single product display page url : PRG
+*/
+
+        return "/seller/singleproduct";
+    }
+
+    @GetMapping("/product/edit/{productId}")
+    public String updateProduct(@PathVariable("productId") long productId, Model model) {
+        Product product = productService.getProduct(productId);
+        return "sellers/edit-product";
+    }
+
     private Seller getLoggedInSeller(HttpSession session) {
         return Optional.ofNullable((Seller)session.getAttribute("loggedInSeller"))
                     .orElseThrow(SessionlessUserException::new);
     }
+
 
 }

@@ -2,7 +2,6 @@ package edu.miu.simpleshop.controller;
 
 import edu.miu.simpleshop.domain.Buyer;
 import edu.miu.simpleshop.domain.Seller;
-import edu.miu.simpleshop.service.BuyerService;
 import edu.miu.simpleshop.service.CategoryService;
 import edu.miu.simpleshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class LoginController {
+public class HomeController {
 
     @Autowired
-    private ProductService service;
+    private ProductService productService;
 
     @Autowired
     private CategoryService categoryService;
@@ -24,9 +23,9 @@ public class LoginController {
     public String getIndex(Model model){
         Buyer buyer = new Buyer();
         Seller seller = new Seller();
-        model.addAttribute("productsHome",service.getAllUnconfirmedProducts());
+        model.addAttribute("productsHome", productService.getAllUnconfirmedProducts());
         model.addAttribute("categories", categoryService.getAllCategories() );
-        model.addAttribute("productsCount", service.getAllUnconfirmedProducts().size());
+        model.addAttribute("productsCount", productService.getAllUnconfirmedProducts().size());
         model.addAttribute("buyerRegister", buyer);
         model.addAttribute("sellerRegister", seller);
         //model.addAttribute("productsCount", service.getAllUnconfirmedProducts().size());
@@ -41,7 +40,7 @@ public class LoginController {
 
 
 
-    @GetMapping(value = "/login")
+    @GetMapping("/login")
     public String loginPage(@RequestParam(value = "error", required = false) String error,
                             @RequestParam(value = "logout", required = false) String logout,
                             Model model) {
@@ -56,10 +55,21 @@ public class LoginController {
         return "login";
     }
 
-
-
     @GetMapping("/denied")
     public String accessDenied(){
         return "accessDenied";
+    }
+
+
+    @GetMapping("/products")
+    public String getProductsByCategory(@RequestParam("category") Long id, Model model){
+        model.addAttribute("productsFromCat", productService.getByCategoryId(id));
+        return "product/singlecategory";
+    }
+
+    @GetMapping("/products/productList")
+    public String getAllProducts(Model model){
+        model.addAttribute("productsAll", productService.getAllUnconfirmedProducts());
+        return "product/productList";
     }
 }
