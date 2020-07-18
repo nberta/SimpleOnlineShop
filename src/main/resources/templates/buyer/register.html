@@ -19,18 +19,22 @@
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="icon_profile"></i></span>
-                            <input type="text" th:field="*{user.username}" name="username" class="form-control" placeholder="*Username" autofocus="">
+                            <input required type="text" th:field="*{user.username}" name="username" class="form-control" placeholder="*Username" autofocus="">
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-                            <input name="password" type="password" th:field="*{user.password}" class="form-control" placeholder="*Password">
+                            <input required name="password" type="password" th:field="*{user.password}" class="form-control" placeholder="*Password">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                            <input required name="email" type="email" th:field="*{user.email}" class="form-control" placeholder="*Email">
                         </div>
                         <div class="input-group">
                             <label>Shipping Address</label>
-                            <input type="text" th:field="*{shippingAddress.street}" id="sStreet" class="form-control" placeholder="*Street">
-                            <input type="text" th:field="*{shippingAddress.city}" id="sCity" class="form-control" placeholder="*City">
-                            <input type="text" th:field="*{shippingAddress.state}" id="sState" class="form-control" placeholder="*State">
-                            <input type="text" th:field="*{shippingAddress.zip}" id="sZip" class="form-control" placeholder="*Zipcode">
+                            <input required type="text" th:field="*{shippingAddress.street}" id="sStreet" class="form-control" placeholder="*Street">
+                            <input required type="text" th:field="*{shippingAddress.city}" id="sCity" class="form-control" placeholder="*City">
+                            <input required type="text" th:field="*{shippingAddress.state}" id="sState" class="form-control" placeholder="*State">
+                            <input required type="text" th:field="*{shippingAddress.zip}" id="sZip" class="form-control" placeholder="*Zipcode">
                         </div>
                         <!--Same as shipping code -->
                         <input type="checkbox" onclick="SetBilling(this.checked);"/> Same as Shipping
@@ -45,7 +49,9 @@
                         </div>
                         <button class="btn btn-info btn-lg btn-block" type="submit">Signup</button>
                     </div>
+                </form>
             </div>
+        </section>
     </div>
     <div class="col-lg-4">
         <section class="panel">

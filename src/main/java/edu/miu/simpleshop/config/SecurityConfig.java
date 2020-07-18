@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .antMatchers("/sellers/register", "/buyers/register").permitAll()
+                .antMatchers("/sellers/register", "/buyers/register", "/signup").permitAll()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/buyers/**", "/sellers/profile/**").hasAuthority("BUYER")
                 .antMatchers("/sellers/**").hasAuthority("SELLER")
@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and().formLogin()
                 .loginPage("/login").successHandler(successHandler).permitAll()
-                .and().logout().permitAll();
+                .and().logout().logoutSuccessUrl("/").permitAll();
 
 
         http.csrf().disable();

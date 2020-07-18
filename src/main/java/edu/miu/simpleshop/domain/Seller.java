@@ -1,5 +1,7 @@
 package edu.miu.simpleshop.domain;
 
+import edu.miu.simpleshop.domain.enums.Role;
+
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -59,6 +61,7 @@ public class Seller{
 
     public void setUser(User user) {
         this.user = user;
+        user.setRole(Role.SELLER);
     }
 
     public boolean isActive() { return this.isActive; }

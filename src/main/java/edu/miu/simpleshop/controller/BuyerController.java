@@ -2,6 +2,7 @@
 package edu.miu.simpleshop.controller;
 
 import edu.miu.simpleshop.domain.*;
+import edu.miu.simpleshop.domain.enums.Role;
 import edu.miu.simpleshop.exception.SessionlessUserException;
 import edu.miu.simpleshop.service.*;
 
@@ -39,6 +40,9 @@ public class BuyerController {
     @Autowired
     private ShoppingCartService shoppingCartService;
 
+    @Autowired
+    private UserService userService;
+
 
     @GetMapping("/register")
     public String getRegistrationForm(@ModelAttribute("buyer") Buyer buyer, Model model) {
@@ -48,13 +52,14 @@ public class BuyerController {
     }
 
     @PostMapping("/register")
-    public String save(@Valid Buyer buyer, RedirectAttributes attributes, Model model) {
-//        if (bindingResult.hasErrors()) return "register";
-        //buyer.setUser(userService.save(buyer.getUser()));
+    public String save(@Valid Buyer buyer, BindingResult bindingResult,
+                       RedirectAttributes attributes, Model model) {
+        if (bindingResult.hasErrors()) return "buyer/register";
+        buyer.getUser().setRole(Role.BUYER);
         buyer = buyerService.save(buyer);
         model.addAttribute("buyer", buyer);
         attributes.addFlashAttribute("buyer", buyer);
-        return "buyer/details";
+        return "redirect:/login";
     }
 
     @GetMapping("/edit/{id}")
