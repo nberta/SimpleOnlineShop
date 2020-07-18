@@ -1,10 +1,6 @@
 package edu.miu.simpleshop.controller;
 
-
-import edu.miu.simpleshop.domain.Buyer;
 import edu.miu.simpleshop.domain.Product;
-import edu.miu.simpleshop.domain.ProductReview;
-import edu.miu.simpleshop.domain.Seller;
 import edu.miu.simpleshop.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,13 +51,13 @@ public class AdminController {
     }
 
     @PostMapping("/reviews/{productReviewId}/approve")
-    public String approveReview(@PathVariable("productReviewId") Long productReviewId, Model model) {
+    public String approveReview(@PathVariable("productReviewId") Long productReviewId) {
         productReviewService.confirm(productReviewId);
         return "redirect:/admin/reviews";
     }
 
     @PostMapping("/reviews/{productReviewId}/reject")
-    public String rejectReview(@PathVariable("productReviewId") Long productReviewId, Model model) {
+    public String rejectReview(@PathVariable("productReviewId") Long productReviewId) {
         productReviewService.delete(productReviewId);
         return "redirect:/admin/reviews";
     }

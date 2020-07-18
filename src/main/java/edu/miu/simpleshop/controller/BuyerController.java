@@ -1,7 +1,6 @@
 
 package edu.miu.simpleshop.controller;
 
-
 import edu.miu.simpleshop.domain.*;
 import edu.miu.simpleshop.exception.SessionlessUserException;
 import edu.miu.simpleshop.service.*;
@@ -114,7 +113,7 @@ public class BuyerController {
     }
 
     @PostMapping("/my-cart/clear")
-    public String clearShoppingCart(Model model, HttpSession session) {
+    public String clearShoppingCart(HttpSession session) {
         Buyer buyer = getLoggedInBuyer(session);
         shoppingCartService.clearShoppingCart(buyer.getShoppingCart());
         return "redirect:/buyers/my-cart";
