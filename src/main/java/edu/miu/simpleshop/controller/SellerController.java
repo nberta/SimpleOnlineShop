@@ -159,7 +159,7 @@ public class SellerController {
     public String saveProduct( Product product, BindingResult bindingResult,
                                RedirectAttributes redirectAttributes, Model model, HttpSession session) {
         if (!getLoggedInSeller(session).isActive())
-            return "redirect:/";
+            return "product/productForm";
 
 //        if (bindingResult.hasErrors()) {
 //            return "product/productForm";
@@ -218,7 +218,7 @@ public class SellerController {
         } else {
             System.out.println("Please select image.");
         }
-        product.setImageIdentifier("img/" + imageName);
+        product.setImageIdentifier("images/" + imageName);
         productService.save(product);
         redirectAttributes.addFlashAttribute("product", product);
 /*
@@ -226,7 +226,7 @@ public class SellerController {
         redirect to single product display page url : PRG
 */
 
-        return "redirect:/";
+        return "product/productForm";
     }
 
     @GetMapping("/product/edit/{productId}")
