@@ -36,10 +36,10 @@
                 <h3>Product Details</h3>
                 <hr/>
                 <div class="tab" th:each="orderLine :${order.orderLines}">
-                    Product Name: <span th:text="${orderLine.product.name}"/> <br/>
-                    Product Price: <span th:text="${orderLine.product.price}"/><br/>
-                    Product Quantity: <span th:text="${orderLine.product.quantity}"/><br/>
-                    Product Description: <span th:text="${orderLine.product.description}"/><br/>
+                    Name: <span th:text="${orderLine.product.name}"/> <br/>
+                    Price: <span th:text="${orderLine.product.price}"/><br/>
+                    Quantity: <span th:text="${orderLine.quantity}"/><br/>
+                    Description: <span th:text="${orderLine.product.description}"/><br/>
                     <p> </p>
                 </div>
                 <hr/>

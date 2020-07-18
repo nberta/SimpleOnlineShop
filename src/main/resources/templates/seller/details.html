@@ -21,13 +21,25 @@
                     <h2>Seller Username: <span th:text="*{user.username}"></span></h2>
                     <h3>Email: <span th:text="*{user.email}" /></h3>
                     <h2>Total Products: <span th:text="*{products.size()}" /></h2>
-                    <p><span class="icon_heart"></span><button class="btn btn-send">Follow</button>
+                    <div th:if="${not followed}">
+                        <form action="#" th:action="@{/buyers/following/{id}/follow(id=*{id})}" method="post">
+                            <span class="icon_heart"></span>
+                            <button type="submit" class="btn btn-send">Follow</button>
+                        </form>
+                    </div>
+                    <div th:if="${followed}">
+                        <form action="#" th:action="@{/buyers/following/{id}/unfollow(id=*{id})}" method="post">
+                            <span class="icon_heart"></span>
+                            <button type="submit" class="btn btn-send">Unfollow</button>
+                        </form>
+                    </div>
+
+
                     <br/>
                     <h3>List of Products</h3>
-                    <div th:each="${sellerPro.products}" class="col-lg-5">
+                    <div th:each="product :${sellerPro.products}" class="col-lg-5">
+                        <span th:text="${product.name}"/> for <span th:text="${product.price}"/><br/>
                     </div>
-                    <br />
-                    <h4> Add Review!</h4>
                 </div>
             </div>
         </div>
@@ -36,8 +48,8 @@
                 <header class="panel-heading">
                     Recent Reviews!
                 </header>
-                <ul class="list-group" th:each="products: ${sellerPro.products}" >
-                    <p class="list-group-item" th:text="${products.productReviews}"></p>
+                <ul class="list-group" th:each="comment :${reviews}" >
+                    <li class="list-group-item" th:text="${comment.review}"></li>
                 </ul>
             </section>
         </div>

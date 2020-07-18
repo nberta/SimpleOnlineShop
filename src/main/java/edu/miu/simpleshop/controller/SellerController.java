@@ -6,6 +6,7 @@ import edu.miu.simpleshop.domain.Seller;
 import edu.miu.simpleshop.domain.User;
 import edu.miu.simpleshop.exception.SessionlessUserException;
 import edu.miu.simpleshop.exception.WrongImageException;
+import edu.miu.simpleshop.service.BuyerService;
 import edu.miu.simpleshop.service.OrderLineService;
 import edu.miu.simpleshop.service.ProductService;
 import edu.miu.simpleshop.service.SellerService;
@@ -22,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/sellers")
@@ -29,6 +31,9 @@ public class SellerController {
 
     @Autowired
     private SellerService sellerService;
+
+    @Autowired
+    private BuyerService buyerService;
 
     @Autowired
     private ProductService productService;
@@ -59,8 +64,17 @@ public class SellerController {
     }
 
     @GetMapping("/profile/{id}")
-    public String sellerProfile(@PathVariable Long id, Model model){
-        model.addAttribute("sellerPro", sellerService.getById(id));
+    public String sellerProfile(@PathVariable Long id, Model model, HttpSession session){
+        Buyer buyer = buyerService.getById(Optional
+                .ofNullable((Buyer)session.getAttribute("loggedInBuyer"))
+                .orElseThrow(SessionlessUserException::new).getId());
+        Seller seller = sellerService.getById(id);
+        model.addAttribute("followed", buyer.isFollowing(seller));
+        model.addAttribute("sellerPro", seller);
+        model.addAttribute("reviews",
+                seller.getProducts().stream()
+                        .flatMap(p -> p.getProductReviews().stream())
+                        .collect(Collectors.toList()));
         return "seller/details";
     }
 
@@ -223,8 +237,8 @@ public class SellerController {
     }
 
     private Seller getLoggedInSeller(HttpSession session) {
-        return Optional.ofNullable((Seller)session.getAttribute("loggedInSeller"))
-                    .orElseThrow(SessionlessUserException::new);
+        return sellerService.getById(Optional.ofNullable((Seller)session.getAttribute("loggedInSeller"))
+                    .orElseThrow(SessionlessUserException::new).getId());
     }
 
 

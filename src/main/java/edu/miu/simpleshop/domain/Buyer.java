@@ -35,7 +35,7 @@ public class Buyer{
         this.fullName = fullName;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer", orphanRemoval = true)
     private List<Follow> follows = new ArrayList<>();
 
     @OneToMany (cascade = CascadeType.ALL)
@@ -47,7 +47,7 @@ public class Buyer{
     @OneToOne(cascade = CascadeType.ALL)
     private Address billingAddress;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer", orphanRemoval = true)
     private List<ProductReview> productReviews = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -138,16 +138,18 @@ public class Buyer{
         this.follows.add(follow);
     }
 
-    public void unfollowSeller(Seller seller){
-     //  this.follows.remove(followSeller(follow))
-    }
     public void unfollowSeller(Long id) {
-        this.follows = follows.stream().filter(f -> !f.getId().equals(id)).collect(Collectors.toList());
+        follows.removeIf(f -> f.getSeller().getId().equals(id));
     }
     public boolean isActive() { return this.isActive; }
 
     public void setIsActive(boolean isActive) { this.isActive = isActive; }
 
     public void addOrder(Order o) { this.orders.add(o); }
+
+    public boolean isFollowing(Seller seller) {
+        return follows.stream().map(Follow::getSeller)
+                .anyMatch(s -> s.getId().equals(seller.getId()));
+    }
 }
 

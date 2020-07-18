@@ -37,11 +37,20 @@
                 </div>
                 <div class="dress-card-body">
                     <h3 class="dress-card-title" th:text="${products.name}"></h3>
-                    &nbsp;
+
+                    <div th:if="${itemId.id == products.id}" th:text="${itemId.message}" style="color: red">
+                        Feedback message
+                    </div>&nbsp;
                     <h4> On Stock: <span th:text="${products.quantity}"></span> </h4>
                     <h3>$<span class="dress-card-price" th:text="${products.price}" style="color: #4da944; font-size: large"></span></h3>
                     <div class="row">
-                        <a th:href="@{/cart/add/{id}(id=${products.id})}"></a><button class="btn btn-primary centered"><span class="icon_cart mr-2"></span>Add to Cart!</button>
+                        <form action="#" th:action="@{/buyers/cart/add/{id}(id=${products.id})}" method="post">
+                            <label for="quantity">Quantity: </label>
+                            <input required id="quantity" type="number" name="quantity" class="form-control"/>
+                            <button type="submit" class="btn btn-primary centered">
+                                <span class="icon_cart mr-2"></span>Add to Cart!
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

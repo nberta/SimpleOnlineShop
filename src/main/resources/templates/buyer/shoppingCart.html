@@ -49,7 +49,7 @@
 <section class="wrapper" layout:fragment="wrapper">
     <div class="col-lg-8">
 <div layout:fragment="main-content" class="row" style="margin-left: 4%">
-    <div  th:if="${errorMessage}">
+    <div  th:if="${errorMessage != null and errorMessage != ''}">
         <p class="alert alert-danger" > <span th:text="${errorMessage}" th:remove="tag" ></span></p>
     </div>
     <div class="card"  style="width: 80%;">
@@ -81,7 +81,7 @@
                              width="200" height="200"  alt="...">
                     </td>
                     <td th:text="${cartItem.product.description}" style="text-align: center; vertical-align: middle">Text ...</td>
-                    <td class="text-center" th:text="${cartItem.product.quantity}" style="text-align: center; vertical-align: middle">Text ...</td>
+                    <td class="text-center" th:text="${cartItem.quantity}" style="text-align: center; vertical-align: middle">Text ...</td>
                     <td class="text-right"th:text="${cartItem.product.price}" style="text-align: center; vertical-align: middle"> Text ...</td>
                     <td style="text-align: center; vertical-align: middle">
                         <form action="#" th:action="@{/buyers/my-cart/remove/{id}(id=${cartItem.id})}" method="post">
