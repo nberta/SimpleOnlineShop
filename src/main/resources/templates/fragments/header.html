@@ -28,28 +28,36 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <a th:href="@{/}" class="logo">Simple Online<span class="lite">Shop</span></a>
+
         </div>
         <ul class="nav navbar-nav">
             <li class="active"><a th:href="@{/}">Home</a></li>
             <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Buyer<span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">Add Product</a></li>
-                    <li><a href="#">Orders</a></li>
-                    <li><a href="#">Profile</a></li>
+                    <li><a th:href="@{/}">All Products</a></li>
+                    <li><a th:href="@{/buyers/orders}">Orders</a></li>
+<!--                    <li><a th:href="@{/profile/{id}(id=${buyer.id})}">Profile</a></li>-->
                 </ul>
             </li>
-            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Seller<span class="caret"></span></a>
+            <li sec:authorize="hasAuthority('SELLER')" class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Seller<span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">Profile</a></li>
-                    <li><a href="#">Orders</a></li>
-                    <li><a href="#">All Products</a></li>
+<!--                    <li><a th:href="@{/profile/{id}(id=${seller.id})}">Profile</a></li>-->
+                    <li><a th:href="@{/sellers/my-orders}">Orders</a></li>
+                    <li><a th:href="@{/sellers/product/add}">Add Product</a></li>
                 </ul>
+            </li>
+            <li sec:authorize="hasAuthority('ADMIN')" class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li><a th:href="@{/admin/pending-buyers}">Pending Buyers</a></li>
+                <li><a th:href="@{/admin/pending-sellers}">Pending Sellers</a></li>
+                <li><a th:href="@{/admin/reviews}">Pending Reviews</a></li>
+            </ul>
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a th:href="@{/signup}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
             <li>
-                <a sec:authorize="isAnonymous()" th:href="@{/login}" data-toggle="modal" data-target="#loginModal" class="glyphicon glyphicon-log-in">Login</a>
+                <a sec:authorize="isAnonymous()" th:href="@{/login}">Login</a>
                 <a sec:authorize="isAuthenticated()" class= "glyphicon glyphicon-log-out" th:href="@{/logout}">Logout<</a>
 
             </li>
@@ -59,6 +67,7 @@
         </ul>
         </div>
     </div>
+    <div class="modal"  th:replace="fragments/modals :: loginModal"></div>
 </nav>
 
 

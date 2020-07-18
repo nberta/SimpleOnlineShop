@@ -34,12 +34,6 @@ public class UserServiceImpl implements UserService {
         return repository.save(user);
     }
 
-    //I made this in order to get the username when they are logged in.
-    @Override
-    public User getSignedInUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return this.getByUserName(auth.getName());
-    }
 
 
 }
