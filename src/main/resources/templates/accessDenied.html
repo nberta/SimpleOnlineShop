@@ -1,15 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/main}"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Access Denied Page</title>
 </head>
 <body>
+<section class="wrapper" layout:fragment="wrapper">
 
-<h2>Sorry, you do not have permission to view this page.</h2>
+    <h2>Sorry, you do not have permission to view this page.</h2>
 
-Click <a th:href="@{/}">here</a>
-to go back to the Homepage.
+    Click <a th:href="@{/}">here</a>
+    to go back to the Homepage.
+
+</section>
 
 </body>
 </html>

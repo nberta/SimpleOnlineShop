@@ -86,20 +86,20 @@ public class BuyerController {
         return "buyer/mysellers";
     }
 
-    @GetMapping("/following/{id}/follow")
+    @PostMapping("/following/{id}/follow")
     public String followSeller(@PathVariable("id") Long id, Model model, HttpSession session) {
         Buyer buyer = getLoggedInBuyer(session);
         buyerService.followSeller(buyer, id);
         model.addAttribute("follows", buyerService.getFollowedSellersForBuyer(buyer.getId()));
-        return "buyer/mysellers";
+        return "redirect:/buyers/following";
     }
 
-    @GetMapping("/following/{id}/unfollow")
+    @PostMapping("/following/{id}/unfollow")
     public String unfollowSeller(@PathVariable("id") Long id, Model model, HttpSession session) {
         Buyer buyer = getLoggedInBuyer(session);
         buyerService.unfollowSeller(buyer, id);
         model.addAttribute("follows", buyerService.getFollowedSellersForBuyer(buyer.getId()));
-        return "buyer/mysellers";
+        return "redirect:/buyers/following";
     }
 
 
@@ -107,7 +107,7 @@ public class BuyerController {
     @GetMapping("/my-cart")
     public String loadShoppingCart(Model model,
                                    @ModelAttribute("errorMessage") String errorMessage, HttpSession session) {
-        Buyer buyer = buyerService.getById(getLoggedInBuyer(session).getId());
+        Buyer buyer = getLoggedInBuyer(session);
         model.addAttribute("cartItems", buyer.getShoppingCart().getCartItems());
         return "buyer/shoppingCart";
     }
@@ -120,13 +120,21 @@ public class BuyerController {
     }
 
     @PostMapping("/cart/add/{id}")
-    public String addToCart(@PathVariable("id") Long productId,
+    public String addToCart(@PathVariable("id") Long productId, RedirectAttributes redirectAttributes,
                             @RequestParam("quantity") Integer quantity, HttpSession session) {
         Buyer buyer = getLoggedInBuyer(session);
-        buyer.getShoppingCart().addCartItem(new CartItem(productService.getProduct(productId), quantity));
+        Product product = productService.getProduct(productId);
+        if (quantity == null || quantity <= 0 || product.getQuantity() < quantity ) {
+            redirectAttributes.addFlashAttribute("itemId",
+                    new IdHolder(productId, "Invalid quantity"));
+            return "redirect:/";
+        }
+        buyer.getShoppingCart().addCartItem(new CartItem(product, quantity));
+        buyerService.save(buyer);
 
-        //redirect to whatever page they were on
-        return "redirect:/buyers/my-cart";
+        redirectAttributes.addFlashAttribute("itemId",
+                new IdHolder(productId, "Successfully added"));
+        return "redirect:/";
     }
 
     @PostMapping("/my-cart/remove/{id}")
@@ -138,7 +146,6 @@ public class BuyerController {
     @PostMapping("/my-cart/make-purchase")
     public String makePurchase(RedirectAttributes redirectAttributes, HttpSession session) {
         Buyer buyer = getLoggedInBuyer(session);
-        buyer = buyerService.getById(buyer.getId());
         List<CartItem> itemsForCheckOut = buyer.getShoppingCart().getCartItems();
         if (itemsForCheckOut.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage",
@@ -158,7 +165,7 @@ public class BuyerController {
             current.removeIf(refuse::contains);
             buyerService.save(buyer);
             redirectAttributes.addFlashAttribute("errorMessage",
-                    "Order failed. There were products in your cart that were not available");
+                    "Order failed. There were products in your cart that are no longer not available");
             return "redirect:/buyers/my-cart";
         }
     }
@@ -179,14 +186,13 @@ public class BuyerController {
     @GetMapping("/orders")
     public String orderList(Model model, HttpSession session) {
         Buyer buyer = getLoggedInBuyer(session);
-        buyer = buyerService.getById(buyer.getId());
         model.addAttribute("orders", buyer.getOrders());
         return "buyer/orders";
     }
 
     @GetMapping("/orders/{id}")
     public String orderDetails(@PathVariable("id") Long orderId, Model model, HttpSession session) {
-        Buyer buyer = buyerService.getById(getLoggedInBuyer(session).getId());
+        Buyer buyer = getLoggedInBuyer(session);
         for (Order o : buyer.getOrders())
             if (o.getId().equals(orderId))
                 model.addAttribute("order", o);
@@ -218,8 +224,9 @@ public class BuyerController {
     }
 
     private Buyer getLoggedInBuyer(HttpSession session) {
-        return Optional.ofNullable((Buyer)session.getAttribute("loggedInBuyer"))
-                .orElseThrow(SessionlessUserException::new);
+        return buyerService.getById(Optional
+                .ofNullable((Buyer)session.getAttribute("loggedInBuyer"))
+                .orElseThrow(SessionlessUserException::new).getId());
     }
 
 }
