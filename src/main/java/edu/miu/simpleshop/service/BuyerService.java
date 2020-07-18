@@ -13,7 +13,7 @@ public interface BuyerService {
     Buyer getById(Long id);
     ShoppingCart getShoppingCartForBuyer(Buyer buyer);
     ShoppingCart saveShoppingCart(Buyer buyer);
-    CartItem removeCartItem(Buyer buyer, Long id);
+    void removeCartItem(Buyer buyer, Long id);
     void followSeller(Buyer buyer, Long sellerId);
     void unfollowSeller (Buyer buyer, Long sellerId);
     Collection<Seller> getFollowedSellersForBuyer(Long id);

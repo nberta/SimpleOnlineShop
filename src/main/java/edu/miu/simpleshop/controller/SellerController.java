@@ -1,8 +1,10 @@
 package edu.miu.simpleshop.controller;
 
+import edu.miu.simpleshop.domain.Buyer;
 import edu.miu.simpleshop.domain.Product;
 import edu.miu.simpleshop.domain.Seller;
 import edu.miu.simpleshop.domain.User;
+import edu.miu.simpleshop.exception.SessionlessUserException;
 import edu.miu.simpleshop.service.OrderLineService;
 import edu.miu.simpleshop.service.ProductService;
 import edu.miu.simpleshop.service.SellerService;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/sellers")
@@ -82,14 +85,14 @@ public class SellerController {
 
     @GetMapping("/my-products")
     public String sellerProductPage(Model model, HttpSession session) {
-        Seller seller = (Seller)session.getAttribute("loggedInSeller");
+        Seller seller = getLoggedInSeller(session);
         model.addAttribute("products", productService.getBySellerId(seller.getId()));
         return "seller/singleproduct";
     }
 
     @DeleteMapping("/product/remove/{productId}")
     public String deleteProduct(@PathVariable("productId") Long productId, HttpSession session) {
-        Seller seller = (Seller)session.getAttribute("loggedInSeller");
+        Seller seller = getLoggedInSeller(session);
         Product product = productService.getProduct(productId);
         if (product.getSeller().getId().equals(seller.getId()))
             productService.delete(productId);
@@ -98,23 +101,28 @@ public class SellerController {
 
     @GetMapping("/my-orders")
     public String sellerOrders(Model model, HttpSession session) {
-        Seller seller = (Seller)session.getAttribute("loggedInSeller");
+        Seller seller = getLoggedInSeller(session);
         model.addAttribute("orderLines", orderLineService.findAllByOrderId(seller.getId()));
         return "seller/orders";
     }
 
     @GetMapping("/orders/{id}/set-status/shipped")
     public String sellerStatusUpdate(@PathVariable("id") Long id, HttpSession session) {
-        Seller seller = (Seller)session.getAttribute("loggedInSeller");
+        Seller seller = getLoggedInSeller(session);
         orderLineService.updateToShipped(id, seller);
         return "redirect:/sellers/my-orders";
     }
     @GetMapping("/orders/{id}/set-status/canceled")
     public String sellerCancelOrder(@PathVariable("id") Long id,
                                     HttpSession session) {
-        Seller seller = (Seller)session.getAttribute("loggedInSeller");
+        Seller seller = getLoggedInSeller(session);
         sellerService.cancelOrderLineForSeller(id, seller);
         return "redirect:/sellers/my-orders";
+    }
+
+    private Seller getLoggedInSeller(HttpSession session) {
+        return Optional.ofNullable((Seller)session.getAttribute("loggedInSeller"))
+                    .orElseThrow(SessionlessUserException::new);
     }
 
 }

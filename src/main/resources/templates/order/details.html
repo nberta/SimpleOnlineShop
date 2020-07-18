@@ -24,6 +24,10 @@
                     Total Price:<span th:text="*{totalCost}"/>
                 </p>
 
+                <p>
+                    Gain points from purchase: <span th:text="*{gainPoints}"/>
+                </p>
+
                 <h4>Shipping Address:</h4>
                 <p class="tab" th:object="${order.shippingAddress}">
                     Street: <span th:text="*{street}"/> <br/>

@@ -22,6 +22,8 @@ public class Order  {
 
    private Double totalCost;
 
+   private Integer gainPoints;
+
    @OneToOne(cascade = CascadeType.ALL)
    private Address shippingAddress;
 
@@ -83,5 +85,13 @@ public class Order  {
 
    public void setTotalCost(Double totalCost) {
       this.totalCost = totalCost;
+   }
+
+   public Integer getGainPoints() {
+      return gainPoints;
+   }
+
+   public void setGainPoints(Integer gainPoints) {
+      this.gainPoints = gainPoints;
    }
 }

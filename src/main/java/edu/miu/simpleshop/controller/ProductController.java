@@ -38,15 +38,6 @@ public class ProductController {
     @Autowired
     private CategoryService categoryService;
 
-    //@Autowired
- //   private MultipartHelper multipartService;
-
-
-    public String mainPage(@RequestParam(value = "category", required = false) Integer category, Model model) {
-        List<Product> products = productService.getAllUnconfirmedProducts();
-        model.addAttribute("products", products);
-        return "index";
-    }
 
     @GetMapping("/product/add")
     public String addProduct(@ModelAttribute("product") Product product) throws IOException {

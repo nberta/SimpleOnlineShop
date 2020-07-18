@@ -82,7 +82,6 @@ public class BuyerServiceImpl implements BuyerService {
         return buyer;
     }
 
-
     @Override
     public void followSeller(Buyer buyer, Long sellerId) {
         Optional<Seller> seller = sellerRepository.findById(sellerId);
@@ -107,11 +106,10 @@ public class BuyerServiceImpl implements BuyerService {
     }
 
     @Override
-    public CartItem removeCartItem(Buyer buyer, Long id) {
+    public void removeCartItem(Buyer buyer, Long id) {
         ShoppingCart shoppingCart = buyer.getShoppingCart();
-        CartItem cartItem = shoppingCart.removeCartItemById(id);
+        shoppingCart.removeCartItemById(id);
         shoppingCartRepository.save(shoppingCart);
-        return cartItem;
     }
 
     @Override

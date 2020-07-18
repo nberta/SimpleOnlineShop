@@ -14,7 +14,7 @@ public interface OrderService {
     Order getById(Long id);
     List<Order> getAllOrders();
     Order save(Order order);
-    Order cancel(Long id);
+    Order cancel(Long id, Buyer buyer);
     Order delete(Long id);
     Collection<OrderLine> getOrderLinesByOrderId(Long id);
     boolean canMakeOrder(Collection<CartItem> cartItems, Collection<CartItem> possibleRefuse);
