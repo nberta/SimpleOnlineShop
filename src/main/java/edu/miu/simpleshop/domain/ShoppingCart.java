@@ -46,20 +46,11 @@ public class ShoppingCart {
         this.buyer = buyer;
     }
 
-    public CartItem removeLastCartItem() {
-        if (!cartItems.isEmpty()) return null;
-        else return cartItems.remove(cartItems.size() - 1);
-    }
-
-    public CartItem removeCartItemById(Long id) {
-        for (CartItem c : cartItems)
-            if (c.getId().equals(id)) return c;
-            return null;
+    public void removeCartItemById(Long id) {
+        cartItems.removeIf(c -> c.getId().equals(id));
     }
 
     public void clear() {
-        int size = cartItems.size();
-        while (size-- > 0)
-            cartItems.remove(size);
+        cartItems.removeIf(c -> true);
     }
 }

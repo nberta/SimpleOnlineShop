@@ -55,39 +55,42 @@
         <p class="alert alert-danger" > <span th:text="${errorMessage}" th:remove="tag" ></span></p>
     </div>
     <div class="card"  style="width: 80%;">
-
-        <div class="card-body">
-            <h4>Shopping Cart</h4>
-            <p><hr>
+        <h4>Shopping Cart</h4>
+        <hr/>
+        <div th:if="${not #lists.isEmpty(cartItems)}" class="card-body">
+            <p>
                 You have items in your shopping cart.
-                <button  class="float-right btn btn-light btn-sm">Clear Shopping Cart</button>
             </p>
+            <form action="#" th:action="@{/buyers/my-cart/clear}" method="post">
+                <input type="submit" class="float-right btn btn-danger btn-sm" value="Clear Shopping Cart"/>
+            </form>
         </div>
-        <table class="table">
+        <div th:if="${#lists.isEmpty(cartItems)}">Your cart is empty...</div>
+        <table th:if="${not #lists.isEmpty(cartItems)}" class="table">
             <thead>
-            <tr>
-                <th></th>
-                <th>Product</th>
-                <th class="text-center" >Quantity</th>
-                <th class="text-right" >Price</th>
-                <th>Action</th>
-            </tr>
+                <tr>
+                    <th></th>
+                    <th>Product</th>
+                    <th class="text-center" >Quantity</th>
+                    <th class="text-right" >Price</th>
+                    <th>Action</th>
+                </tr>
             </thead>
             <tbody>
-            <tr th:each="cartItem :${cartItems}">
-                <td>
-                    <img th:src="@{'/img/' + ${cartItem.product.imageIdentifier}+'.png'}"  class="img-fluid img-thumbnail"
-                         width="200" height="200"  alt="...">
-                </td>
-                <td th:text="${cartItem.product.description}" style="text-align: center; vertical-align: middle">Text ...</td>
-                <td class="text-center" th:text="${cartItem.product.quantity}" style="text-align: center; vertical-align: middle">Text ...</td>
-                <td class="text-right"th:text="${cartItem.product.price}" style="text-align: center; vertical-align: middle"> Text ...</td>
-                <td style="text-align: center; vertical-align: middle">
-                    <form action="#" th:action="@{/buyers/my-cart/remove/{id}(id=${cartItem.id})}" method="post">
-                        <input type="submit" value="Remove">
-                    </form>
-                </td>
-            </tr>
+                <tr th:each="cartItem :${cartItems}">
+                    <td>
+                        <img th:src="@{'/img/' + ${cartItem.product.imageIdentifier}}"  class="img-fluid img-thumbnail"
+                             width="200" height="200"  alt="...">
+                    </td>
+                    <td th:text="${cartItem.product.description}" style="text-align: center; vertical-align: middle">Text ...</td>
+                    <td class="text-center" th:text="${cartItem.product.quantity}" style="text-align: center; vertical-align: middle">Text ...</td>
+                    <td class="text-right"th:text="${cartItem.product.price}" style="text-align: center; vertical-align: middle"> Text ...</td>
+                    <td style="text-align: center; vertical-align: middle">
+                        <form action="#" th:action="@{/buyers/my-cart/remove/{id}(id=${cartItem.id})}" method="post">
+                            <input type="submit" value="Remove">
+                        </form>
+                    </td>
+                </tr>
             </tbody>
             <tfoot>
             <tr>

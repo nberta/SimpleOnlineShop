@@ -2,6 +2,7 @@ package edu.miu.simpleshop.service.impl;
 
 import edu.miu.simpleshop.domain.*;
 import edu.miu.simpleshop.domain.enums.OrderStatus;
+import edu.miu.simpleshop.exception.IllegalAccessAttemptException;
 import edu.miu.simpleshop.exception.IllegalCustomerStateException;
 import edu.miu.simpleshop.repository.OrderLineRepository;
 import edu.miu.simpleshop.repository.OrderRepository;
@@ -55,14 +56,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order cancel(Long id) {
-        Order order = getById(id);
-        for (OrderLine ol : order.getOrderLines()) {
-            if (!ol.getStatus().equals(OrderStatus.SHIPPED) || !ol.getStatus().equals(OrderStatus.DELIVERED))
-                ol.setStatus(OrderStatus.CANCELLED);
+    public Order cancel(Long id, Buyer buyer) {
+        if (buyer.getOrders().stream().anyMatch(o -> o.getId().equals(id))) {
+            Order order = getById(id);
+            for (OrderLine ol : order.getOrderLines()) {
+                if (!ol.getStatus().equals(OrderStatus.SHIPPED) || !ol.getStatus().equals(OrderStatus.DELIVERED))
+                    ol.setStatus(OrderStatus.CANCELLED);
+            }
+            save(order);
+            return order;
         }
-        save(order);
-        return order;
+        throw new IllegalAccessAttemptException("Order is not accessible to you.");
     }
 
     @Override
@@ -99,10 +103,11 @@ public class OrderServiceImpl implements OrderService {
             billingInfo.setBillingAddress(buyer.getBillingAddress());
 
             Order order = new Order(orderLines, billingInfo, buyer.getShippingAddress());
-            orderRepository.save(order);
+            order.setGainPoints((int)Math.round(order.getTotalCost()/10));
             ReceiptMaker.prepareOrderReceipt(order);
 
-            buyer.setGainPoints(buyer.getGainPoints() + (int)Math.floor(order.getTotalCost()/10));
+            buyer.addOrder(order);
+            buyer.setGainPoints(buyer.getGainPoints() + order.getGainPoints());
             shoppingCartService
                     .clearShoppingCart(shoppingCartService
                             .getById(buyer.getShoppingCart().getId()));

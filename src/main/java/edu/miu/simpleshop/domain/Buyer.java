@@ -138,5 +138,6 @@ public class Buyer{
 
     public void setIsActive(boolean isActive) { this.isActive = isActive; }
 
+    public void addOrder(Order o) { this.orders.add(o); }
 }
 
