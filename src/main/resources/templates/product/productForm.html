@@ -1,3 +1,14 @@
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html style="overflow: hidden;" xmlns:th="http://www.thymeleaf.org/" lang="en"><head>
     <meta charset="utf-8">
@@ -133,7 +144,7 @@
             <!--overview start-->
             <div class="row">
                 <div class="col-lg-07">
-                    <h3 class="page-header"><i class="fa fa-files-o"></i> Form Validation</h3>
+                    <h3 class="page-header"><i class="fa fa-files-o"></i> Add Product</h3>
                     <ol class="breadcrumb">
                         <li><i class="fa fa-home"></i><a th:href="@{/}">Home</a></li>
                         <li><i class="icon_document_alt"></i>Signup</li>
@@ -151,7 +162,7 @@
                         <header class="panel-heading">Please fill out the details for your product</header>
                         <div class="panel-body">
                             <div class="form">
-                                <form class="form-validate form-horizontal" th:object="${product}" action="#" th:action="@{/products/product/add}" enctype="multipart/form-data" method="post">
+                                <form class="form-validate form-horizontal" th:object="${product}" action="#" th:action="@{/sellers/product/add}" enctype="multipart/form-data" method="post">
                                     <div class="error" th:if="${#fields.hasErrors('*')}">
                                         <p th:each="error :${#fields.errors('*')}" th:text="${error}"></p>
                                     </div>
