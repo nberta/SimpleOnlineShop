@@ -139,7 +139,6 @@ public class SellerController {
         return "redirect:/sellers/my-orders";
     }
 
-
     @GetMapping("/product/add")
     public String addProduct(@ModelAttribute("product") Product product, HttpSession session)  {
         if (!getLoggedInSeller(session).isActive())
