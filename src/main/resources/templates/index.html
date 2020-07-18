@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layouts/main}"
-      xmlns:th="http://www.thymeleaf.org" >
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
     <title>SimpleOnlineShop - Home</title>
@@ -30,7 +30,7 @@
         <div class="col-lg-3" th:each="products: ${productsHome}">
             <div class="dress-card">
                 <div class="dress-card-head">
-                    <a th:href="@{/thisProduct/{id}(id=${products.id})}"><img class="dress-card-img-top" th:src="@{/images/cool-status.jpg}"></a>
+                    <a th:href="@{/thisProduct/{id}(id=${products.id})}"><img class="dress-card-img-top" th:src="@{/images/{value}(value=${products.getImageIdentifier()})}"></a>
                     <div class="surprise-bubble"><span class="dress-card-heart">
                 <i class="fas fa-heart"></i>
               </span><a th:href="@{/sellers/profile/{id}(id=${products.seller.id})}"> <span th:text="${products.seller.user.username}"></span></a></div>
@@ -44,7 +44,7 @@
                     <h4> On Stock: <span th:text="${products.quantity}"></span> </h4>
                     <h3>$<span class="dress-card-price" th:text="${products.price}" style="color: #4da944; font-size: large"></span></h3>
                     <div class="row">
-                        <form action="#" th:action="@{/buyers/cart/add/{id}(id=${products.id})}" method="post">
+                        <form sec:authorize="hasAuthority('BUYER')" action="#" th:action="@{/buyers/cart/add/{id}(id=${products.id})}" method="post">
                             <label for="quantity">Quantity: </label>
                             <input required id="quantity" type="number" name="quantity" class="form-control"/>
                             <button type="submit" class="btn btn-primary centered">
@@ -73,80 +73,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-<!--
-        <div class="row">
-            <div th:each="products: ${productsHome}" class="col-12 col-sm-8 col-md-6 col-lg-4">
-                <div class="card">
-              &lt;!&ndash;img class="card-img" th:src="@{/images/{value}(value=${products.id})}" alt="Vans"&ndash;&gt;
-                    <img class="card-img" th:src="@{/images/cool-status.jpg}" alt="Vans">
-                    <div class="card-img-overlay d-flex justify-content-end">
-                        <a th:text="${products.quantity}"  class="card-link text-danger like"></a>
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-title" th:text="${products.name}"></h4>
-                        <h6 class="card-subtitle mb-2 text-muted">Sold By: <a th:href="@{/sellers/profile/{id}(id=${products.seller.id})}"><span th:text="${products.seller.user.username}"></span></a></h6>
-                        <p>Description: <span th:text="${products.description}"></span></p>
-                        <div class="buy d-flex justify-content-between align-items-center">
-                            <div class="price text-success" th:text="${products.price}"><h5 class="mt-4"></h5></div>
-                            <a th:href="@{/buyers/cart/add/{productId}(id=${products.id})}"
-                            class="btn-success"><i class="icon_cart"></i> Add to Cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>-->
-
-<!--        <div class="col">-->
-<!--        <div class="row">-->
-<!--            <div th:each="products,iStat : ${productsHome}">-->
-<!--                <div th:class="${iStat.even}? 'col' : 'w-100' " style="margin:2%;">-->
-<!--                    <div class="card" style="width:15rem;">-->
-
-<!--                        <img th:src="@{/images/cool-status.jpg}" class="card-img-top" alt="...">-->
-
-<!--                        <a th:text="${products.quantity}"  class="card-link text-danger like"></a>-->
-
-<!--                        <div class="card-body">-->
-<!--                            <h5 class="card-title" th:text="${products.name}">Card title</h5>-->
-<!--                            <h6 class="card-subtitle mb-2 text-muted">Sold By:-->
-<!--                                <a th:href="@{/sellers/profile/{id}(id=${products.seller.id})}">-->
-<!--                                    <span th:text="${products.seller.user.username}"></span></a></h6>-->
-<!--                            <p class="card-text" th:text="${products.description}">Some quick example text to build-->
-<!--                                on the-->
-<!--                                card title and make up the bulk of the card's content.</p>-->
-<!--                            <div class="input-group mb-3">-->
-<!--                                <div class="input-group-prepend">-->
-<!--                                    <span class="input-group-text" id="basic-addon3">$</span>-->
-<!--                                </div>-->
-<!--                                <input type="text" readonly-->
-<!--                                       th:value="${products.price}" class="form-control"-->
-<!--                                       aria-describedby="basic-addon3"></input>-->
-<!--                            </div>-->
-
-<!--                            &lt;!&ndash; <a class="btn btn-primary"-->
-<!--                                th:href="@{'/cartItem/viewDetails' (productId=${product.id})}">-->
-<!--                                 View Details &raquo;</a>&ndash;&gt;-->
-<!--                            <a class="btn btn-primary"-->
-<!--                               th:href="@{/buyers/cart/add/{productId}(id=${products.id})}">-->
-<!--                                Add to Cart &raquo;</a>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    </div>-->
-
-
-
