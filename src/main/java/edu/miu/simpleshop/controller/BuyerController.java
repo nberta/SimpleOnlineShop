@@ -4,6 +4,7 @@ package edu.miu.simpleshop.controller;
 
 import edu.miu.simpleshop.domain.*;
 import edu.miu.simpleshop.domain.enums.Role;
+import edu.miu.simpleshop.exception.SessionlessUserException;
 import edu.miu.simpleshop.service.*;
 import edu.miu.simpleshop.util.PdfReceiptDownload;
 
@@ -25,6 +26,7 @@ import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/buyers")
@@ -44,6 +46,9 @@ public class BuyerController {
 
     @Autowired
     private ProductReviewService productReviewService;
+
+    @Autowired
+    private ShoppingCartService shoppingCartService;
 
 
     @GetMapping("/register")
@@ -87,14 +92,16 @@ public class BuyerController {
     //Follows
     @GetMapping("/following")
     public String getSellersFollowed(Model model, HttpSession session) {
-        Buyer buyer = (Buyer)session.getAttribute("loggedInBuyer");
+        Buyer buyer = Optional.ofNullable((Buyer)session.getAttribute("loggedInBuyer"))
+                .orElseThrow(SessionlessUserException::new);
         model.addAttribute("follows", buyerService.getFollowedSellersForBuyer(buyer.getId()));
         return "buyer/mysellers";
     }
 
     @GetMapping("/following/{id}/follow")
     public String followSeller(@PathVariable("id") Long id, Model model, HttpSession session) {
-        Buyer buyer = (Buyer)session.getAttribute("loggedInBuyer");
+        Buyer buyer = Optional.ofNullable((Buyer)session.getAttribute("loggedInBuyer"))
+                .orElseThrow(SessionlessUserException::new);
         buyerService.followSeller(buyer, id);
         model.addAttribute("follows", buyerService.getFollowedSellersForBuyer(buyer.getId()));
         return "buyer/mysellers";
@@ -102,7 +109,8 @@ public class BuyerController {
 
     @GetMapping("/following/{id}/unfollow")
     public String unfollowSeller(@PathVariable("id") Long id, Model model, HttpSession session) {
-        Buyer buyer = (Buyer)session.getAttribute("loggedInBuyer");
+        Buyer buyer = Optional.ofNullable((Buyer)session.getAttribute("loggedInBuyer"))
+                .orElseThrow(SessionlessUserException::new);
         buyerService.unfollowSeller(buyer, id);
         model.addAttribute("follows", buyerService.getFollowedSellersForBuyer(buyer.getId()));
         return "buyer/mySellers";
@@ -113,18 +121,37 @@ public class BuyerController {
     @GetMapping("/my-cart")
     public String loadShoppingCart(Model model,
                                    @ModelAttribute("errorMessage") String errorMessage, HttpSession session) {
-        Buyer buyer = (Buyer)session.getAttribute("loggedInBuyer");
-        ShoppingCart cart = buyerService.getShoppingCartForBuyer(buyer);
-        model.addAttribute("cartItems", cart.getCartItems());
+        Buyer buyer = Optional.ofNullable((Buyer)session.getAttribute("loggedInBuyer"))
+                .orElseThrow(SessionlessUserException::new);
+        model.addAttribute("cartItems", buyer.getShoppingCart().getCartItems());
         model.addAttribute("itemsForCheckOut", new ArrayList<CartItem>());
         return "buyer/shoppingCart";
     }
 
+    @PostMapping("/cart/add/{id}")
+    public String addToCart(@PathVariable("id") Long productId,
+                            @RequestParam("quantity") Integer quantity, HttpSession session) {
+        Buyer buyer = Optional.ofNullable((Buyer)session.getAttribute("loggedInBuyer"))
+                .orElseThrow(SessionlessUserException::new);
+        buyer.getShoppingCart().addCartItem(new CartItem(productService.getProduct(productId), quantity));
+
+        //redirect to whatever page they were on
+        return "redirect:/buyers/my-cart";
+    }
+
+    @PostMapping("/my-cart/remove/{id}")
+    public String removeFromCart(@PathVariable("id") Long cartItemId, HttpSession session) {
+        Buyer buyer = Optional.ofNullable((Buyer)session.getAttribute("loggedInBuyer"))
+                .orElseThrow(SessionlessUserException::new);
+        shoppingCartService.removeCartItem(cartItemId, buyer);
+        return "redirect:/buyers/my-cart";
+    }
     @PostMapping("/my-cart/make-purchase")
-    public String makePurchase(@ModelAttribute("itemsForCheckOut")List<CartItem> itemsForCheckOut,
-                               RedirectAttributes redirectAttributes, HttpSession session) {
-        Buyer buyer = (Buyer)session.getAttribute("loggedInBuyer");
+    public String makePurchase(RedirectAttributes redirectAttributes, HttpSession session) {
+        Buyer buyer = Optional.ofNullable((Buyer)session.getAttribute("loggedInBuyer"))
+                .orElseThrow(SessionlessUserException::new);
         buyer = buyerService.getById(buyer.getId());
+        List<CartItem> itemsForCheckOut = buyer.getShoppingCart().getCartItems();
         if (itemsForCheckOut.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Order failed. Attempted to make purchase without any items");
@@ -169,11 +196,23 @@ public class BuyerController {
     }
 
     //Check Order History
-    @GetMapping("/buyer/orders")
+    @GetMapping("/orders")
     public String orderList(Model model, HttpSession session) {
-        Buyer buyer = (Buyer)session.getAttribute("loggedInBuyer");
+        Buyer buyer = Optional.ofNullable((Buyer)session.getAttribute("loggedInBuyer"))
+                .orElseThrow(SessionlessUserException::new);
+        buyer = buyerService.getById(buyer.getId());
         model.addAttribute("orders", buyer.getOrders());
         return "buyer/orders";
+    }
+
+    @GetMapping("/orders/{id}")
+    public String orderDetails(@PathVariable("id") Long orderId, Model model, HttpSession session) {
+        Buyer buyer = Optional.ofNullable((Buyer)session.getAttribute("loggedInBuyer"))
+                .orElseThrow(SessionlessUserException::new);
+        for (Order o : buyer.getOrders())
+            if (o.getId().equals(orderId))
+                model.addAttribute("order", o);
+        return "order/details";
     }
 
     //reviews
@@ -193,7 +232,8 @@ public class BuyerController {
             model.addAttribute("productId", productReview.getProduct().getId());
             return "product/create-review";
         }
-        Buyer buyer = (Buyer)session.getAttribute("loggedInBuyer");
+        Buyer buyer = Optional.ofNullable((Buyer)session.getAttribute("loggedInBuyer"))
+                .orElseThrow(SessionlessUserException::new);
         productReview.setBuyer(buyer);
         productReview.setProduct(productService.getProduct(id));
         productReviewService.save(productReview);

@@ -12,7 +12,6 @@ import java.io.*;
 
 public class ReceiptMaker {
 
-
     public static void prepareOrderReceipt(Order order) {
         Thread newThread = new Thread(() -> {
             makeReceipt(order);

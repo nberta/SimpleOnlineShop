@@ -15,8 +15,6 @@ public class CartItem {
 
     private int quantity;
 
-    @ManyToOne
-    private ShoppingCart shoppingCart;
 
     public CartItem(){}
 
@@ -43,11 +41,17 @@ public class CartItem {
         this.quantity = quantity;
     }
 
-    public ShoppingCart getShoppingCart() {
-        return shoppingCart;
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CartItem cartItem = (CartItem) o;
+        return quantity == cartItem.quantity &&
+                id.equals(cartItem.id);
     }
 }

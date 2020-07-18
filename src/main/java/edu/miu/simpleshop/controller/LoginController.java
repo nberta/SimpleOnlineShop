@@ -20,8 +20,6 @@ public class LoginController {
     @Autowired
     private CategoryService categoryService;
 
-
-
     @GetMapping("/")
     public String getIndex(Model model){
         Buyer buyer = new Buyer();

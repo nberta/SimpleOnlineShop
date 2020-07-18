@@ -140,14 +140,10 @@ public class ProductController {
     @GetMapping("/product/edit/{productId}")
     public String updateProduct(@PathVariable("productId") long productId, Model model) {
         Product product = productService.getProduct(productId);
-        return "seller/edit-product";
+        return "sellers/edit-product";
     }
 
-    @DeleteMapping("/product/remove/{productId}")
-    public String deleteProduct(@PathVariable("productId") long productId) {
-        productService.delete(productId);
-        return "redirect:/seller/my-products";
-    }
+
 
 //    @GetMapping("/category/{id}")
 //    public String getCategoriesById(@PathVariable("id") Long id, Model model){

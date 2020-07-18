@@ -1,5 +1,6 @@
 package edu.miu.simpleshop.controller;
 
+import edu.miu.simpleshop.domain.Product;
 import edu.miu.simpleshop.domain.Seller;
 import edu.miu.simpleshop.domain.User;
 import edu.miu.simpleshop.service.OrderLineService;
@@ -74,7 +75,6 @@ public class SellerController {
         return "seller/details";
     }
 
-
     @GetMapping("/register/{id}")
     public String getRegistrationForm(@PathVariable Long id) {
         return "seller/sellerRegistrationForm";
@@ -85,6 +85,15 @@ public class SellerController {
         Seller seller = (Seller)session.getAttribute("loggedInSeller");
         model.addAttribute("products", productService.getBySellerId(seller.getId()));
         return "seller/singleproduct";
+    }
+
+    @DeleteMapping("/product/remove/{productId}")
+    public String deleteProduct(@PathVariable("productId") Long productId, HttpSession session) {
+        Seller seller = (Seller)session.getAttribute("loggedInSeller");
+        Product product = productService.getProduct(productId);
+        if (product.getSeller().getId().equals(seller.getId()))
+            productService.delete(productId);
+        return "redirect:/sellers/my-products";
     }
 
     @GetMapping("/my-orders")
@@ -107,4 +116,5 @@ public class SellerController {
         sellerService.cancelOrderLineForSeller(id, seller);
         return "redirect:/sellers/my-orders";
     }
+
 }
